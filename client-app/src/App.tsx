@@ -7,7 +7,7 @@ function App() {
   const [accounts, setAccounts] = useState([]);
 
   useEffect(() => {
-    axios.get('htpp://localhost:5000/api/accounts').then(response => {
+    axios.get('http://localhost:5000/api/accounts').then(response => {
       console.log(response);
       setAccounts(response.data);
     })
@@ -16,7 +16,6 @@ function App() {
   return (
     <div>
       <Header as='h2' icon='users' content='Banking System'/>
-      <header className="App-header">
         <List>
         {accounts.map((account: any) =>(
             <List.Item key={account.id}>
@@ -24,7 +23,6 @@ function App() {
             </List.Item>
           ))}
         </List>
-      </header>
     </div>
   );
 }
