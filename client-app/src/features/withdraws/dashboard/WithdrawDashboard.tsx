@@ -16,15 +16,17 @@ interface Props {
     closeForm: () => void;
     createOrEdit:  (withdraw: Withdraw) => void;
     deleteWithdraw: (id: string) => void;
+    submitting: boolean;
 }
 
-export default function WithdrawDashboard({withdraws, selectedWithdraw, selectWithdraw, cancelSelectWithdraw, editMode, openForm, closeForm, createOrEdit, deleteWithdraw}: Props) {
+export default function WithdrawDashboard({withdraws, selectedWithdraw, selectWithdraw, cancelSelectWithdraw, editMode, openForm, closeForm, createOrEdit, deleteWithdraw, submitting}: Props) {
     return(
         <Grid>
             <Grid.Column width='10'>
                 <WithdrawList withdraws={withdraws} 
                     selectWithdraw={selectWithdraw}
                     deleteWithdraw={deleteWithdraw}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
@@ -35,7 +37,12 @@ export default function WithdrawDashboard({withdraws, selectedWithdraw, selectWi
                     openForm={openForm}
                 />}
                 {editMode &&
-                <WithdrawForm closeForm={closeForm} withdraw={selectedWithdraw} createOrEdit={createOrEdit}/>}
+                <WithdrawForm 
+                    closeForm={closeForm} 
+                    withdraw={selectedWithdraw} 
+                    createOrEdit={createOrEdit}
+                    submitting={submitting}
+                />}
             </Grid.Column>
         </Grid>
     )

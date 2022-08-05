@@ -16,15 +16,17 @@ interface Props {
     closeForm: () => void;
     createOrEdit:  (balance: Balance) => void;
     deleteBalance: (id: string) => void;
+    submitting: boolean;
 }
 
-export default function BalanceDashboard({balances, selectedBalance, selectBalance, cancelSelectBalance, editMode, openForm, closeForm, createOrEdit, deleteBalance}: Props) {
+export default function BalanceDashboard({balances, selectedBalance, selectBalance, cancelSelectBalance, editMode, openForm, closeForm, createOrEdit, deleteBalance, submitting}: Props) {
     return(
         <Grid>
             <Grid.Column width='10'>
                 <BalanceList balances={balances} 
                     selectBalance={selectBalance}
                     deleteBalance={deleteBalance}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
@@ -35,7 +37,12 @@ export default function BalanceDashboard({balances, selectedBalance, selectBalan
                     openForm={openForm}
                 />}
                 {editMode &&
-                <BalanceForm closeForm={closeForm} balance={selectedBalance} createOrEdit={createOrEdit}/>}
+                <BalanceForm 
+                    closeForm={closeForm} 
+                    balance={selectedBalance} 
+                    createOrEdit={createOrEdit}
+                    submitting={submitting}
+                />}
             </Grid.Column>
         </Grid>
     )

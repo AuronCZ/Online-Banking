@@ -16,15 +16,17 @@ interface Props {
     closeForm: () => void;
     createOrEdit:  (card: Cards) => void;
     deleteCard: (id: string) => void;
+    submitting: boolean;
 }
 
-export default function CardDashboard({cards, selectedCard, selectCard, cancelSelectCard, editMode, openForm, closeForm, createOrEdit, deleteCard}: Props) {
+export default function CardDashboard({cards, selectedCard, selectCard, cancelSelectCard, editMode, openForm, closeForm, createOrEdit, deleteCard, submitting}: Props) {
     return(
         <Grid>
             <Grid.Column width='10'>
                 <CardList cards={cards} 
                     selectCard={selectCard}
                     deleteCard={deleteCard}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
@@ -35,7 +37,12 @@ export default function CardDashboard({cards, selectedCard, selectCard, cancelSe
                     openForm={openForm}
                 />}
                 {editMode &&
-                <CardForm closeForm={closeForm} card={selectedCard} createOrEdit={createOrEdit}/>}
+                <CardForm 
+                    closeForm={closeForm} 
+                    card={selectedCard} 
+                    createOrEdit={createOrEdit}
+                    submitting={submitting}
+                />}
             </Grid.Column>
         </Grid>
     )

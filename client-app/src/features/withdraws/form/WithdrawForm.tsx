@@ -6,9 +6,10 @@ interface Props{
     withdraw: Withdraw | undefined;
     closeForm: () => void;
     createOrEdit:  (withdraw: Withdraw) => void;
+    submitting: boolean;
 }
 
-export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, createOrEdit}: Props){
+export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, createOrEdit, submitting}: Props){
 
 
     const initialState = selectedWithdraw ?? {
@@ -35,9 +36,9 @@ export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, cre
             <Form onSubmit={handleSubmit} autoComplete='off'>
                 <Form.Input placeholder='Account Number' value={withdraw.accountNumber} name='accountNumber' onChange={handleInputChange}/>
                 <Form.Input placeholder='Amount' value={withdraw.amount} name='amount' onChange={handleInputChange}/>
-                <Form.Input placeholder='Date' value={withdraw.date} name='date' onChange={handleInputChange}/>
+                <Form.Input type='date' placeholder='Date' value={withdraw.date} name='date' onChange={handleInputChange}/>
                 <Form.Input placeholder='Pin' value={withdraw.pin} name='pin' onChange={handleInputChange}/>
-                <Button floated='right' positive type='submit' content='Submit' />
+                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>

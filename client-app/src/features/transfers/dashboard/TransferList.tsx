@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { Transfer } from "../../../app/models/transfer";
 
@@ -6,9 +6,18 @@ interface Props {
     transfers: Transfer[];
     selectTransfer: (id: string) => void;
     deleteTransfer: (id: string) => void;
+    submitting: boolean;
 }
 
-export default function AccountList({transfers, selectTransfer, deleteTransfer}: Props) {
+export default function AccountList({transfers, selectTransfer, deleteTransfer, submitting}: Props) {
+    const [target, setTarget] = useState('');
+
+
+    function handleTransferDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+        setTarget(e.currentTarget.name);
+        deleteTransfer(id);
+    }
+    
     return (
         <Segment>
             <Item.Group divided>
@@ -23,7 +32,14 @@ export default function AccountList({transfers, selectTransfer, deleteTransfer}:
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectTransfer(transfer.id)} floated='right' content='View' color='blue' />
-                                <Button onClick={() => deleteTransfer(transfer.id)} floated='right' content='Delete' color='red' />
+                                <Button
+                                    name={transfer.id} 
+                                    loading={submitting && target === transfer.id} 
+                                    onClick={(e) => handleTransferDelete(e, transfer.id)} 
+                                    floated='right' 
+                                    content='Delete' 
+                                    color='red' 
+                                />
                                 <Label basic content={transfer.amount} />
                             </Item.Extra>
                         </Item.Content>

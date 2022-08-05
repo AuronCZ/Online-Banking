@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { Account } from "../../../app/models/account";
 
@@ -6,9 +6,20 @@ interface Props {
     accounts: Account[];
     selectAccount: (id: string) => void;
     deleteAccount: (id: string) => void;
+    submitting: boolean;
 }
 
-export default function AccountList({accounts, selectAccount, deleteAccount}: Props) {
+export default function AccountList({accounts, selectAccount, deleteAccount, submitting}: Props) {
+    const [target, setTarget] = useState('');
+
+
+    function handleAccountDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+        setTarget(e.currentTarget.name);
+        deleteAccount(id);
+    }
+
+
+
     return (
         <Segment>
             <Item.Group divided>
@@ -24,7 +35,14 @@ export default function AccountList({accounts, selectAccount, deleteAccount}: Pr
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectAccount(account.id)} floated='right' content='View' color='blue' />
-                                <Button onClick={() => deleteAccount(account.id)} floated='right' content='Delete' color='red' />
+                                <Button 
+                                    name={account.id}
+                                    loading={submitting && target === account.id} 
+                                    onClick={(e) => handleAccountDelete(e, account.id)} 
+                                    floated='right' 
+                                    content='Delete' 
+                                    color='red' 
+                                />
                                 <Label basic content={account.accountType} />
                             </Item.Extra>
                         </Item.Content>

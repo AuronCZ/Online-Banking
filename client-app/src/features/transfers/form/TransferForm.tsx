@@ -6,9 +6,10 @@ interface Props{
     transfer: Transfer | undefined;
     closeForm: () => void;
     createOrEdit:  (transfer: Transfer) => void;
+    submitting: boolean;
 }
 
-export default function TransferForm({transfer: selectedTransfer, closeForm, createOrEdit}: Props){
+export default function TransferForm({transfer: selectedTransfer, closeForm, createOrEdit, submitting}: Props){
 
     const initialState = selectedTransfer ?? {
         id: '',
@@ -37,8 +38,8 @@ export default function TransferForm({transfer: selectedTransfer, closeForm, cre
                 <Form.Input placeholder='Account Number' value={transfer.accountNumber} name='accountNumber' onChange={handleInputChange}/>
                 <Form.Input placeholder='Amount' value={transfer.amount} name='amount' onChange={handleInputChange}/>
                 <Form.Input placeholder='Payee' value={transfer.payee} name='payee' onChange={handleInputChange}/>
-                <Form.Input placeholder='Date' value={transfer.date} name='date' onChange={handleInputChange}/>
-                <Button floated='right' positive type='submit' content='Submit' />
+                <Form.Input type='date' placeholder='Date' value={transfer.date} name='date' onChange={handleInputChange}/>
+                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>

@@ -15,16 +15,18 @@ interface Props {
     openForm: (id: string) => void;
     closeForm: () => void;
     createOrEdit:  (transfer: Transfer) => void; 
-    deleteTransfer: (id: string) => void;   
+    deleteTransfer: (id: string) => void;
+    submitting: boolean;   
 }
 
-export default function TransferDashboard({transfers, selectedTransfer, selectTransfer, cancelSelectTransfer, editMode, openForm, closeForm, createOrEdit, deleteTransfer}: Props) {
+export default function TransferDashboard({transfers, selectedTransfer, selectTransfer, cancelSelectTransfer, editMode, openForm, closeForm, createOrEdit, deleteTransfer, submitting}: Props) {
     return(
         <Grid>
             <Grid.Column width='10'>
                 <TransferList  transfers={transfers} 
                     selectTransfer={selectTransfer}
                     deleteTransfer={deleteTransfer}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width='6'>
@@ -35,7 +37,12 @@ export default function TransferDashboard({transfers, selectedTransfer, selectTr
                     openForm={openForm}
                 />}
                 {editMode &&
-                <TransferForm closeForm={closeForm} transfer={selectedTransfer} createOrEdit={createOrEdit}/>}
+                <TransferForm 
+                    closeForm={closeForm} 
+                    transfer={selectedTransfer} 
+                    createOrEdit={createOrEdit}
+                    submitting={submitting}
+                />}
             </Grid.Column>
         </Grid>
     )

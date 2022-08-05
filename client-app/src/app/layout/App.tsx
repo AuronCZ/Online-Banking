@@ -1,5 +1,4 @@
 import React, {useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container} from 'semantic-ui-react';
 import { Account } from '../models/account';
 import { Balance } from '../models/balance';
@@ -13,11 +12,15 @@ import CardDashboard from '../../features/cards/dashboard/CardDashboard';
 import TransferDashboard from '../../features/transfers/dashboard/TransferDashboard';
 import WithdrawDashboard from '../../features/withdraws/dashboard/WithdrawDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
+import LoadingComponent from './LoadingComponent';
 
 function App() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [selectedAccount,setSelectedAccount] = useState<Account | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] =useState(false);
 
   const [balances, setBalances] = useState<Balance[]>([]);
   const [selectedBalance,setSelectedBalance] = useState<Balance | undefined>(undefined);
@@ -32,20 +35,50 @@ function App() {
   const [selectedWithdraw,setSelectedWithdraw] = useState<Withdraw | undefined>(undefined);
 
   useEffect(() => {
-    axios.get<Account[]>('http://localhost:5000/api/accounts').then(response => {
-      setAccounts(response.data);
+    agent.Accounts.list().then(response => {
+      let accounts: Account[] = [];
+      response.forEach(account =>{
+        account.openDate = account.openDate.split('T')[0];
+        accounts.push(account);
+      })
+      setAccounts(accounts);
+      setLoading(false);
     })
-    axios.get<Balance[]>('http://localhost:5000/api/balances').then(response => {
-      setBalances(response.data);
+    agent.Balances.list().then(response => {
+      let balances: Balance[] = [];
+      response.forEach(balance =>{
+        balance.date = balance.date.split('T')[0];
+        balances.push(balance);
+      })
+      setBalances(balances);
+      setLoading(false);
     })
-    axios.get<Cards[]>('http://localhost:5000/api/cards').then(response => {
-      setCards(response.data);
+    agent.Cardss.list().then(response => {
+      let cards: Cards[] = [];
+      response.forEach(card =>{
+        card.expirationDate = card.expirationDate.split('T')[0];
+        cards.push(card);
+      })
+      setCards(cards);
+      setLoading(false);
     })
-    axios.get<Transfer[]>('http://localhost:5000/api/transfers').then(response => {
-      setTransfers(response.data);
+    agent.Transfers.list().then(response => {
+      let transfers: Transfer[] = [];
+      response.forEach(transfer =>{
+        transfer.date = transfer.date.split('T')[0];
+        transfers.push(transfer);
+      })
+      setTransfers(transfers);
+      setLoading(false);
     })
-    axios.get<Withdraw[]>('http://localhost:5000/api/withdraws').then(response => {
-      setWithdraws(response.data);
+    agent.Withdraws.list().then(response => {
+      let withdraws: Withdraw[] = [];
+      response.forEach(withdra =>{
+        withdra.date = withdra.date.split('T')[0];
+        withdraws.push(withdra);
+      })
+      setWithdraws(withdraws);
+      setLoading(false);
     })
   }, [])
 
@@ -112,63 +145,149 @@ function App() {
   }
 
   function handleCreateOrEditAccount(account: Account) {
-    account.id
-      ? setAccounts([...accounts.filter(x => x.id !== account.id), account])
-      : setAccounts([...accounts,{...account, id: uuid()}]);
-      setEditMode(false);
-      setSelectedAccount(account);
+    setSubmitting(true);
+    if (account.id) {
+      agent.Accounts.update(account).then(() => {
+        setAccounts([...accounts.filter(x => x.id !== account.id), account])
+        setSelectedAccount(account);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      account.id = uuid();
+      agent.Accounts.create(account).then(() => {
+        setAccounts([...accounts, account])
+        setSelectedAccount(account);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
   function handleCreateOrEditBalance(balance: Balance) {
-    balance.id
-      ? setBalances([...balances.filter(x => x.id !== balance.id), balance])
-      : setBalances([...balances,{...balance, id: uuid()}]);
-      setEditMode(false);
-      setSelectedBalance(balance);
+    setSubmitting(true);
+    if (balance.id) {
+      agent.Balances.update(balance).then(() => {
+        setBalances([...balances.filter(x => x.id !== balance.id), balance])
+        setSelectedBalance(balance);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      balance.id = uuid();
+      agent.Balances.create(balance).then(() => {
+        setBalances([...balances, balance])
+        setSelectedBalance(balance);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
   function handleCreateOrEditCard(card: Cards) {
-    card.id
-      ? setCards([...cards.filter(x => x.id !== card.id), card])
-      : setCards([...cards,{...card, id: uuid()}]);
-      setEditMode(false);
-      setSelectedCard(card);
+    setSubmitting(true);
+    if (card.id) {
+      agent.Cardss.update(card).then(() => {
+        setCards([...cards.filter(x => x.id !== card.id), card])
+        setSelectedCard(card);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      card.id = uuid();
+      agent.Cardss.create(card).then(() => {
+        setCards([...cards, card])
+        setSelectedCard(card);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
   function handleCreateOrEditTransfer(transfer: Transfer) {
-    transfer.id
-      ? setTransfers([...transfers.filter(x => x.id !== transfer.id), transfer])
-      : setTransfers([...transfers,{...transfer, id: uuid()}]);
-      setEditMode(false);
-      setSelectedTransfer(transfer);
+    setSubmitting(true);
+    if (transfer.id) {
+      agent.Transfers.update(transfer).then(() => {
+        setTransfers([...transfers.filter(x => x.id !== transfer.id), transfer])
+        setSelectedTransfer(transfer);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      transfer.id = uuid();
+      agent.Transfers.create(transfer).then(() => {
+        setTransfers([...transfers, transfer])
+        setSelectedTransfer(transfer);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
   function handleCreateOrEditWithdraw(withdraw: Withdraw) {
-    withdraw.id
-      ? setWithdraws([...withdraws.filter(x => x.id !== withdraw.id), withdraw])
-      : setWithdraws([...withdraws,{...withdraw, id: uuid()}]);
-      setEditMode(false);
-      setSelectedWithdraw(withdraw);
+    setSubmitting(true);
+    if (withdraw.id) {
+      agent.Withdraws.update(withdraw).then(() => {
+        setWithdraws([...withdraws.filter(x => x.id !== withdraw.id), withdraw])
+        setSelectedWithdraw(withdraw);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    } else {
+      withdraw.id = uuid();
+      agent.Withdraws.create(withdraw).then(() => {
+        setWithdraws([...withdraws, withdraw])
+        setSelectedWithdraw(withdraw);
+        setEditMode(false);
+        setSubmitting(false);
+      })
+    }
   }
 
 
 
   function handleDeleteAccount(id: string){
-    setAccounts([...accounts.filter(x => x.id !== id)])
-  }
-  function handleDeleteBalance(id: string){
-    setBalances([...balances.filter(x => x.id !== id)])
-  }
-  function handleDeleteCard(id: string){
-    setCards([...cards.filter(x => x.id !== id)])
-  }
-  function handleDeleteTransfer(id: string){
-    setTransfers([...transfers.filter(x => x.id !== id)])
-  }
-  function handleDeleteWithdraw(id: string){
-    setWithdraws([...withdraws.filter(x => x.id !== id)])
+    setSubmitting(true);
+    agent.Accounts.delete(id).then(() => {
+      setAccounts([...accounts.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
   }
 
+  function handleDeleteBalance(id: string){
+    setSubmitting(true);
+    agent.Balances.delete(id).then(() => {
+      setBalances([...balances.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
+  }
+
+  function handleDeleteCard(id: string){
+    setSubmitting(true);
+    agent.Cardss.delete(id).then(() => {
+      setCards([...cards.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
+  }
+
+  function handleDeleteTransfer(id: string){
+    setSubmitting(true);
+    agent.Transfers.delete(id).then(() => {
+      setTransfers([...transfers.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
+  }
+
+  function handleDeleteWithdraw(id: string){
+    setSubmitting(true);
+    agent.Withdraws.delete(id).then(() => {
+      setWithdraws([...withdraws.filter(x => x.id !== id)]);
+      setSubmitting(false);
+    })
+  }
+
+
+  if (loading) return <LoadingComponent content='Loading app' />
 
 
   return (
@@ -185,6 +304,7 @@ function App() {
           closeForm={handleFormClose}
           createOrEdit={handleCreateOrEditAccount}
           deleteAccount={handleDeleteAccount}
+          submitting={submitting}
           />
 
        <BalanceDashboard 
@@ -197,6 +317,7 @@ function App() {
         closeForm={handleFormClose}
         createOrEdit={handleCreateOrEditBalance}
         deleteBalance={handleDeleteBalance}
+        submitting={submitting}
        />
        <CardDashboard 
         cards={cards} 
@@ -208,6 +329,7 @@ function App() {
         closeForm={handleFormClose}
         createOrEdit={handleCreateOrEditCard}
         deleteCard={handleDeleteCard}
+        submitting={submitting}
        />
        <TransferDashboard 
         transfers={transfers} 
@@ -219,6 +341,7 @@ function App() {
         closeForm={handleFormClose}
         createOrEdit={handleCreateOrEditTransfer}
         deleteTransfer={handleDeleteTransfer}
+        submitting={submitting}
         />
        <WithdrawDashboard 
         withdraws={withdraws} 
@@ -230,6 +353,7 @@ function App() {
         closeForm={handleFormClose}
         createOrEdit={handleCreateOrEditWithdraw}
         deleteWithdraw={handleDeleteWithdraw}
+        submitting={submitting}
         />
       </Container>
     </>
