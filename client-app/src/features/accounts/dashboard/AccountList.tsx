@@ -5,9 +5,10 @@ import { Account } from "../../../app/models/account";
 interface Props {
     accounts: Account[];
     selectAccount: (id: string) => void;
+    deleteAccount: (id: string) => void;
 }
 
-export default function AccountList({accounts, selectAccount}: Props) {
+export default function AccountList({accounts, selectAccount, deleteAccount}: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -23,6 +24,7 @@ export default function AccountList({accounts, selectAccount}: Props) {
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectAccount(account.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => deleteAccount(account.id)} floated='right' content='Delete' color='red' />
                                 <Label basic content={account.accountType} />
                             </Item.Extra>
                         </Item.Content>

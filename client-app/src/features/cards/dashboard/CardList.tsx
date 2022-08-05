@@ -7,9 +7,10 @@ import { Cards } from "../../../app/models/card";
 interface Props {
     cards: Cards[];
     selectCard: (id: string) => void;
+    deleteCard: (id: string) => void;
 }
 
-export default function AccountList({cards, selectCard}: Props) {
+export default function AccountList({cards, selectCard, deleteCard}: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -23,6 +24,7 @@ export default function AccountList({cards, selectCard}: Props) {
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectCard(card.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => deleteCard(card.id)} floated='right' content='Delete' color='red' />
                                 <Label basic content={card.cardType} />
                             </Item.Extra>
                         </Item.Content>

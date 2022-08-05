@@ -8,9 +8,10 @@ import { Cards } from "../../../app/models/card";
 interface Props{
     card: Cards;
     cancelSelectCard: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function CardDetails({card, cancelSelectCard}: Props){
+export default function CardDetails({card, cancelSelectCard, openForm}: Props){
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/cardImages/${card.cardType}.jpg`} />
@@ -25,7 +26,7 @@ export default function CardDetails({card, cancelSelectCard}: Props){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(card.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectCard} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

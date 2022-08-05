@@ -8,9 +8,10 @@ import { Transfer } from "../../../app/models/transfer";
 interface Props{
     transfer: Transfer;
     cancelSelectTransfer: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function TransferDetails({transfer, cancelSelectTransfer}: Props){
+export default function TransferDetails({transfer, cancelSelectTransfer, openForm}: Props){
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/transferImages/${transfer.amount}.jpg`} />
@@ -28,7 +29,7 @@ export default function TransferDetails({transfer, cancelSelectTransfer}: Props)
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(transfer.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectTransfer} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

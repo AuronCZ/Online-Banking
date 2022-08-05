@@ -7,9 +7,10 @@ import { Account } from "../../../app/models/account";
 interface Props{
     account: Account;
     cancelSelectAccount: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function AccountDetails({account, cancelSelectAccount}: Props){
+export default function AccountDetails({account, cancelSelectAccount, openForm}: Props){
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/accountImages/${account.accountType}.jpg`} />
@@ -30,7 +31,7 @@ export default function AccountDetails({account, cancelSelectAccount}: Props){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(account.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectAccount} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

@@ -8,9 +8,10 @@ import { Withdraw } from "../../../app/models/withdraw";
 interface Props{
     withdraw: Withdraw;
     cancelSelectWithdraw: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function WithdrawDetails({withdraw, cancelSelectWithdraw}: Props){
+export default function WithdrawDetails({withdraw, cancelSelectWithdraw, openForm}: Props){
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/withdrawImages/${withdraw.amount}.jpg`} />
@@ -25,7 +26,7 @@ export default function WithdrawDetails({withdraw, cancelSelectWithdraw}: Props)
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(withdraw.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectWithdraw} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

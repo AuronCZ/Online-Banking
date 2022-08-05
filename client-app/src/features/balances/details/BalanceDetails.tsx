@@ -7,9 +7,10 @@ import { Balance } from "../../../app/models/balance";
 interface Props{
     balance: Balance;
     cancelSelectBalance: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function BalanceDetails({balance, cancelSelectBalance}: Props){
+export default function BalanceDetails({balance, cancelSelectBalance, openForm}: Props){
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/balanceImages/${balance.accountType}.jpg`} />
@@ -24,7 +25,7 @@ export default function BalanceDetails({balance, cancelSelectBalance}: Props){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(balance.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectBalance} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

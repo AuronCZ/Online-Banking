@@ -5,9 +5,10 @@ import { Transfer } from "../../../app/models/transfer";
 interface Props {
     transfers: Transfer[];
     selectTransfer: (id: string) => void;
+    deleteTransfer: (id: string) => void;
 }
 
-export default function AccountList({transfers, selectTransfer}: Props) {
+export default function AccountList({transfers, selectTransfer, deleteTransfer}: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -22,6 +23,7 @@ export default function AccountList({transfers, selectTransfer}: Props) {
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectTransfer(transfer.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => deleteTransfer(transfer.id)} floated='right' content='Delete' color='red' />
                                 <Label basic content={transfer.amount} />
                             </Item.Extra>
                         </Item.Content>

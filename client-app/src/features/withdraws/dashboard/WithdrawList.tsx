@@ -6,9 +6,10 @@ import { Withdraw } from "../../../app/models/withdraw";
 interface Props {
     withdraws: Withdraw[];
     selectWithdraw: (id: string) => void;
+    deleteWithdraw: (id: string) => void;
 }
 
-export default function AccountList({withdraws, selectWithdraw}: Props) {
+export default function AccountList({withdraws, selectWithdraw, deleteWithdraw}: Props) {
     return (
         <Segment>
             <Item.Group divided>
@@ -22,6 +23,7 @@ export default function AccountList({withdraws, selectWithdraw}: Props) {
                             </Item.Description>
                             <Item.Extra>
                                 <Button onClick={() => selectWithdraw(withdraw.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => deleteWithdraw(withdraw.id)} floated='right' content='Delete' color='red' />
                                 <Label basic content={withdraw.amount} />
                             </Item.Extra>
                         </Item.Content>

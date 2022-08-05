@@ -1,16 +1,45 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
+import { Cards } from "../../../app/models/card";
 
-export default function CardForm(){
+interface Props{
+    card: Cards | undefined;
+    closeForm: () => void;
+    createOrEdit:  (card: Cards) => void;
+}
+
+export default function CardForm({card: selectedCard, closeForm, createOrEdit}: Props){
+
+
+
+    const initialState = selectedCard ?? {
+        id: '',
+        accountNumber: '',
+        cardType: '',
+        cardNumber: '',
+        expirationDate: ''
+    }
+
+    const [card, setCard] = useState(initialState);
+
+    function handleSubmit() {
+        createOrEdit(card);
+    }
+
+    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        const {name, value} = event.target;
+        setCard({...card, [name]:value})
+    }
+
     return(
         <Segment clearing>
-            <Form>
-                <Form.Input placeholder='Account Number' />
-                <Form.Input placeholder='Card Type' />
-                <Form.Input placeholder='Card Number' />
-                <Form.Input placeholder='Expiration Date' />
+            <Form onSubmit={handleSubmit} autoComplete='off'>
+                <Form.Input placeholder='Account Number' value={card.accountNumber} name='accountNumber' onChange={handleInputChange}/>
+                <Form.Input placeholder='Card Type' value={card.cardType} name='cardType' onChange={handleInputChange}/>
+                <Form.Input placeholder='Card Number' value={card.cardNumber} name='cardNumber' onChange={handleInputChange}/>
+                <Form.Input placeholder='Expiration Date' value={card.expirationDate} name='expirationDate' onChange={handleInputChange}/>
                 <Button floated='right' positive type='submit' content='Submit' />
-                <Button floated='right' type='button' content='Cancel' />
+                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )

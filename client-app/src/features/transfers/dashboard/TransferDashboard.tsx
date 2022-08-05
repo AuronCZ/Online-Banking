@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, List } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { Transfer } from "../../../app/models/transfer";
 import TransferDetails from "../details/TransferDetails";
 import TransferForm from "../form/TransferForm";
@@ -10,19 +10,32 @@ interface Props {
     transfers: Transfer[];
     selectedTransfer: Transfer | undefined;
     selectTransfer: (id: string) => void;
-    cancelSelectTransfer: () => void;    
+    cancelSelectTransfer: () => void;
+    editMode: boolean;
+    openForm: (id: string) => void;
+    closeForm: () => void;
+    createOrEdit:  (transfer: Transfer) => void; 
+    deleteTransfer: (id: string) => void;   
 }
 
-export default function TransferDashboard({transfers, selectedTransfer, selectTransfer, cancelSelectTransfer}: Props) {
+export default function TransferDashboard({transfers, selectedTransfer, selectTransfer, cancelSelectTransfer, editMode, openForm, closeForm, createOrEdit, deleteTransfer}: Props) {
     return(
         <Grid>
             <Grid.Column width='10'>
-                <TransferList  transfers={transfers} selectTransfer={selectTransfer}/>
+                <TransferList  transfers={transfers} 
+                    selectTransfer={selectTransfer}
+                    deleteTransfer={deleteTransfer}
+                />
             </Grid.Column>
             <Grid.Column width='6'>
                 {selectedTransfer &&
-                <TransferDetails transfer={selectedTransfer} cancelSelectTransfer={cancelSelectTransfer}/>}
-                <TransferForm />
+                <TransferDetails
+                    transfer={selectedTransfer}
+                    cancelSelectTransfer={cancelSelectTransfer}
+                    openForm={openForm}
+                />}
+                {editMode &&
+                <TransferForm closeForm={closeForm} transfer={selectedTransfer} createOrEdit={createOrEdit}/>}
             </Grid.Column>
         </Grid>
     )
