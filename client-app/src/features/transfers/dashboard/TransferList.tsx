@@ -1,15 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Transfer } from "../../../app/models/transfer";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    transfers: Transfer[];
-    selectTransfer: (id: string) => void;
-    deleteTransfer: (id: string) => void;
-    submitting: boolean;
-}
 
-export default function AccountList({transfers, selectTransfer, deleteTransfer, submitting}: Props) {
+export default observer (function AccountList() {
+    const {transferStore} = useStore();
+    const {deleteTransfer, transfersByDate, loading} = transferStore;
+
+
     const [target, setTarget] = useState('');
 
 
@@ -21,7 +20,7 @@ export default function AccountList({transfers, selectTransfer, deleteTransfer, 
     return (
         <Segment>
             <Item.Group divided>
-                {transfers.map(transfer => (
+                {transfersByDate.map(transfer => (
                     <Item key={transfer.id}>
                         <Item.Content>
                             <Item.Header as='a'>{transfer.transferNumber}</Item.Header>
@@ -31,10 +30,10 @@ export default function AccountList({transfers, selectTransfer, deleteTransfer, 
                                 <div>{transfer.payee}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => selectTransfer(transfer.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => transferStore.selectTransfer(transfer.id)} floated='right' content='View' color='blue' />
                                 <Button
                                     name={transfer.id} 
-                                    loading={submitting && target === transfer.id} 
+                                    loading={loading && target === transfer.id} 
                                     onClick={(e) => handleTransferDelete(e, transfer.id)} 
                                     floated='right' 
                                     content='Delete' 
@@ -48,4 +47,4 @@ export default function AccountList({transfers, selectTransfer, deleteTransfer, 
             </Item.Group>
         </Segment>
     )
-}
+})

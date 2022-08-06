@@ -1,15 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    accounts: Account[];
-    selectAccount: (id: string) => void;
-    deleteAccount: (id: string) => void;
-    submitting: boolean;
-}
 
-export default function AccountList({accounts, selectAccount, deleteAccount, submitting}: Props) {
+
+export default observer (function AccountList() {
+    const {accountStore} = useStore();
+    const {deleteAccount, accountsByDate, loading} = accountStore;
+
     const [target, setTarget] = useState('');
 
 
@@ -18,12 +17,10 @@ export default function AccountList({accounts, selectAccount, deleteAccount, sub
         deleteAccount(id);
     }
 
-
-
     return (
         <Segment>
             <Item.Group divided>
-                {accounts.map(account => (
+                {accountsByDate.map(account => (
                     <Item key={account.id}>
                         <Item.Content>
                             <Item.Header as='a'>{account.accountNumber}</Item.Header>
@@ -34,10 +31,10 @@ export default function AccountList({accounts, selectAccount, deleteAccount, sub
                                 <div>{account.balance}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => selectAccount(account.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => accountStore.selectAccount(account.id)} floated='right' content='View' color='blue' />
                                 <Button 
                                     name={account.id}
-                                    loading={submitting && target === account.id} 
+                                    loading={loading && target === account.id} 
                                     onClick={(e) => handleAccountDelete(e, account.id)} 
                                     floated='right' 
                                     content='Delete' 
@@ -51,4 +48,4 @@ export default function AccountList({accounts, selectAccount, deleteAccount, sub
             </Item.Group>
         </Segment>
     )
-}
+})

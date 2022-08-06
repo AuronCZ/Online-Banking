@@ -1,16 +1,18 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
-import { Balance } from "../../../app/models/balance";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useStore } from "../../../app/stores/store";
 
 
 
-interface Props{
-    balance: Balance;
-    cancelSelectBalance: () => void;
-    openForm: (id: string) => void;
-}
 
-export default function BalanceDetails({balance, cancelSelectBalance, openForm}: Props){
+
+export default function BalanceDetails(){
+    const {balanceStore} = useStore();
+    const {selectedBalance: balance, openForm, cancelSelectedBalance} = balanceStore;
+
+    if(!balance) return <LoadingComponent />;
+    
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/balanceImages/${balance.accountType}.jpg`} />
@@ -26,7 +28,7 @@ export default function BalanceDetails({balance, cancelSelectBalance, openForm}:
             <Card.Content extra>
                 <Button.Group widths='2'>
                     <Button onClick={() => openForm(balance.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectBalance} basic color='grey' content='Cancel' />
+                    <Button onClick={cancelSelectedBalance} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>

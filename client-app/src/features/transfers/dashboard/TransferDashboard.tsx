@@ -1,49 +1,29 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import { Transfer } from "../../../app/models/transfer";
+import { useStore } from "../../../app/stores/store";
 import TransferDetails from "../details/TransferDetails";
 import TransferForm from "../form/TransferForm";
 import TransferList from "./TransferList";
 
 
-interface Props {
-    transfers: Transfer[];
-    selectedTransfer: Transfer | undefined;
-    selectTransfer: (id: string) => void;
-    cancelSelectTransfer: () => void;
-    editMode: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
-    createOrEdit:  (transfer: Transfer) => void; 
-    deleteTransfer: (id: string) => void;
-    submitting: boolean;   
-}
 
-export default function TransferDashboard({transfers, selectedTransfer, selectTransfer, cancelSelectTransfer, editMode, openForm, closeForm, createOrEdit, deleteTransfer, submitting}: Props) {
+export default observer (function TransferDashboard() {
+
+    const {transferStore} = useStore();
+    const {selectedTransfer, editMode} = transferStore;
+    
     return(
         <Grid>
             <Grid.Column width='10'>
-                <TransferList  transfers={transfers} 
-                    selectTransfer={selectTransfer}
-                    deleteTransfer={deleteTransfer}
-                    submitting={submitting}
-                />
+                <TransferList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedTransfer &&
-                <TransferDetails
-                    transfer={selectedTransfer}
-                    cancelSelectTransfer={cancelSelectTransfer}
-                    openForm={openForm}
-                />}
+                {selectedTransfer && !editMode &&
+                <TransferDetails />}
                 {editMode &&
-                <TransferForm 
-                    closeForm={closeForm} 
-                    transfer={selectedTransfer} 
-                    createOrEdit={createOrEdit}
-                    submitting={submitting}
-                />}
+                <TransferForm />}
             </Grid.Column>
         </Grid>
     )
-}
+})

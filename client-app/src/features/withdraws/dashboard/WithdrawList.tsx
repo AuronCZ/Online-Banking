@@ -1,16 +1,13 @@
+import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Withdraw } from "../../../app/models/withdraw";
+import { useStore } from "../../../app/stores/store";
 
 
-interface Props {
-    withdraws: Withdraw[];
-    selectWithdraw: (id: string) => void;
-    deleteWithdraw: (id: string) => void;
-    submitting: boolean;
-}
+export default observer (function AccountList() {
+    const {withdrawStore} = useStore();
+    const {deleteWithdraw, withdrawsByDate, loading} = withdrawStore;
 
-export default function AccountList({withdraws, selectWithdraw, deleteWithdraw, submitting}: Props) {
     const [target, setTarget] = useState('');
 
 
@@ -22,7 +19,7 @@ export default function AccountList({withdraws, selectWithdraw, deleteWithdraw, 
     return (
         <Segment>
             <Item.Group divided>
-                {withdraws.map(withdraw => (
+                {withdrawsByDate.map(withdraw => (
                     <Item key={withdraw.id}>
                         <Item.Content>
                             <Item.Header as='a'>{withdraw.accountNumber}</Item.Header>
@@ -31,10 +28,10 @@ export default function AccountList({withdraws, selectWithdraw, deleteWithdraw, 
                                 <div>{withdraw.pin}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => selectWithdraw(withdraw.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => withdrawStore.selectWithdraw(withdraw.id)} floated='right' content='View' color='blue' />
                                 <Button 
                                     name={withdraw.id}
-                                    loading={submitting && target === withdraw.id} 
+                                    loading={loading && target === withdraw.id} 
                                     onClick={(e) => handleWithdrawDelete(e, withdraw.id)} 
                                     floated='right' 
                                     content='Delete' 
@@ -48,4 +45,4 @@ export default function AccountList({withdraws, selectWithdraw, deleteWithdraw, 
             </Item.Group>
         </Segment>
     )
-}
+})

@@ -1,15 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { Balance } from "../../../app/models/balance";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    balance: Balance | undefined;
-    closeForm: () => void;
-    createOrEdit:  (balance: Balance) => void;
-    submitting: boolean;
-}
 
-export default function BalanceForm({balance: selectedBalance, closeForm, createOrEdit, submitting}: Props){
+export default observer (function BalanceForm(){
+    const {balanceStore} = useStore();
+    const {selectedBalance, closeForm, createBalance, updateBalance, loading} = balanceStore;
 
 
     const initialState = selectedBalance ?? {
@@ -23,7 +20,7 @@ export default function BalanceForm({balance: selectedBalance, closeForm, create
     const [balance, setBalance] = useState(initialState);
 
     function handleSubmit() {
-        createOrEdit(balance);
+        balance.id ? updateBalance(balance) : createBalance(balance);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -39,9 +36,9 @@ export default function BalanceForm({balance: selectedBalance, closeForm, create
                 <Form.Input placeholder='AccountType' value={balance.accountType} name='accountType' onChange={handleInputChange}/>
                 <Form.Input placeholder='Amount' value={balance.amount} name='amount' onChange={handleInputChange}/>
                 <Form.Input type='date' placeholder='Date' value={balance.date} name='date' onChange={handleInputChange}/>
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )
-}
+})

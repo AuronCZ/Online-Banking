@@ -1,48 +1,28 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
+import { useStore } from "../../../app/stores/store";
 import AccountDetails from "../details/AccountDetils";
 import AccountForm from "../form/AccountForm";
 import AccountList from "./AccountList";
 
-interface Props {
-    accounts: Account[];
-    selectedAccount: Account | undefined;
-    selectAccount: (id: string) => void;
-    cancelSelectAccount: () => void;
-    editMode: boolean;
-    openForm: (id: string) => void;
-    closeForm: () => void;
-    createOrEdit:  (account: Account) => void;
-    deleteAccount: (id: string) => void;
-    submitting: boolean;
-}
 
-export default function AccountDashboard({accounts, selectedAccount, selectAccount, cancelSelectAccount, editMode, openForm, closeForm, createOrEdit, deleteAccount, submitting}: Props) {
+export default observer (function AccountDashboard() {
+
+    const {accountStore} = useStore();
+    const {selectedAccount, editMode} = accountStore;
+
     return(
         <Grid>
             <Grid.Column width='10'>
-                <AccountList accounts={accounts} 
-                    selectAccount={selectAccount}
-                    deleteAccount={deleteAccount}
-                    submitting={submitting}
-                />
+                <AccountList />
             </Grid.Column>
             <Grid.Column width='6'>
                 {selectedAccount && !editMode &&
-                <AccountDetails 
-                    account={selectedAccount} 
-                    cancelSelectAccount={cancelSelectAccount}
-                    openForm={openForm} 
-                />}
+                <AccountDetails />}
                 {editMode &&
-                <AccountForm  
-                    closeForm={closeForm} 
-                    account={selectedAccount} 
-                    createOrEdit={createOrEdit}
-                    submitting={submitting}
-                />}
+                <AccountForm />}
             </Grid.Column>
         </Grid>
     )
-}
+})

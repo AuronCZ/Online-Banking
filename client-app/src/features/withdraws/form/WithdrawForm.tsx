@@ -1,15 +1,13 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { Withdraw } from "../../../app/models/withdraw";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    withdraw: Withdraw | undefined;
-    closeForm: () => void;
-    createOrEdit:  (withdraw: Withdraw) => void;
-    submitting: boolean;
-}
 
-export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, createOrEdit, submitting}: Props){
+export default observer (function WithdrawForm(){
+    const {withdrawStore} = useStore();
+    const {selectedWithdraw, closeForm, createWithdraw, updateWithdraw, loading} = withdrawStore;
 
 
     const initialState = selectedWithdraw ?? {
@@ -23,7 +21,7 @@ export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, cre
     const [withdraw, setWithdraw] = useState(initialState);
 
     function handleSubmit() {
-        createOrEdit(withdraw);
+        withdraw.id ? updateWithdraw(withdraw) : createWithdraw(withdraw);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -38,9 +36,9 @@ export default function WithdrawForm({withdraw: selectedWithdraw, closeForm, cre
                 <Form.Input placeholder='Amount' value={withdraw.amount} name='amount' onChange={handleInputChange}/>
                 <Form.Input type='date' placeholder='Date' value={withdraw.date} name='date' onChange={handleInputChange}/>
                 <Form.Input placeholder='Pin' value={withdraw.pin} name='pin' onChange={handleInputChange}/>
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )
-}
+})

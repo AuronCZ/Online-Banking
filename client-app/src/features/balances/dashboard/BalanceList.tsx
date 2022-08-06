@@ -1,18 +1,14 @@
+import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Balance } from "../../../app/models/balance";
+import { useStore } from "../../../app/stores/store";
 
 
-interface Props {
-    balances: Balance[];
-    selectBalance: (id: string) => void;
-    deleteBalance: (id: string) => void;
-    submitting: boolean;
-}
+export default observer (function AccountList() {
+    const {balanceStore} = useStore();
+    const {deleteBalance, balancesByDate, loading} = balanceStore;
 
-export default function AccountList({balances, selectBalance, deleteBalance, submitting}: Props) {
     const [target, setTarget] = useState('');
-
 
     function handleBalanceDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
         setTarget(e.currentTarget.name);
@@ -22,7 +18,7 @@ export default function AccountList({balances, selectBalance, deleteBalance, sub
     return (
         <Segment>
             <Item.Group divided>
-                {balances.map(balance => (
+                {balancesByDate.map(balance => (
                     <Item key={balance.id}>
                         <Item.Content>
                             <Item.Header as='a'>{balance.accountNumber}</Item.Header>
@@ -31,10 +27,10 @@ export default function AccountList({balances, selectBalance, deleteBalance, sub
                                 <div>{balance.amount}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => selectBalance(balance.id)} floated='right' content='View' color='blue' />
+                                <Button onClick={() => balanceStore.selectBalance(balance.id)} floated='right' content='View' color='blue' />
                                 <Button
                                     name={balance.id} 
-                                    loading={submitting && target === balance.id} 
+                                    loading={loading && target === balance.id} 
                                     onClick={(e) => handleBalanceDelete(e, balance.id)} 
                                     floated='right' 
                                     content='Delete' 
@@ -48,4 +44,4 @@ export default function AccountList({balances, selectBalance, deleteBalance, sub
             </Item.Group>
         </Segment>
     )
-}
+})

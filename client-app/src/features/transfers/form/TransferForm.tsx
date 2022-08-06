@@ -1,15 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { Transfer } from "../../../app/models/transfer";
+import { useStore } from "../../../app/stores/store";
 
-interface Props{
-    transfer: Transfer | undefined;
-    closeForm: () => void;
-    createOrEdit:  (transfer: Transfer) => void;
-    submitting: boolean;
-}
-
-export default function TransferForm({transfer: selectedTransfer, closeForm, createOrEdit, submitting}: Props){
+export default observer (function TransferForm(){
+    const {transferStore} = useStore();
+    const {selectedTransfer, closeForm, createTransfer, updateTransfer, loading} = transferStore;
 
     const initialState = selectedTransfer ?? {
         id: '',
@@ -23,7 +20,7 @@ export default function TransferForm({transfer: selectedTransfer, closeForm, cre
     const [transfer, setTransfer] = useState(initialState);
 
     function handleSubmit() {
-        createOrEdit(transfer);
+        transfer.id ? updateTransfer(transfer) : createTransfer(transfer);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -39,9 +36,9 @@ export default function TransferForm({transfer: selectedTransfer, closeForm, cre
                 <Form.Input placeholder='Amount' value={transfer.amount} name='amount' onChange={handleInputChange}/>
                 <Form.Input placeholder='Payee' value={transfer.payee} name='payee' onChange={handleInputChange}/>
                 <Form.Input type='date' placeholder='Date' value={transfer.date} name='date' onChange={handleInputChange}/>
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )
-}
+})

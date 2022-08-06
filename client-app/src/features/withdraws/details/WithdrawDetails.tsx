@@ -1,17 +1,16 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
-import { Withdraw } from "../../../app/models/withdraw";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { useStore } from "../../../app/stores/store";
 
 
 
+export default function WithdrawDetails(){
+    const {withdrawStore} = useStore();
+    const {selectedWithdraw: withdraw, openForm, cancelSelectedWithdraw} = withdrawStore;
 
-interface Props{
-    withdraw: Withdraw;
-    cancelSelectWithdraw: () => void;
-    openForm: (id: string) => void;
-}
-
-export default function WithdrawDetails({withdraw, cancelSelectWithdraw, openForm}: Props){
+    if(!withdraw) return <LoadingComponent />;
+    
     return(
         <Card fluid>
             <Image src={`/assets/typeImages/withdrawImages/${withdraw.amount}.jpg`} />
@@ -27,7 +26,7 @@ export default function WithdrawDetails({withdraw, cancelSelectWithdraw, openFor
             <Card.Content extra>
                 <Button.Group widths='2'>
                     <Button onClick={() => openForm(withdraw.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectWithdraw} basic color='grey' content='Cancel' />
+                    <Button onClick={cancelSelectedWithdraw} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
