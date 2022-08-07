@@ -1,17 +1,20 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import WithdrawDetails from "../details/WithdrawDetails";
-import WithdrawForm from "../form/WithdrawForm";
 import WithdrawList from "./WithdrawList";
 
 
 
 export default observer (function WithdrawDashboard() {
-
     const {withdrawStore} = useStore();
-    const {selectedWithdraw, editMode} = withdrawStore;
+
+    useEffect(() => {
+        withdrawStore.loadWithdraws();
+      }, [withdrawStore])
+
+      if (withdrawStore.loadingInitial) return <LoadingComponent content='Loading app' />
     
     return(
         <Grid>
@@ -19,10 +22,7 @@ export default observer (function WithdrawDashboard() {
                 <WithdrawList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedWithdraw && !editMode &&
-                <WithdrawDetails />}
-                {editMode &&
-                <WithdrawForm  />}
+                <h2>Withdraw filter</h2>
             </Grid.Column>
         </Grid>
     )

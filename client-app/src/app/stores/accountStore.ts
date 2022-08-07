@@ -19,11 +19,11 @@ export default class AccountStore {
     }
 
     loadAccounts = async () =>  {
+        this.loadingInitial = true;
         try {
             const accounts = await agent.Accounts.list();
             accounts.forEach(account =>{
-                account.openDate = account.openDate.split('T')[0];
-                this.accountRegistry.set(account.id, account);
+                this.setAccount(account);
             })
             this.setLoadingInitial(false);
         } catch (error) {
@@ -32,27 +32,38 @@ export default class AccountStore {
         }
     }
 
+    loadAccount = async (id: string) => {
+        let account = this.getAccount(id);
+        if (account) {
+            this.selectedAccount = account;
+        } else {
+            this.loadingInitial = true;
+            try {
+                account = await agent.Accounts.details(id);
+                this.setAccount(account);
+                this.selectedAccount = account;
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private setAccount = (account: Account) => {
+        account.openDate = account.openDate.split('T')[0];
+        this.accountRegistry.set(account.id, account);
+    }
+
+    private getAccount = (id: string) => {
+        return this.accountRegistry.get(id);
+    }
+
 
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-    selectAccount = (id: string) => {
-        this.selectedAccount = this.accountRegistry.get(id);
-    }
-
-    cancelSelectedAccount = () => {
-        this.selectedAccount = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectAccount(id) : this.cancelSelectedAccount();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
-    }
 
     createAccount = async (account: Account) => {
         this.loading = true;
@@ -97,7 +108,6 @@ export default class AccountStore {
             await agent.Accounts.delete(id);
             runInAction(() => {
                 this.accountRegistry.delete(id);
-                if (this.selectedAccount?.id === id) this.cancelSelectedAccount();
                 this.loading = false;
             })
         } catch (error) {

@@ -1,4 +1,6 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Card,  Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -6,11 +8,16 @@ import { useStore } from "../../../app/stores/store";
 
 
 
-export default function CardDetails(){
+export default observer (function CardDetails(){
     const {cardStore} = useStore();
-    const {selectedCard: card, openForm, cancelSelectedCard} = cardStore;
+    const {selectedCard: card, loadCard, loadingInitial} = cardStore;
+    const {id} = useParams<{id: string}>();
 
-    if(!card) return <LoadingComponent />;
+    useEffect(() => {
+        if (id) loadCard(id);
+    }, [id, loadCard])
+
+    if(loadingInitial || !card) return <LoadingComponent />;
     
     return(
         <Card fluid>
@@ -26,10 +33,10 @@ export default function CardDetails(){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(card.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedCard} basic color='grey' content='Cancel' />
+                    <Button basic color='blue' content='Edit' />
+                    <Button basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
     )
-}
+})

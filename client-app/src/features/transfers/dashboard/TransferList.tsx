@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 
@@ -30,7 +31,7 @@ export default observer (function AccountList() {
                                 <div>{transfer.payee}</div>
                             </Item.Description>
                             <Item.Extra>
-                                <Button onClick={() => transferStore.selectTransfer(transfer.id)} floated='right' content='View' color='blue' />
+                                <Button as={Link} to={`/transfers/${transfer.id}`} floated='right' content='View' color='blue' />
                                 <Button
                                     name={transfer.id} 
                                     loading={loading && target === transfer.id} 

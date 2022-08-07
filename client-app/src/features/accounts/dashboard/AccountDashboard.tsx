@@ -1,16 +1,19 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import AccountDetails from "../details/AccountDetils";
-import AccountForm from "../form/AccountForm";
 import AccountList from "./AccountList";
 
 
 export default observer (function AccountDashboard() {
-
     const {accountStore} = useStore();
-    const {selectedAccount, editMode} = accountStore;
+
+    useEffect(() => {
+      accountStore.loadAccounts();
+    }, [accountStore])
+
+  if (accountStore.loadingInitial) return <LoadingComponent content='Loading app' />
 
     return(
         <Grid>
@@ -18,10 +21,7 @@ export default observer (function AccountDashboard() {
                 <AccountList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedAccount && !editMode &&
-                <AccountDetails />}
-                {editMode &&
-                <AccountForm />}
+                <h2>Account filter</h2>
             </Grid.Column>
         </Grid>
     )

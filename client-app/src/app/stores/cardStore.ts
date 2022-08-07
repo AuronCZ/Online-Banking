@@ -19,11 +19,11 @@ export default class CardStore {
     }
 
     loadCards = async () => {
+        this.loadingInitial = true;
         try {
             const cards = await agent.Cardss.list();
             cards.forEach(card =>{
-                card.expirationDate = card.expirationDate.split('T')[0];
-                this.cardRegistry.set(card.id, card);
+                this.setCard(card);
               })
               this.setLoadingInitial(false);
         } catch (error) {
@@ -32,26 +32,37 @@ export default class CardStore {
         }
     }
 
+    loadCard = async (id: string) => {
+        let card = this.getCard(id);
+        if (card) {
+            this.selectedCard = card;
+        } else {
+            this.loadingInitial = true;
+            try {
+                card = await agent.Cardss.details(id);
+                this.setCard(card);
+                this.selectedCard = card;
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private setCard = (card: Cards) => {
+        card.expirationDate = card.expirationDate.split('T')[0];
+        this.cardRegistry.set(card.id, card);
+    }
+
+    private getCard = (id: string) => {
+        return this.cardRegistry.get(id);
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-    selectCard = (id: string) => {
-        this.selectedCard = this.cardRegistry.get(id);
-    }
-
-    cancelSelectedCard = () => {
-        this.selectedCard = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectCard(id) : this.cancelSelectedCard();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
-    }
 
     createCard = async (card: Cards) => {
         this.loading = true;
@@ -96,7 +107,6 @@ export default class CardStore {
             await agent.Cardss.delete(id);
             runInAction(() => {
                 this.cardRegistry.delete(id);
-                if (this.selectedCard?.id === id) this.cancelSelectedCard();
                 this.loading = false;
             })
         } catch (error) {

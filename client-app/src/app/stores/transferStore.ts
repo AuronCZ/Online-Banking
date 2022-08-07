@@ -19,11 +19,11 @@ export default class TransferStore {
     }
 
     loadTransfers = async () => {
+        this.loadingInitial = true;
         try {
             const transfers = await agent.Transfers.list();
             transfers.forEach(transfer =>{
-                transfer.date = transfer.date.split('T')[0];
-                this.transferRegistry.set(transfer.id, transfer);
+                this.setTransfer(transfer);
               })
               this.setLoadingInitial(false);
         } catch (error) {
@@ -32,26 +32,37 @@ export default class TransferStore {
         }
     }
 
+    loadTransfer = async (id: string) => {
+        let transfer = this.getTransfer(id);
+        if (transfer) {
+            this.selectedTransfer = transfer;
+        } else {
+            this.loadingInitial = true;
+            try {
+                transfer = await agent.Transfers.details(id);
+                this.setTransfer(transfer);
+                this.selectedTransfer = transfer;
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private setTransfer = (transfer: Transfer) => {
+        transfer.date = transfer.date.split('T')[0];
+        this.transferRegistry.set(transfer.id, transfer);
+    }
+
+    private getTransfer = (id: string) => {
+        return this.transferRegistry.get(id);
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-    selectTransfer = (id: string) => {
-        this.selectedTransfer = this.transferRegistry.get(id);
-    }
-
-    cancelSelectedTransfer = () => {
-        this.selectedTransfer = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectTransfer(id) : this.cancelSelectedTransfer();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
-    }
 
     createTransfer = async (transfer: Transfer) => {
         this.loading = true;
@@ -96,7 +107,6 @@ export default class TransferStore {
             await agent.Transfers.delete(id);
             runInAction(() => {
                 this.transferRegistry.delete(id);
-                if (this.selectedTransfer?.id === id) this.cancelSelectedTransfer();
                 this.loading = false;
             })
         } catch (error) {

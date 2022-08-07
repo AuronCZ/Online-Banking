@@ -1,17 +1,20 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import TransferDetails from "../details/TransferDetails";
-import TransferForm from "../form/TransferForm";
 import TransferList from "./TransferList";
 
 
 
 export default observer (function TransferDashboard() {
-
     const {transferStore} = useStore();
-    const {selectedTransfer, editMode} = transferStore;
+
+    useEffect(() => {
+        transferStore.loadTransfers();
+      }, [transferStore])
+
+      if (transferStore.loadingInitial) return <LoadingComponent content='Loading app' />
     
     return(
         <Grid>
@@ -19,10 +22,7 @@ export default observer (function TransferDashboard() {
                 <TransferList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedTransfer && !editMode &&
-                <TransferDetails />}
-                {editMode &&
-                <TransferForm />}
+                <h2>Transfer filter</h2>
             </Grid.Column>
         </Grid>
     )

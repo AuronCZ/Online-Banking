@@ -1,4 +1,6 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Card, Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -6,11 +8,16 @@ import { useStore } from "../../../app/stores/store";
 
 
 
-export default function TransferDetails(){
+export default observer (function TransferDetails(){
     const {transferStore} = useStore();
-    const {selectedTransfer: transfer, openForm, cancelSelectedTransfer} = transferStore;
+    const {selectedTransfer: transfer, loadTransfer, loadingInitial} = transferStore;
+    const {id} = useParams<{id: string}>();
 
-    if(!transfer) return <LoadingComponent />;
+    useEffect(() => {
+        if (id) loadTransfer(id);
+    }, [id, loadTransfer])
+
+    if(loadingInitial || !transfer) return <LoadingComponent />;
     
     return(
         <Card fluid>
@@ -29,10 +36,10 @@ export default function TransferDetails(){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(transfer.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedTransfer} basic color='grey' content='Cancel' />
+                    <Button basic color='blue' content='Edit' />
+                    <Button basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
     )
-}
+})

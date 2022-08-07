@@ -19,11 +19,11 @@ export default class BalanceStore {
     }
 
     loadBalances = async () => {
+        this.loadingInitial = true;
         try {
             const balances = await agent.Balances.list();
             balances.forEach(balance =>{
-                balance.date = balance.date.split('T')[0];
-                this.balanceRegistry.set(balance.id, balance);
+                this.setBalance(balance);
               })
               this.setLoadingInitial(false);
         } catch (error) {
@@ -32,26 +32,36 @@ export default class BalanceStore {
         }
     }
 
+    loadBalance = async (id: string) => {
+        let balance = this.getBalance(id);
+        if (balance) {
+            this.selectedBalance = balance;
+        } else {
+            this.loadingInitial = true;
+            try {
+                balance = await agent.Balances.details(id);
+                this.setBalance(balance);
+                this.selectedBalance = balance;
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private setBalance = (balance: Balance) => {
+        balance.date = balance.date.split('T')[0];
+        this.balanceRegistry.set(balance.id, balance);
+    }
+
+    private getBalance = (id: string) => {
+        return this.balanceRegistry.get(id);
+    }
+
 
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
-    }
-
-    selectBalance = (id: string) => {
-        this.selectedBalance = this.balanceRegistry.get(id);
-    }
-
-    cancelSelectedBalance = () => {
-        this.selectedBalance = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectBalance(id) : this.cancelSelectedBalance();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
     }
 
     createBalance = async (balance: Balance) => {
@@ -97,7 +107,6 @@ export default class BalanceStore {
             await agent.Balances.delete(id);
             runInAction(() => {
                 this.balanceRegistry.delete(id);
-                if (this.selectedBalance?.id === id) this.cancelSelectedBalance();
                 this.loading = false;
             })
         } catch (error) {

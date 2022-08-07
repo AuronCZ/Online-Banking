@@ -1,4 +1,4 @@
-import React, {useEffect } from 'react';
+import React from 'react';
 import { Container} from 'semantic-ui-react';
 import NavBar from './NavBar';
 import AccountDashboard from '../../features/accounts/dashboard/AccountDashboard';
@@ -6,48 +6,35 @@ import BalanceDashboard from '../../features/balances/dashboard/BalanceDashboard
 import CardDashboard from '../../features/cards/dashboard/CardDashboard';
 import TransferDashboard from '../../features/transfers/dashboard/TransferDashboard';
 import WithdrawDashboard from '../../features/withdraws/dashboard/WithdrawDashboard';
-import LoadingComponent from './LoadingComponent';
-import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
+import { Route, Routes } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
+import AccountForm from '../../features/accounts/form/AccountForm';
+import AccountDetails from '../../features/accounts/details/AccountDetils';
+import BalanceDetails from '../../features/balances/details/BalanceDetails';
+import CardDetails from '../../features/cards/details/CardDetails';
+import TransferDetails from '../../features/transfers/details/TransferDetails';
+import WithdrawDetails from '../../features/withdraws/details/WithdrawDetails';
 
 function App() {
-  const {accountStore} = useStore();
-  const {balanceStore} = useStore();
-  const {cardStore} = useStore();
-  const {transferStore} = useStore();
-  const {withdrawStore} = useStore();
-
-  useEffect(() => {
-    accountStore.loadAccounts();
-    balanceStore.loadBalances();
-    cardStore.loadCards();
-    transferStore.loadTransfers();
-    withdrawStore.loadWithdraws();
-  }, [accountStore, balanceStore, cardStore, transferStore, withdrawStore])
-
-
-
-  if (accountStore.loadingInitial) return <LoadingComponent content='Loading app' />
-  if (balanceStore.loadingInitial) return <LoadingComponent content='Loading app' />
-  if (cardStore.loadingInitial) return <LoadingComponent content='Loading app' />
-  if (transferStore.loadingInitial) return <LoadingComponent content='Loading app' />
-  if (withdrawStore.loadingInitial) return <LoadingComponent content='Loading app' />
-
-
   return (
     <>
       <NavBar  />
       <Container style={{marginTop: '7em'}}>
-       <AccountDashboard />
-
-       <BalanceDashboard />
-
-       <CardDashboard />
-
-       <TransferDashboard />
-
-       <WithdrawDashboard />
-
+      <Routes>
+        <Route path='/' element={<HomePage/>} />
+        <Route path='/accounts' element={<AccountDashboard/>} />
+        <Route path='/accounts/:id' element={<AccountDetails/>} />
+        <Route path='/balances' element={<BalanceDashboard/>} />
+        <Route path='/balances/:id' element={<BalanceDetails/>} />
+        <Route path='/cards' element={<CardDashboard/>} />
+        <Route path='/cards/:id' element={<CardDetails/>} />
+        <Route path='/transfers' element={<TransferDashboard/>} />
+        <Route path='/transfers/:id' element={<TransferDetails/>} />
+        <Route path='/withdraws' element={<WithdrawDashboard/>} />
+        <Route path='/withdraws/:id' element={<WithdrawDetails/>} />
+        <Route path='/createAccount' element={<AccountForm/>} />
+      </Routes>
       </Container>
     </>
   );

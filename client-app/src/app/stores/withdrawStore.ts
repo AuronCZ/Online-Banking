@@ -19,11 +19,11 @@ export default class WithdrawStore {
     }
 
     loadWithdraws = async () => {
+        this.loadingInitial = true;
         try {
             const withdraws = await agent.Withdraws.list();
             withdraws.forEach(withdraw =>{
-                withdraw.date = withdraw.date.split('T')[0];
-                this.withdrawRegistry.set(withdraw.id, withdraw);
+                this.setWithdraw(withdraw);
               })
               this.setLoadingInitial(false);
         } catch (error) {
@@ -32,26 +32,37 @@ export default class WithdrawStore {
         }
     }
 
+    loadWithdraw = async (id: string) => {
+        let withdraw = this.getWithdraw(id);
+        if (withdraw) {
+            this.selectedWithdraw = withdraw;
+        } else {
+            this.loadingInitial = true;
+            try {
+                withdraw = await agent.Withdraws.details(id);
+                this.setWithdraw(withdraw);
+                this.selectedWithdraw = withdraw;
+                this.setLoadingInitial(false);
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private setWithdraw = (withdraw: Withdraw) => {
+        withdraw.date = withdraw.date.split('T')[0];
+        this.withdrawRegistry.set(withdraw.id, withdraw);
+    }
+
+    private getWithdraw = (id: string) => {
+        return this.withdrawRegistry.get(id);
+    }
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-    selectWithdraw = (id: string) => {
-        this.selectedWithdraw = this.withdrawRegistry.get(id);
-    }
-
-    cancelSelectedWithdraw = () => {
-        this.selectedWithdraw = undefined;
-    }
-
-    openForm = (id?: string) => {
-        id ? this.selectWithdraw(id) : this.cancelSelectedWithdraw();
-        this.editMode = true;
-    }
-
-    closeForm = () => {
-        this.editMode = false;
-    }
 
     createWithdraw = async (withdraw: Withdraw) => {
         this.loading = true;
@@ -96,7 +107,6 @@ export default class WithdrawStore {
             await agent.Withdraws.delete(id);
             runInAction(() => {
                 this.withdrawRegistry.delete(id);
-                if (this.selectedWithdraw?.id === id) this.cancelSelectedWithdraw();
                 this.loading = false;
             })
         } catch (error) {

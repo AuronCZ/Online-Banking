@@ -1,17 +1,20 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import CardDetails from "../details/CardDetails";
-import CardForm from "../form/CardForm";
 import CardList from "./CardList";
 
 
 
 export default observer (function CardDashboard() {
-
     const {cardStore} = useStore();
-    const {selectedCard, editMode} = cardStore;
+
+    useEffect(() => {
+        cardStore.loadCards();
+      }, [cardStore])
+
+      if (cardStore.loadingInitial) return <LoadingComponent content='Loading app' />
     
     return(
         <Grid>
@@ -19,10 +22,7 @@ export default observer (function CardDashboard() {
                 <CardList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedCard && !editMode &&
-                <CardDetails />}
-                {editMode &&
-                <CardForm  />}
+                <h2>Card filter</h2>
             </Grid.Column>
         </Grid>
     )

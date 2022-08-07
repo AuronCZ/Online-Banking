@@ -1,13 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { Withdraw } from "../../../app/models/withdraw";
 import { useStore } from "../../../app/stores/store";
 
 
 export default observer (function WithdrawForm(){
     const {withdrawStore} = useStore();
-    const {selectedWithdraw, closeForm, createWithdraw, updateWithdraw, loading} = withdrawStore;
+    const {selectedWithdraw, createWithdraw, updateWithdraw, loading} = withdrawStore;
 
 
     const initialState = selectedWithdraw ?? {
@@ -37,7 +36,7 @@ export default observer (function WithdrawForm(){
                 <Form.Input type='date' placeholder='Date' value={withdraw.date} name='date' onChange={handleInputChange}/>
                 <Form.Input placeholder='Pin' value={withdraw.pin} name='pin' onChange={handleInputChange}/>
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )

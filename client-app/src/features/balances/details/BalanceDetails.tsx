@@ -1,4 +1,6 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Card, Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -7,11 +9,16 @@ import { useStore } from "../../../app/stores/store";
 
 
 
-export default function BalanceDetails(){
+export default observer (function BalanceDetails(){
     const {balanceStore} = useStore();
-    const {selectedBalance: balance, openForm, cancelSelectedBalance} = balanceStore;
+    const {selectedBalance: balance, loadBalance, loadingInitial} = balanceStore;
+    const {id} = useParams<{id: string}>();
 
-    if(!balance) return <LoadingComponent />;
+    useEffect(() => {
+        if (id) loadBalance(id);
+    }, [id, loadBalance])
+
+    if(loadingInitial || !balance) return <LoadingComponent />;
     
     return(
         <Card fluid>
@@ -27,10 +34,10 @@ export default function BalanceDetails(){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(balance.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedBalance} basic color='grey' content='Cancel' />
+                    <Button basic color='blue' content='Edit' />
+                    <Button basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
     )
-}
+})

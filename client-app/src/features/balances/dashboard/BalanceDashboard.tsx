@@ -1,17 +1,20 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import BalanceDetails from "../details/BalanceDetails";
-import BalanceForm from "../form/BalanceForm";
 import BalanceList from "./BalanceList";
 
 
 
 export default observer (function BalanceDashboard() {
-
     const {balanceStore} = useStore();
-    const {selectedBalance, editMode} = balanceStore;
+
+    useEffect(() => {
+        balanceStore.loadBalances();
+      }, [balanceStore])
+
+      if (balanceStore.loadingInitial) return <LoadingComponent content='Loading app' />
     
     return(
         <Grid>
@@ -19,10 +22,7 @@ export default observer (function BalanceDashboard() {
                 <BalanceList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {selectedBalance && !editMode &&
-                <BalanceDetails />}
-                {editMode &&
-                <BalanceForm />}
+                <h2>Balance filter</h2>
             </Grid.Column>
         </Grid>
     )

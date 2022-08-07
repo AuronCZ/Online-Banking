@@ -1,14 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import { useStore } from "../../../app/stores/store";
-
 
 
 export default observer (function AccountForm(){
     const {accountStore} = useStore();
-    const {selectedAccount, closeForm, createAccount, updateAccount, loading} = accountStore;
+    const {selectedAccount, createAccount, updateAccount, loading} = accountStore;
 
     const initialState = selectedAccount ?? {
         id: '',
@@ -41,7 +39,7 @@ export default observer (function AccountForm(){
                 <Form.Input type='date' placeholder='Open Date' value={account.openDate} name='openDate' onChange={handleInputChange}/>
                 <Form.Input placeholder='Balance' value={account.balance} name='balance' onChange={handleInputChange}/>
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )

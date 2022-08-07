@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Button, Card, Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -6,11 +8,16 @@ import { useStore } from "../../../app/stores/store";
 
 
 
-export default function AccountDetails(){
+export default observer (function AccountDetails(){
     const {accountStore} = useStore();
-    const {selectedAccount: account, openForm, cancelSelectedAccount} = accountStore;
+    const {selectedAccount: account, loadAccount, loadingInitial} = accountStore;
+    const {id} = useParams<{id: string}>();
 
-    if(!account) return <LoadingComponent />;
+    useEffect(() => {
+        if (id) loadAccount(id);
+    }, [id, loadAccount])
+
+    if(loadingInitial || !account) return <LoadingComponent />;
 
     return(
         <Card fluid>
@@ -32,10 +39,10 @@ export default function AccountDetails(){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button onClick={() => openForm(account.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectedAccount} basic color='grey' content='Cancel' />
+                    <Button basic color='blue' content='Edit' />
+                    <Button basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
     )
-}
+})

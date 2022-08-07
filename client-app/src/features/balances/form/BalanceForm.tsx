@@ -6,7 +6,7 @@ import { useStore } from "../../../app/stores/store";
 
 export default observer (function BalanceForm(){
     const {balanceStore} = useStore();
-    const {selectedBalance, closeForm, createBalance, updateBalance, loading} = balanceStore;
+    const {selectedBalance, createBalance, updateBalance, loading} = balanceStore;
 
 
     const initialState = selectedBalance ?? {
@@ -37,7 +37,7 @@ export default observer (function BalanceForm(){
                 <Form.Input placeholder='Amount' value={balance.amount} name='amount' onChange={handleInputChange}/>
                 <Form.Input type='date' placeholder='Date' value={balance.date} name='date' onChange={handleInputChange}/>
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' type='button' content='Cancel' />
+                <Button floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )
