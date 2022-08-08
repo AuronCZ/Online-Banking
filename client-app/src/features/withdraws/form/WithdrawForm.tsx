@@ -1,32 +1,51 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import {v4 as uuid} from 'uuid';
+import { Link } from "react-router-dom";
 
 
 export default observer (function WithdrawForm(){
+    const navigate = useNavigate();
     const {withdrawStore} = useStore();
-    const {selectedWithdraw, createWithdraw, updateWithdraw, loading} = withdrawStore;
-
-
-    const initialState = selectedWithdraw ?? {
+    const { createWithdraw, updateWithdraw, loading, loadWithdraw, loadingInitial} = withdrawStore;
+    const {id} = useParams<{id: string}>();
+    const [withdraw, setWithdraw] = useState({
         id: '',
         accountNumber: '',
         amount: '',
         date: '',
         pin: ''
-    }
+    });
 
-    const [withdraw, setWithdraw] = useState(initialState);
+    useEffect(() => {
+        if (id) loadWithdraw(id).then(withdraw => setWithdraw(withdraw!))
+    }, [id, loadWithdraw]);
+
+
+
 
     function handleSubmit() {
-        withdraw.id ? updateWithdraw(withdraw) : createWithdraw(withdraw);
+        if (withdraw.id.length === 0) {
+            let newWithdraw = {
+                ...withdraw,
+                id: uuid()
+            };
+            createWithdraw(newWithdraw).then(() => navigate(`/withdraws/${newWithdraw.id}`))
+        } else {
+            updateWithdraw(withdraw).then(() => navigate(`/withdraws/${withdraw.id}`))
+        }
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         const {name, value} = event.target;
         setWithdraw({...withdraw, [name]:value})
     }
+
+    if (loadingInitial) return <LoadingComponent content='Loading withdraw...' />
 
     return(
         <Segment clearing>
@@ -36,7 +55,7 @@ export default observer (function WithdrawForm(){
                 <Form.Input type='date' placeholder='Date' value={withdraw.date} name='date' onChange={handleInputChange}/>
                 <Form.Input placeholder='Pin' value={withdraw.pin} name='pin' onChange={handleInputChange}/>
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button floated='right' type='button' content='Cancel' />
+                <Button as={Link} to='/withdraws' floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )

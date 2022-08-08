@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Button, Card, Image } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
@@ -39,8 +40,8 @@ export default observer (function AccountDetails(){
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths='2'>
-                    <Button basic color='blue' content='Edit' />
-                    <Button basic color='grey' content='Cancel' />
+                    <Button as={Link} to={`/manageAccount/${account.id}`}  basic color='blue' content='Edit' />
+                    <Button as={Link} to='/accounts' basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>

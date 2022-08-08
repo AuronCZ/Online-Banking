@@ -9,10 +9,11 @@ import WithdrawList from "./WithdrawList";
 
 export default observer (function WithdrawDashboard() {
     const {withdrawStore} = useStore();
+    const {loadWithdraws, withdrawRegistry} = withdrawStore;
 
     useEffect(() => {
-        withdrawStore.loadWithdraws();
-      }, [withdrawStore])
+        if(withdrawRegistry.size <= 1) loadWithdraws();
+      }, [withdrawRegistry.size, loadWithdraws])
 
       if (withdrawStore.loadingInitial) return <LoadingComponent content='Loading app' />
     

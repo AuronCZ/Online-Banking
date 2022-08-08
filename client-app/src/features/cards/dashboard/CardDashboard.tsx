@@ -9,10 +9,11 @@ import CardList from "./CardList";
 
 export default observer (function CardDashboard() {
     const {cardStore} = useStore();
+    const {loadCards, cardRegistry} = cardStore;
 
     useEffect(() => {
-        cardStore.loadCards();
-      }, [cardStore])
+        if(cardRegistry.size <= 1) loadCards();
+      }, [cardRegistry.size, loadCards])
 
       if (cardStore.loadingInitial) return <LoadingComponent content='Loading app' />
     

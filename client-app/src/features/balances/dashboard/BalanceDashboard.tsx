@@ -9,10 +9,11 @@ import BalanceList from "./BalanceList";
 
 export default observer (function BalanceDashboard() {
     const {balanceStore} = useStore();
+    const {loadBalances, balanceRegistry} = balanceStore;
 
     useEffect(() => {
-        balanceStore.loadBalances();
-      }, [balanceStore])
+        if(balanceRegistry.size <= 1) loadBalances();
+      }, [balanceRegistry.size, loadBalances])
 
       if (balanceStore.loadingInitial) return <LoadingComponent content='Loading app' />
     

@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Account } from "../models/account";
-import {v4 as uuid} from 'uuid';
+
 
 export default class AccountStore {
     accountRegistry = new Map<string, Account>();
@@ -36,13 +36,17 @@ export default class AccountStore {
         let account = this.getAccount(id);
         if (account) {
             this.selectedAccount = account;
+            return account;
         } else {
             this.loadingInitial = true;
             try {
                 account = await agent.Accounts.details(id);
                 this.setAccount(account);
-                this.selectedAccount = account;
+                runInAction(() => {
+                    this.selectedAccount = account;
+                })
                 this.setLoadingInitial(false);
+                return account;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
@@ -67,7 +71,6 @@ export default class AccountStore {
 
     createAccount = async (account: Account) => {
         this.loading = true;
-        account.id = uuid();
         try {
             await agent.Accounts.create(account);
             runInAction(() => {

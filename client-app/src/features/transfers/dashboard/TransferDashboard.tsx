@@ -9,10 +9,11 @@ import TransferList from "./TransferList";
 
 export default observer (function TransferDashboard() {
     const {transferStore} = useStore();
+    const {loadTransfers, transferRegistry} = transferStore;
 
     useEffect(() => {
-        transferStore.loadTransfers();
-      }, [transferStore])
+        if(transferRegistry.size <= 1) loadTransfers();
+      }, [transferRegistry.size, loadTransfers])
 
       if (transferStore.loadingInitial) return <LoadingComponent content='Loading app' />
     

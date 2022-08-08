@@ -8,10 +8,11 @@ import AccountList from "./AccountList";
 
 export default observer (function AccountDashboard() {
     const {accountStore} = useStore();
+    const {loadAccounts, accountRegistry} = accountStore;
 
     useEffect(() => {
-      accountStore.loadAccounts();
-    }, [accountStore])
+      if(accountRegistry.size <= 1) loadAccounts();
+    }, [accountRegistry.size, loadAccounts])
 
   if (accountStore.loadingInitial) return <LoadingComponent content='Loading app' />
 

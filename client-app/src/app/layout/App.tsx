@@ -7,7 +7,7 @@ import CardDashboard from '../../features/cards/dashboard/CardDashboard';
 import TransferDashboard from '../../features/transfers/dashboard/TransferDashboard';
 import WithdrawDashboard from '../../features/withdraws/dashboard/WithdrawDashboard';
 import { observer } from 'mobx-react-lite';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import AccountForm from '../../features/accounts/form/AccountForm';
 import AccountDetails from '../../features/accounts/details/AccountDetils';
@@ -17,6 +17,8 @@ import TransferDetails from '../../features/transfers/details/TransferDetails';
 import WithdrawDetails from '../../features/withdraws/details/WithdrawDetails';
 
 function App() {
+  const location = useLocation();
+
   return (
     <>
       <NavBar  />
@@ -33,7 +35,7 @@ function App() {
         <Route path='/transfers/:id' element={<TransferDetails/>} />
         <Route path='/withdraws' element={<WithdrawDashboard/>} />
         <Route path='/withdraws/:id' element={<WithdrawDetails/>} />
-        <Route path='/createAccount' element={<AccountForm/>} />
+        <Route key={location.key} path='/createAccount' element={<AccountForm/>} />
       </Routes>
       </Container>
     </>

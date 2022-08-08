@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Cards } from "../models/card";
-import {v4 as uuid} from 'uuid';
+
 
 export default class CardStore {
     cardRegistry = new Map<string, Cards>();
@@ -36,13 +36,17 @@ export default class CardStore {
         let card = this.getCard(id);
         if (card) {
             this.selectedCard = card;
+            return card;
         } else {
             this.loadingInitial = true;
             try {
                 card = await agent.Cardss.details(id);
                 this.setCard(card);
-                this.selectedCard = card;
+                runInAction(() => {
+                    this.selectedCard = card;
+                })
                 this.setLoadingInitial(false);
+                return card;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
@@ -66,7 +70,6 @@ export default class CardStore {
 
     createCard = async (card: Cards) => {
         this.loading = true;
-        card.id = uuid();
         try {
             await agent.Cardss.create(card);
             runInAction(() => {

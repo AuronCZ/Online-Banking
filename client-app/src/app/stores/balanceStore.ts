@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Balance } from "../models/balance";
-import {v4 as uuid} from 'uuid';
+
 
 export default class BalanceStore {
     balanceRegistry = new Map<string, Balance>();
@@ -36,13 +36,17 @@ export default class BalanceStore {
         let balance = this.getBalance(id);
         if (balance) {
             this.selectedBalance = balance;
+            return balance;
         } else {
             this.loadingInitial = true;
             try {
                 balance = await agent.Balances.details(id);
                 this.setBalance(balance);
-                this.selectedBalance = balance;
+                runInAction(() => {
+                    this.selectedBalance = balance;
+                })
                 this.setLoadingInitial(false);
+                return balance;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
@@ -66,7 +70,6 @@ export default class BalanceStore {
 
     createBalance = async (balance: Balance) => {
         this.loading = true;
-        balance.id = uuid();
         try {
             await agent.Balances.create(balance);
             runInAction(() => {

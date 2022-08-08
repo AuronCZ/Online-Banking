@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Transfer } from "../models/transfer";
-import {v4 as uuid} from 'uuid';
+
 
 export default class TransferStore {
     transferRegistry = new Map<string, Transfer>();
@@ -36,13 +36,17 @@ export default class TransferStore {
         let transfer = this.getTransfer(id);
         if (transfer) {
             this.selectedTransfer = transfer;
+            return transfer;
         } else {
             this.loadingInitial = true;
             try {
                 transfer = await agent.Transfers.details(id);
                 this.setTransfer(transfer);
-                this.selectedTransfer = transfer;
+                runInAction(() => {
+                    this.selectedTransfer = transfer;
+                })
                 this.setLoadingInitial(false);
+                return transfer;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
@@ -66,7 +70,6 @@ export default class TransferStore {
 
     createTransfer = async (transfer: Transfer) => {
         this.loading = true;
-        transfer.id = uuid();
         try {
             await agent.Transfers.create(transfer);
             runInAction(() => {

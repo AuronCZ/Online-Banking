@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Withdraw } from "../models/withdraw";
-import {v4 as uuid} from 'uuid';
+
 
 export default class WithdrawStore {
     withdrawRegistry = new Map<string, Withdraw>();
@@ -36,13 +36,17 @@ export default class WithdrawStore {
         let withdraw = this.getWithdraw(id);
         if (withdraw) {
             this.selectedWithdraw = withdraw;
+            return withdraw;
         } else {
             this.loadingInitial = true;
             try {
                 withdraw = await agent.Withdraws.details(id);
                 this.setWithdraw(withdraw);
-                this.selectedWithdraw = withdraw;
+                runInAction(() => {
+                    this.selectedWithdraw = withdraw;
+                })
                 this.setLoadingInitial(false);
+                return withdraw;
             } catch (error) {
                 console.log(error);
                 this.setLoadingInitial(false);
@@ -66,7 +70,6 @@ export default class WithdrawStore {
 
     createWithdraw = async (withdraw: Withdraw) => {
         this.loading = true;
-        withdraw.id = uuid();
         try {
             await agent.Withdraws.create(withdraw);
             runInAction(() => {
