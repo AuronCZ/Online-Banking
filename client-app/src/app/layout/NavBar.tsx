@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Container, Menu } from "semantic-ui-react";
+import { Container, Menu } from "semantic-ui-react";
 
 
 export default function NavBar(){
@@ -16,9 +16,6 @@ export default function NavBar(){
                 <Menu.Item as={NavLink} to='/cards' name='Cards' />
                 <Menu.Item as={NavLink} to='/transfers' name='Transfers' />
                 <Menu.Item as={NavLink} to='/withdraws' name='Withdraws' />
-                <Menu.Item>
-                    <Button as={NavLink} to='/createAccount' positive content='Create Account' />
-                </Menu.Item>
             </Container>
         </Menu>
     )
