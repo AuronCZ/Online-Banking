@@ -37,7 +37,7 @@ const Accounts = {
     list: () => requests.get<Account[]>('/accounts'),
     details: (id: string) => requests.get<Account>(`/accounts/${id}`),
     create: (account: Account) => axios.post<void>('/accounts', account),
-    update: (account: Account) => axios.post<void>(`/accounts/${account.id}`, account),
+    update: (account: Account) => axios.put<void>(`/accounts/${account.id}`, account),
     delete: (id: string) => axios.delete<void>(`/accounts/${id}`)
 
 }
@@ -45,28 +45,28 @@ const Balances = {
     list: () => requests.get<Balance[]>('/balances'),
     details: (id: string) => requests.get<Balance>(`/balances/${id}`),
     create: (balance: Balance) => axios.post<void>('/balances', balance),
-    update: (balance: Balance) => axios.post<void>(`/balances/${balance.id}`, balance),
+    update: (balance: Balance) => axios.put<void>(`/balances/${balance.id}`, balance),
     delete: (id: string) => axios.delete<void>(`/balances/${id}`)
 }
 const Cardss = {
     list: () => requests.get<Cards[]>('/cards'),
     details: (id: string) => requests.get<Cards>(`/cards/${id}`),
     create: (card: Cards) => axios.post<void>('/cards', card),
-    update: (card: Cards) => axios.post<void>(`/cards/${card.id}`, card),
+    update: (card: Cards) => axios.put<void>(`/cards/${card.id}`, card),
     delete: (id: string) => axios.delete<void>(`/cards/${id}`)
 }
 const Transfers = {
     list: () => requests.get<Transfer[]>('/transfers'),
     details: (id: string) => requests.get<Transfer>(`/transfers/${id}`),
     create: (transfer: Transfer) => axios.post<void>('/transfers', transfer),
-    update: (transfer: Transfer) => axios.post<void>(`/transfers/${transfer.id}`, transfer),
+    update: (transfer: Transfer) => axios.put<void>(`/transfers/${transfer.id}`, transfer),
     delete: (id: string) => axios.delete<void>(`/transfers/${id}`)
 }
 const Withdraws = {
     list: () => requests.get<Withdraw[]>('/withdraws'),
     details: (id: string) => requests.get<Withdraw>(`/withdraws/${id}`),
     create: (withdraw: Withdraw) => axios.post<void>('/withdraws', withdraw),
-    update: (withdraw: Withdraw) => axios.post<void>(`/withdraws/${withdraw.id}`, withdraw),
+    update: (withdraw: Withdraw) => axios.put<void>(`/withdraws/${withdraw.id}`, withdraw),
     delete: (id: string) => axios.delete<void>(`/withdraws/${id}`)
 }
 
