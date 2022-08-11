@@ -1,11 +1,11 @@
 import React from 'react';
 import { Container} from 'semantic-ui-react';
 import NavBar from './NavBar';
-import AccountDashboard from '../../features/accounts/dashboard/AccountDashboard';
 import { observer } from 'mobx-react-lite';
 import { Route, Routes, useLocation, useRoutes } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import AccountForm from '../../features/accounts/form/AccountForm';
+import AccountDashboard from '../../features/accounts/dashboard/AccountDashboard';
 import AccountDetails from '../../features/accounts/details/AccountDetils';
 import BalanceDetails from '../../features/balances/details/BalanceDetails';
 import BalanceDashboard from '../../features/balances/dashboard/BalanceDashboard';
