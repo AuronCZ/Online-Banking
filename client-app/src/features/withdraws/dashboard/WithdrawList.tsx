@@ -1,49 +1,26 @@
+import React, { Fragment } from "react";
 import { observer } from "mobx-react-lite";
-import React, { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Item, Label, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
+import WithdrawListItem from "./WithdrawListItem";
 
 
-export default observer (function AccountList() {
-    const {withdrawStore} = useStore();
-    const {deleteWithdraw, withdrawsByDate, loading} = withdrawStore;
+export default observer(function WithdrawList() {
+    const { withdrawStore } = useStore();
+    const { groupeWithdraws } = withdrawStore;
 
-    const [target, setTarget] = useState('');
-
-
-    function handleWithdrawDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
-        setTarget(e.currentTarget.name);
-        deleteWithdraw(id);
-    }
-    
     return (
-        <Segment>
-            <Item.Group divided>
-                {withdrawsByDate.map(withdraw => (
-                    <Item key={withdraw.id}>
-                        <Item.Content>
-                            <Item.Header as='a'>{withdraw.accountNumber}</Item.Header>
-                            <Item.Meta>{withdraw.date}</Item.Meta>
-                            <Item.Description>
-                                <div>{withdraw.pin}</div>
-                            </Item.Description>
-                            <Item.Extra>
-                                <Button as={Link} to={`/withdraws/${withdraw.id}`} floated='right' content='View' color='blue' />
-                                <Button 
-                                    name={withdraw.id}
-                                    loading={loading && target === withdraw.id} 
-                                    onClick={(e) => handleWithdrawDelete(e, withdraw.id)} 
-                                    floated='right' 
-                                    content='Delete' 
-                                    color='red' 
-                                />
-                                <Label basic content={withdraw.amount} />
-                            </Item.Extra>
-                        </Item.Content>
-                    </Item>
-                ))}
-            </Item.Group>
-        </Segment>
+        <>
+            {groupeWithdraws.map(([group, withdraws]) => (
+                <Fragment key={group}>
+                    <Header sub color='teal'>
+                        {group}
+                    </Header>
+                            {withdraws.map(withdraw => (
+                                <WithdrawListItem key={withdraw.id} withdraw={withdraw} />
+                            ))}
+                </Fragment>
+            ))}
+        </>
     )
 })

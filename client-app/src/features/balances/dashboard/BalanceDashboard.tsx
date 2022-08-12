@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import BalanceFilters from "./BalanceFilters";
 import BalanceList from "./BalanceList";
 
 
@@ -25,7 +26,7 @@ export default observer (function BalanceDashboard() {
                 <BalanceList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Balance filter</h2>
+                <BalanceFilters />
             </Grid.Column>
         </Grid>
     )

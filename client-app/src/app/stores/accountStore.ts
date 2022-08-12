@@ -18,6 +18,16 @@ export default class AccountStore {
         return Array.from(this.accountRegistry.values()).sort((a, b) => Date.parse(a.openDate) - Date.parse(b.openDate));
     }
 
+    get groupedAccounts() {
+        return Object.entries(
+            this.accountsByDate.reduce((accounts, account) => {
+                const date = account.openDate;
+                accounts[date] = accounts[date] ? [...accounts[date], account] : [account];
+                return accounts;
+            }, {} as {[key: string]: Account[]})
+        )
+    }
+
     loadAccounts = async () =>  {
         this.loadingInitial = true;
         try {

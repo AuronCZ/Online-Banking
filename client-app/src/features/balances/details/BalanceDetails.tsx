@@ -1,12 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { Button, Card, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-
-
+import BalanceDetailedChat from "./BalanceDetailedChat";
+import BalanceDetailedInfo from "./BalanceDetailedInfo";
+import BalanceDetailedSidebar from "./BalanceDetailedSidebar";
+import BalanceDetailedHeader from "./BalanceDetaledHeader";
 
 
 
@@ -22,23 +23,15 @@ export default observer (function BalanceDetails(){
     if(loadingInitial || !balance) return <LoadingComponent />;
     
     return(
-        <Card fluid>
-            <Image src={`/assets/typeImages/balanceImages/${balance.accountType}.jpg`} />
-            <Card.Content>
-                <Card.Header>{balance.accountNumber}</Card.Header>
-                <Card.Meta>
-                    <span>{balance.date}</span>
-                </Card.Meta>
-                <Card.Description>
-                    {balance.amount}
-                </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button.Group widths='2'>
-                    <Button as={Link} to={`/manageBalance/${balance.id}`} basic color='blue' content='Edit' />
-                    <Button as={Link} to='/balances' basic color='grey' content='Cancel' />
-                </Button.Group>
-            </Card.Content>
-        </Card>
+        <Grid>
+            <Grid.Column width={10}>
+                <BalanceDetailedHeader balance={balance} />
+                <BalanceDetailedInfo balance={balance}/>
+                <BalanceDetailedChat />
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <BalanceDetailedSidebar />
+            </Grid.Column>
+        </Grid>
     )
 })

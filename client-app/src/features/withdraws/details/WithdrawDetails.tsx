@@ -1,10 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { Button, Card, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import WithdrawDetailedChat from "./WithdrawDetailedChat";
+import WithdrawDetailedInfo from "./WithdrawDetailedInfo";
+import WithdrawDetailedSidebar from "./WithdrawDetailedSidebar";
+import WithdrawDetailedHeader from "./WithdrawDetaledHeader";
 
 
 
@@ -20,23 +23,15 @@ export default observer (function WithdrawDetails(){
     if(loadingInitial || !withdraw) return <LoadingComponent />;
     
     return(
-        <Card fluid>
-            <Image src={`/assets/typeImages/withdrawImages/${withdraw.amount}.jpg`} />
-            <Card.Content>
-                <Card.Header>{withdraw.accountNumber}</Card.Header>
-                <Card.Meta>
-                    <span>{withdraw.date}</span>
-                </Card.Meta>
-                <Card.Description>
-                    {withdraw.pin}
-                </Card.Description>
-            </Card.Content>
-            <Card.Content extra>
-                <Button.Group widths='2'>
-                    <Button as={Link} to={`/manageWithdraw/${withdraw.id}`} basic color='blue' content='Edit' />
-                    <Button as={Link} to='/withdraws' basic color='grey' content='Cancel' />
-                </Button.Group>
-            </Card.Content>
-        </Card>
+        <Grid>
+            <Grid.Column width={10}>
+                <WithdrawDetailedHeader withdraw={withdraw} />
+                <WithdrawDetailedInfo withdraw={withdraw} />
+                <WithdrawDetailedChat />
+            </Grid.Column>
+            <Grid.Column width={6}>
+                <WithdrawDetailedSidebar />
+            </Grid.Column>
+        </Grid>
     )
 })

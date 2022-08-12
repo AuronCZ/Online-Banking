@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import WithdrawFilters from "./WithdrawFilters";
 import WithdrawList from "./WithdrawList";
 
 
@@ -25,7 +26,7 @@ export default observer (function WithdrawDashboard() {
                 <WithdrawList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Withdraw filter</h2>
+                <WithdrawFilters />
             </Grid.Column>
         </Grid>
     )

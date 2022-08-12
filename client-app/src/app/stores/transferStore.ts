@@ -18,6 +18,16 @@ export default class TransferStore {
         return Array.from(this.transferRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     }
 
+    get groupedTransfers() {
+        return Object.entries(
+            this.transfersByDate.reduce((transfers, transfer) => {
+                const date = transfer.date;
+                transfers[date] = transfers[date] ? [...transfers[date], transfer] : [transfer];
+                return transfers;
+            }, {} as {[key: string]: Transfer[]})
+        )
+    }
+
     loadTransfers = async () => {
         this.loadingInitial = true;
         try {

@@ -1,48 +1,26 @@
+import React, { Fragment } from "react";
 import { observer } from "mobx-react-lite";
-import React, { SyntheticEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Item, Label, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
+import BalanceListItem from "./BalanceListItem";
 
 
-export default observer (function AccountList() {
-    const {balanceStore} = useStore();
-    const {deleteBalance, balancesByDate, loading} = balanceStore;
+export default observer(function BalanceList() {
+    const { balanceStore } = useStore();
+    const { groupedBalances } = balanceStore;
 
-    const [target, setTarget] = useState('');
-
-    function handleBalanceDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
-        setTarget(e.currentTarget.name);
-        deleteBalance(id);
-    }
-    
     return (
-        <Segment>
-            <Item.Group divided>
-                {balancesByDate.map(balance => (
-                    <Item key={balance.id}>
-                        <Item.Content>
-                            <Item.Header as='a'>{balance.accountNumber}</Item.Header>
-                            <Item.Meta>{balance.date}</Item.Meta>
-                            <Item.Description>
-                                <div>{balance.amount}</div>
-                            </Item.Description>
-                            <Item.Extra>
-                                <Button as={Link} to={`/balances/${balance.id}`} floated='right' content='View' color='blue' />
-                                <Button
-                                    name={balance.id} 
-                                    loading={loading && target === balance.id} 
-                                    onClick={(e) => handleBalanceDelete(e, balance.id)} 
-                                    floated='right' 
-                                    content='Delete' 
-                                    color='red' 
-                                />
-                                <Label basic content={balance.accountType} />
-                            </Item.Extra>
-                        </Item.Content>
-                    </Item>
-                ))}
-            </Item.Group>
-        </Segment>
+        <>
+            {groupedBalances.map(([group, balances]) => (
+                <Fragment key={group}>
+                    <Header sub color='teal'>
+                        {group}
+                    </Header>
+                            {balances.map(balance => (
+                                <BalanceListItem key={balance.id} balance={balance} />
+                            ))}
+                </Fragment>
+            ))}
+        </>
     )
 })

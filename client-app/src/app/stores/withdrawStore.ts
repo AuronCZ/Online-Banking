@@ -18,6 +18,16 @@ export default class WithdrawStore {
         return Array.from(this.withdrawRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     }
 
+    get groupeWithdraws() {
+        return Object.entries(
+            this.withdrawsByDate.reduce((withdraws, withdraw) => {
+                const date = withdraw.date;
+                withdraws[date] = withdraws[date] ? [...withdraws[date], withdraw] : [withdraw];
+                return withdraws;
+            }, {} as {[key: string]: Withdraw[]})
+        )
+    }
+
     loadWithdraws = async () => {
         this.loadingInitial = true;
         try {

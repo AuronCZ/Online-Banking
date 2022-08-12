@@ -18,6 +18,16 @@ export default class CardStore {
         return Array.from(this.cardRegistry.values()).sort((a, b) => Date.parse(a.expirationDate) - Date.parse(b.expirationDate));
     }
 
+    get groupedCards() {
+        return Object.entries(
+            this.cardsByDate.reduce((cards, card) => {
+                const date = card.expirationDate;
+                cards[date] = cards[date] ? [...cards[date], card] : [card];
+                return cards;
+            }, {} as {[key: string]: Cards[]})
+        )
+    }
+
     loadCards = async () => {
         this.loadingInitial = true;
         try {

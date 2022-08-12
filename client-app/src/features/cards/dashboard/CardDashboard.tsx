@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import CardFilters from "./CardFilters";
 import CardList from "./CardList";
 
 
@@ -25,7 +26,7 @@ export default observer (function CardDashboard() {
                 <CardList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Card filter</h2>
+                <CardFilters />
             </Grid.Column>
         </Grid>
     )

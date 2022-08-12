@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { Button, Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
+import AccountFilters from "./AccountFilters";
 import AccountList from "./AccountList";
 
 
@@ -24,7 +25,7 @@ export default observer (function AccountDashboard() {
                 <AccountList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Account filter</h2>
+                <AccountFilters />
             </Grid.Column>
         </Grid>
     )

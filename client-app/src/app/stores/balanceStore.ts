@@ -18,6 +18,16 @@ export default class BalanceStore {
         return Array.from(this.balanceRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
     }
 
+    get groupedBalances() {
+        return Object.entries(
+            this.balancesByDate.reduce((balances, balance) => {
+                const date = balance.date;
+                balances[date] = balances[date] ? [...balances[date], balance] : [balance];
+                return balances;
+            }, {} as {[key: string]: Balance[]})
+        )
+    }
+
     loadBalances = async () => {
         this.loadingInitial = true;
         try {
