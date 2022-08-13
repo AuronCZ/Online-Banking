@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
 using MediatR;
 using Persistence;
@@ -11,12 +12,12 @@ namespace Application.Balances
 {
     public class Details
     {
-        public class Query : IRequest<Balance>
+        public class Query : IRequest<Result<Balance>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Balance>
+        public class Handler : IRequestHandler<Query, Result<Balance>>
         {
         private readonly DataContext context;
 
@@ -26,9 +27,11 @@ namespace Application.Balances
 
             }
 
-            public async Task<Balance> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Balance>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Balances.FindAsync(request.Id);
+                var balance = await this.context.Balances.FindAsync(request.Id);
+
+                return Result<Balance>.Success(balance);
             }
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using MediatR;
 using Persistence;
 
@@ -8,11 +9,11 @@ namespace Application.Withdraws
 {
     public class Delete
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
         }
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
             public Handler(DataContext context)
@@ -20,15 +21,17 @@ namespace Application.Withdraws
                 this.context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var withdraw = await this.context.Withdraws.FindAsync(request.Id);
 
-                this.context.Remove(withdraw);
+                //if (withdraw == null) return null;
 
-                await this.context.SaveChangesAsync();
+                var result = await this.context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to delete the withdraw");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

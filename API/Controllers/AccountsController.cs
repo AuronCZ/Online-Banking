@@ -11,34 +11,34 @@ namespace API.Controllers
     {  
 
         [HttpGet]
-        public async Task<ActionResult<List<Account>>> GetAccounts()
+        public async Task<IActionResult> GetAccounts()
         {
-            return  await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Account>> GetAccount(Guid id)
+        public async Task<IActionResult> GetAccount(Guid id)
         {
-            return await Mediator.Send(new Details.Query{Id = id});
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTransfer(Account account)
         {
-            return Ok(await Mediator.Send(new Create.Command {Account = account}));
+            return HandleResult(await Mediator.Send(new Create.Command {Account = account}));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditAccount(Guid id, Account account)
         {
             account.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command{Account = account}));
+            return HandleResult(await Mediator.Send(new Edit.Command{Account = account}));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command{Id = id}));
+            return HandleResult(await Mediator.Send(new Delete.Command{Id = id}));
         }
     }
 }

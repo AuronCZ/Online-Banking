@@ -7,14 +7,15 @@ using Domain;
 using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Core;
 
 namespace Application.Withdraws
 {
     public class List
     {
-        public class Query : IRequest<List<Withdraw>> {}
+        public class Query : IRequest<Result<List<Withdraw>>> { }
 
-        public class Handler : IRequestHandler<Query, List<Withdraw>>
+        public class Handler : IRequestHandler<Query, Result<List<Withdraw>>>
         {
             private readonly DataContext context;
             public Handler(DataContext context)
@@ -22,9 +23,9 @@ namespace Application.Withdraws
                 this.context = context;
             }
 
-            public async Task<List<Withdraw>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Withdraw>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Withdraws.ToListAsync();
+                return Result<List<Withdraw>>.Success(await this.context.Withdraws.ToListAsync());
             }
         }
     }

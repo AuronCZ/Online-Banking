@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
 
@@ -13,12 +15,20 @@ namespace Application.Balances
     public class Edit
     {
         
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Balance Balance { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.Balance).SetValidator(new BalanceValidator());
+            }
+        }
+
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
         private readonly DataContext context;
         private readonly IMapper mapper;
@@ -29,15 +39,19 @@ namespace Application.Balances
                 this.context = context;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var balance  = await this.context.Balances.FindAsync(request.Balance.Id);
 
+                if (balance == null) return null;
+
                 this.mapper.Map(request.Balance, balance);
 
-                await this.context.SaveChangesAsync();
+                var result = await this.context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to update balance");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

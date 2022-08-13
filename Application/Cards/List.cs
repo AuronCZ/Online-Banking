@@ -7,14 +7,15 @@ using Domain;
 using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Core;
 
 namespace Application.Cards
 {
     public class List
     {
-        public class Query : IRequest<List<Card>> {}
+        public class Query : IRequest<Result<List<Card>>> { }
 
-        public class Handler : IRequestHandler<Query, List<Card>>
+        public class Handler : IRequestHandler<Query, Result<List<Card>>>
         {
             private readonly DataContext context;
             public Handler(DataContext context)
@@ -22,9 +23,9 @@ namespace Application.Cards
                 this.context = context;
             }
 
-            public async Task<List<Card>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Card>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Cards.ToListAsync();
+                return Result<List<Card>>.Success(await this.context.Cards.ToListAsync());
             }
         }
     }

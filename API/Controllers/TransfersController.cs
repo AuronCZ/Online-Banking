@@ -12,34 +12,34 @@ namespace API.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<List<Transfer>>> GetTransfers()
+        public async Task<IActionResult> GetTransfers()
         {
-            return  await Mediator.Send(new List.Query());
+            return HandleResult(await Mediator.Send(new List.Query()));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transfer>> GetATransfer(Guid id)
+        public async Task<IActionResult> GetATransfer(Guid id)
         {
-            return await Mediator.Send(new Details.Query{Id = id});
+            return HandleResult(await Mediator.Send(new Details.Query{Id = id}));
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateTransfer(Transfer transfer)
         {
-            return Ok(await Mediator.Send(new Create.Command {Transfer = transfer}));
+            return HandleResult(await Mediator.Send(new Create.Command {Transfer = transfer}));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTransfer(Guid id, Transfer transfer)
         {
             transfer.Id = id;
-            return Ok(await Mediator.Send(new Edit.Command{Transfer = transfer}));
+            return HandleResult(await Mediator.Send(new Edit.Command{Transfer = transfer}));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransfer(Guid id)
         {
-            return Ok(await Mediator.Send(new Delete.Command{Id = id}));
+            return HandleResult(await Mediator.Send(new Delete.Command{Id = id}));
         }
     }
 }

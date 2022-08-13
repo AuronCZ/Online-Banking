@@ -19,6 +19,11 @@ import TransferDetails from '../../features/transfers/details/TransferDetails';
 import WithdrawForm from '../../features/withdraws/form/WithdrawForm';
 import WithdrawDashboard from '../../features/withdraws/dashboard/WithdrawDashboard';
 import WithdrawDetails from '../../features/withdraws/details/WithdrawDetails';
+import TestErrors from '../../features/errors/TestError';
+import { ToastContainer } from 'react-toastify';
+import NotFound from '../../features/errors/NotFound';
+import ServerError from '../../features/errors/ServerError';
+
 
 
 
@@ -40,6 +45,7 @@ function App() {
 
   return (
     <>
+    <ToastContainer position='bottom-right' hideProgressBar/>
       <NavBar  />
       <Container style={{marginTop: '7em'}}>
       <Routes>
@@ -54,6 +60,9 @@ function App() {
         <Route path='/cards/:id' element={<CardDetails/>} />
         <Route path='/transfers/:id' element={<TransferDetails/>} />
         <Route path='/withdraws/:id' element={<WithdrawDetails/>} />
+        <Route path='/errors' element={<TestErrors/>} />
+        <Route path='/server-error' element={<ServerError/>} />
+        <Route path='*'  element={<NotFound/>} />
       </Routes>
         <App key={location.key} />
       </Container>

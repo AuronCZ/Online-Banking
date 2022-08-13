@@ -7,14 +7,15 @@ using Domain;
 using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Core;
 
 namespace Application.Accounts
 {
     public class List
     {
-        public class Query : IRequest<List<Account>> {}
+        public class Query : IRequest<Result<List<Account>>> { }
 
-        public class Handler : IRequestHandler<Query, List<Account>>
+        public class Handler : IRequestHandler<Query, Result<List<Account>>>
         {
 
             private readonly DataContext context;
@@ -23,9 +24,9 @@ namespace Application.Accounts
                 this.context = context;
             }
 
-            public async Task<List<Account>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Account>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Accounts.ToListAsync();
+                return Result<List<Account>>.Success(await this.context.Accounts.ToListAsync());
             }
         }
     }

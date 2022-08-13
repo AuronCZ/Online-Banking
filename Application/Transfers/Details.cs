@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Core;
 using Domain;
 using MediatR;
 using Persistence;
@@ -11,12 +12,12 @@ namespace Application.Transfers
 {
     public class Details
     {
-        public class Query : IRequest<Transfer>
+        public class Query : IRequest<Result<Transfer>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Transfer>
+        public class Handler : IRequestHandler<Query, Result<Transfer>>
         {
         private readonly DataContext context;
 
@@ -26,9 +27,11 @@ namespace Application.Transfers
 
             }
 
-            public async Task<Transfer> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Transfer>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Transfers.FindAsync(request.Id);
+                var transfer = await this.context.Transfers.FindAsync(request.Id);
+
+                return Result<Transfer>.Success(transfer);
             }
         }
     }

@@ -7,14 +7,15 @@ using Domain;
 using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
+using Application.Core;
 
 namespace Application.Transfers
 {
     public class List
     {
-        public class Query : IRequest<List<Transfer>> {}
+        public class Query : IRequest<Result<List<Transfer>>> { }
 
-        public class Handler : IRequestHandler<Query, List<Transfer>>
+        public class Handler : IRequestHandler<Query, Result<List<Transfer>>>
         {
             private readonly DataContext context;
             public Handler(DataContext context)
@@ -22,9 +23,9 @@ namespace Application.Transfers
                 this.context = context;
             }
 
-            public async Task<List<Transfer>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<Transfer>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await this.context.Transfers.ToListAsync();
+                return Result<List<Transfer>>.Success(await this.context.Transfers.ToListAsync());
             }
         }
     }

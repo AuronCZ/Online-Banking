@@ -16,6 +16,7 @@ export default function NavBar(){
                 <Menu.Item as={NavLink} to='/cards' name='Cards' />
                 <Menu.Item as={NavLink} to='/transfers' name='Transfers' />
                 <Menu.Item as={NavLink} to='/withdraws' name='Withdraws' />
+                <Menu.Item as={NavLink} to='/errors' name='Errors' />
             </Container>
         </Menu>
     )
