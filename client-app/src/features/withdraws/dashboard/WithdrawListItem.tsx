@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Withdraw } from "../../../app/models/withdraw";
-
+import {format} from 'date-fns';
 
 interface Props{
     withdraw: Withdraw
@@ -28,7 +28,7 @@ export default function WithdrawListItem({withdraw}: Props) {
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='clock' /> {withdraw.date}
+                    <Icon name='clock' /> {format(withdraw.date!, 'dd MMM yyyy h:mm aa')}
                 </span>
             </Segment>
             <Segment secondary>

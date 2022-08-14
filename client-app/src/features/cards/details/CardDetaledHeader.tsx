@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Cards} from "../../../app/models/card";
+import {format} from 'date-fns';
 
 const cardImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function CardDetailedHeader({card}: Props) {
                                     content={card.accountNumber}
                                     style={{color: 'white'}}
                                 />
-                                <p>{card.expirationDate}</p>
+                                <p>{format(card.expirationDate!, 'dd MMM yyyy')}</p>
                                 <p>
                                     {card.cardType}
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function CardDetailedHeader({card}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Card</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button as={Link} to={`/manageCard/${card.id}`} color='orange' floated='right'>
                     Manage Card
                 </Button>
             </Segment>

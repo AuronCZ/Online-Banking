@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Account } from "../../../app/models/account";
+import {format} from 'date-fns';
 
 interface Props {
     account: Account
@@ -26,7 +27,7 @@ export default function AccountListItem({account}: Props){
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='clock' /> {account.openDate}
+                    <Icon name='clock' /> {format(account.openDate!, 'dd MMM yyyy h:mm aa')}
                 </span>
             </Segment>
             <Segment secondary>

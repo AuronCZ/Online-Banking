@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react'
 import {Segment, Grid, Icon} from 'semantic-ui-react'
 import {Transfer} from "../../../app/models/transfer";
+import {format} from 'date-fns';
 
 interface Props {
     transfer: Transfer
@@ -27,7 +28,7 @@ export default observer(function TransferDetailedInfo({transfer}: Props) {
                     </Grid.Column>
                     <Grid.Column width={15}>
             <span>
-              {transfer.date}
+                {format(transfer.date!, 'dd MMM yyyy h:mm aa')}
             </span>
                     </Grid.Column>
                 </Grid>

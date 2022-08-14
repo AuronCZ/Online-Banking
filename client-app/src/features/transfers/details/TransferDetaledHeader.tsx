@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Transfer} from "../../../app/models/transfer";
+import {format} from 'date-fns';
 
 const transferImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function TransferDetailedHeader({transfer}: Props) {
                                     content={transfer.transferNumber}
                                     style={{color: 'white'}}
                                 />
-                                <p>{transfer.date}</p>
+                                <p>{format(transfer.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                     {transfer.amount}
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function TransferDetailedHeader({transfer}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Transfer</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button  as={Link} to={`/manageTransfer/${transfer.id}`} color='orange' floated='right'>
                     Manage Transfer
                 </Button>
             </Segment>

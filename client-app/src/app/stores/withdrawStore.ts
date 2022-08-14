@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Withdraw } from "../models/withdraw";
+import {format} from 'date-fns';
 
 
 export default class WithdrawStore {
@@ -8,20 +9,20 @@ export default class WithdrawStore {
     selectedWithdraw: Withdraw | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor(){
         makeAutoObservable(this)
     }
 
     get withdrawsByDate() {
-        return Array.from(this.withdrawRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        return Array.from(this.withdrawRegistry.values()).sort((a, b) => a.date!.getTime() - b.date!.getTime());
     }
 
     get groupeWithdraws() {
         return Object.entries(
             this.withdrawsByDate.reduce((withdraws, withdraw) => {
-                const date = withdraw.date;
+                const date = format(withdraw.date!, 'dd MMM yyyy');
                 withdraws[date] = withdraws[date] ? [...withdraws[date], withdraw] : [withdraw];
                 return withdraws;
             }, {} as {[key: string]: Withdraw[]})
@@ -65,7 +66,7 @@ export default class WithdrawStore {
     }
 
     private setWithdraw = (withdraw: Withdraw) => {
-        withdraw.date = withdraw.date.split('T')[0];
+        withdraw.date = new Date(withdraw.date!);
         this.withdrawRegistry.set(withdraw.id, withdraw);
     }
 

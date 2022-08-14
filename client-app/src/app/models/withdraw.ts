@@ -2,6 +2,6 @@ export interface Withdraw {
     id: string;
     accountNumber: string;
     amount: string;
-    date: string;
+    date: Date | null;
     pin: string;
 }

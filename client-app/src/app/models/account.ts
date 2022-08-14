@@ -4,6 +4,6 @@ export interface Account {
     surname: string;
     accountNumber: string;
     accountType: string;
-    openDate: string;
+    openDate: Date | null;
     balance: string;
 }

@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Balance } from "../models/balance";
+import {format} from 'date-fns';
 
 
 export default class BalanceStore {
@@ -8,20 +9,20 @@ export default class BalanceStore {
     selectedBalance: Balance | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor(){
         makeAutoObservable(this)
     }
 
     get balancesByDate() {
-        return Array.from(this.balanceRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        return Array.from(this.balanceRegistry.values()).sort((a, b) => a.date!.getTime() - b.date!.getTime());
     }
 
     get groupedBalances() {
         return Object.entries(
             this.balancesByDate.reduce((balances, balance) => {
-                const date = balance.date;
+                const date = format(balance.date!, 'dd MMM yyyy');
                 balances[date] = balances[date] ? [...balances[date], balance] : [balance];
                 return balances;
             }, {} as {[key: string]: Balance[]})
@@ -65,7 +66,7 @@ export default class BalanceStore {
     }
 
     private setBalance = (balance: Balance) => {
-        balance.date = balance.date.split('T')[0];
+        balance.date = new Date(balance.date!);
         this.balanceRegistry.set(balance.id, balance);
     }
 

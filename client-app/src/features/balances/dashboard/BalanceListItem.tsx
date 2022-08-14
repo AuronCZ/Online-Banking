@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Balance } from "../../../app/models/balance";
+import {format} from 'date-fns';
+
 
 interface Props {
     balance: Balance
@@ -26,7 +28,7 @@ export default function BalanceListItem({balance}: Props){
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='clock' /> {balance.date}
+                    <Icon name='clock' /> {format(balance.date!, 'dd MMM yyyy h:mm aa')}
                 </span>
             </Segment>
             <Segment secondary>

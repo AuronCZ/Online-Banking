@@ -3,5 +3,5 @@ export interface Cards {
     accountNumber: string;
     cardType: string;
     cardNumber: string;
-    expirationDate: string;
+    expirationDate: Date | null;
 }

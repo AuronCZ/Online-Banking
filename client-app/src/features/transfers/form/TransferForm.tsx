@@ -1,26 +1,42 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { Link } from "react-router-dom";
+import { Formik, Form } from "formik";
+import * as Yup from 'yup';
+import MyTextInput from "../../../app/common/form/MyTextInput";
+import MyTextArea from "../../../app/common/form/MyTextArea";
+import { transferCategoryOptions } from "../../../app/common/options/transferCategoryOptions";
+import MySelectInput from "../../../app/common/form/MySelectInput";
+import MyDateInput from "../../../app/common/form/MyDateInput";
+import { Transfer } from "../../../app/models/transfer";
 
 
-export default observer (function TransferForm(){
+export default observer(function TransferForm() {
     const navigate = useNavigate();
-    const {transferStore} = useStore();
-    const { createTransfer, updateTransfer, loading, loadTransfer, loadingInitial} = transferStore;
-    const {id} = useParams<{id: string}>();
-    const [transfer, setTransfer] = useState({
+    const { transferStore } = useStore();
+    const { createTransfer, updateTransfer, loading, loadTransfer, loadingInitial } = transferStore;
+    const { id } = useParams<{ id: string }>();
+    const [transfer, setTransfer] = useState<Transfer>({
         id: '',
         transferNumber: '',
         accountNumber: '',
         amount: '',
         payee: '',
-        date: ''
+        date: null
     });
+
+    const validationSchema = Yup.object({
+        transferNumber: Yup.string().required('The transfer number is required'),
+        accountNumber: Yup.string().required(),
+        amount: Yup.string().required(),
+        payee: Yup.string().required(),
+        date: Yup.string().required('Date is required').nullable(),
+    })
 
     useEffect(() => {
         if (id) loadTransfer(id).then(transfer => setTransfer(transfer!))
@@ -28,7 +44,7 @@ export default observer (function TransferForm(){
 
 
 
-    function handleSubmit() {
+    function handleFormSubmit(transfer: Transfer) {
         if (transfer.id.length === 0) {
             let newTransfer = {
                 ...transfer,
@@ -40,24 +56,38 @@ export default observer (function TransferForm(){
         }
     }
 
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const {name, value} = event.target;
-        setTransfer({...transfer, [name]:value})
-    }
 
     if (loadingInitial) return <LoadingComponent content='Loading transfer...' />
 
-    return(
+    return (
         <Segment clearing>
-            <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input placeholder='Transfer Number' value={transfer.transferNumber} name='transferNumber' onChange={handleInputChange}/>
-                <Form.Input placeholder='Account Number' value={transfer.accountNumber} name='accountNumber' onChange={handleInputChange}/>
-                <Form.Input placeholder='Amount' value={transfer.amount} name='amount' onChange={handleInputChange}/>
-                <Form.Input placeholder='Payee' value={transfer.payee} name='payee' onChange={handleInputChange}/>
-                <Form.Input type='date' placeholder='Date' value={transfer.date} name='date' onChange={handleInputChange}/>
-                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button as={Link} to='/transfers' floated='right' type='button' content='Cancel' />
-            </Form>
+            <Header content='Transfer Details' sub color='teal' />
+            <Formik 
+                validationSchema={validationSchema} 
+                enableReinitialize 
+                initialValues={transfer} 
+                onSubmit={values => handleFormSubmit(values)}>
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
+                        <MyTextInput placeholder='Transfer Number' name='transferNumber' />
+                        <MyTextInput placeholder='Account Number'  name='accountNumber'  />
+                        <MySelectInput options={transferCategoryOptions} placeholder='Amount'  name='amount'  />
+                        <MyTextArea rows={2} placeholder='Payee'  name='payee'  />
+                        <MyDateInput
+                            placeholderText='Date'  
+                            name='date'  
+                            showTimeSelect
+                            timeCaption='time'
+                            dateFormat='MMMM d, yyyy h:mm aa'
+                        />
+                        <Button 
+                            disabled={isSubmitting || !dirty || !isValid} 
+                            loading={loading} floated='right' 
+                            positive type='submit' content='Submit' />
+                        <Button as={Link} to='/transfers' floated='right' type='button' content='Cancel' />
+                    </Form>
+                )}
+            </Formik>
         </Segment>
     )
 })

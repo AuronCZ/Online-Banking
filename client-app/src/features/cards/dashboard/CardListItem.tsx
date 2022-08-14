@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
 import { Cards } from "../../../app/models/card";
+import {format} from 'date-fns';
+
 
 interface Props{
     card: Cards
@@ -26,7 +28,7 @@ export default function CardListItem({card}: Props) {
             </Segment>
             <Segment>
                 <span>
-                    <Icon name='clock' /> {card.expirationDate}
+                    <Icon name='clock' /> {format(card.expirationDate!, 'dd MMM yyyy h:mm aa')}
                 </span>
             </Segment>
             <Segment secondary>

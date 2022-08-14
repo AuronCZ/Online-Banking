@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Account} from "../../../app/models/account";
+import {format} from 'date-fns';
 
 const accountImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function AccountDetailedHeader({account}: Props) {
                                     content={account.accountNumber}
                                     style={{color: 'white'}}
                                 />
-                                <p>{account.openDate}</p>
+                                <p>{format(account.openDate!, 'dd MMM yyyy')}</p>
                                 <p>
                                    {account.accountType}
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function AccountDetailedHeader({account}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Account</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button as={Link} to={`/manageAccount/${account.id}`} color='orange' floated='right'>
                     Manage Account
                 </Button>
             </Segment>

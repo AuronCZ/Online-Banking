@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Balance} from "../../../app/models/balance";
+import {format} from 'date-fns';
 
 const balanceImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function BalanceDetailedHeader({balance}: Props) {
                                     content={balance.accountNumber}
                                     style={{color: 'white'}}
                                 />
-                                <p>{balance.date}</p>
+                                <p>{format(balance.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                     {balance.accountType}
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function BalanceDetailedHeader({balance}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Balance</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button as={Link} to={`/manageBalance/${balance.id}`} color='orange' floated='right'>
                     Manage balance
                 </Button>
             </Segment>

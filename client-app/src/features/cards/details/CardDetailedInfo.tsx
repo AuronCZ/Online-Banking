@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react'
 import {Segment, Grid, Icon} from 'semantic-ui-react'
 import {Cards} from "../../../app/models/card";
+import {format} from 'date-fns';
 
 interface Props {
     card: Cards
@@ -27,7 +28,7 @@ export default observer(function CardDetailedInfo({card}: Props) {
                     </Grid.Column>
                     <Grid.Column width={15}>
             <span>
-              {card.expirationDate}
+                {format(card.expirationDate!, 'dd MMM yyyy h:mm aa')}
             </span>
                     </Grid.Column>
                 </Grid>

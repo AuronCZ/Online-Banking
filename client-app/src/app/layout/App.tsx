@@ -60,9 +60,6 @@ function App() {
         <Route path='/cards/:id' element={<CardDetails/>} />
         <Route path='/transfers/:id' element={<TransferDetails/>} />
         <Route path='/withdraws/:id' element={<WithdrawDetails/>} />
-        <Route path='/errors' element={<TestErrors/>} />
-        <Route path='/server-error' element={<ServerError/>} />
-        <Route path='*'  element={<NotFound/>} />
       </Routes>
         <App key={location.key} />
       </Container>
@@ -71,3 +68,7 @@ function App() {
 }
 
 export default observer(App);
+
+        // { <Route path='/errors' element={<TestErrors/>} />
+        // <Route path='/server-error' element={<ServerError/>} />
+        // <Route path='*'  element={<NotFound/>} /> }

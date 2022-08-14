@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Account } from "../models/account";
+import {format} from 'date-fns';
 
 
 export default class AccountStore {
@@ -8,20 +9,20 @@ export default class AccountStore {
     selectedAccount: Account | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor(){
         makeAutoObservable(this)
     }
 
     get accountsByDate() {
-        return Array.from(this.accountRegistry.values()).sort((a, b) => Date.parse(a.openDate) - Date.parse(b.openDate));
+        return Array.from(this.accountRegistry.values()).sort((a, b) => a.openDate!.getTime() - b.openDate!.getTime());
     }
 
     get groupedAccounts() {
         return Object.entries(
             this.accountsByDate.reduce((accounts, account) => {
-                const date = account.openDate;
+                const date = format(account.openDate!, 'dd MMM yyyy');
                 accounts[date] = accounts[date] ? [...accounts[date], account] : [account];
                 return accounts;
             }, {} as {[key: string]: Account[]})
@@ -65,7 +66,7 @@ export default class AccountStore {
     }
 
     private setAccount = (account: Account) => {
-        account.openDate = account.openDate.split('T')[0];
+        account.openDate = new Date(account.openDate!);
         this.accountRegistry.set(account.id, account);
     }
 

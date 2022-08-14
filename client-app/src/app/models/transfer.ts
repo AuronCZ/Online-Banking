@@ -4,5 +4,5 @@ export interface Transfer {
     accountNumber: string;
     amount: string;
     payee: string;
-    date: string;
+    date: Date | null;
 }

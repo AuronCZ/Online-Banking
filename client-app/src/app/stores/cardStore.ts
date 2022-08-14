@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Cards } from "../models/card";
+import {format} from 'date-fns';
 
 
 export default class CardStore {
@@ -8,20 +9,20 @@ export default class CardStore {
     selectedCard: Cards | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor(){
         makeAutoObservable(this)
     }
 
     get cardsByDate() {
-        return Array.from(this.cardRegistry.values()).sort((a, b) => Date.parse(a.expirationDate) - Date.parse(b.expirationDate));
+        return Array.from(this.cardRegistry.values()).sort((a, b) => a.expirationDate!.getTime() - b.expirationDate!.getTime());
     }
 
     get groupedCards() {
         return Object.entries(
             this.cardsByDate.reduce((cards, card) => {
-                const date = card.expirationDate;
+                const date = format(card.expirationDate!, 'dd MMM yyyy');
                 cards[date] = cards[date] ? [...cards[date], card] : [card];
                 return cards;
             }, {} as {[key: string]: Cards[]})
@@ -65,7 +66,7 @@ export default class CardStore {
     }
 
     private setCard = (card: Cards) => {
-        card.expirationDate = card.expirationDate.split('T')[0];
+        card.expirationDate = new Date(card.expirationDate!);
         this.cardRegistry.set(card.id, card);
     }
 

@@ -3,5 +3,5 @@ export interface Balance {
     accountNumber: string;
     accountType: string;
     amount: string;
-    date: string;
+    date: Date | null;
 }

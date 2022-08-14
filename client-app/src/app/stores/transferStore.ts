@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Transfer } from "../models/transfer";
+import {format} from 'date-fns';
 
 
 export default class TransferStore {
@@ -8,20 +9,20 @@ export default class TransferStore {
     selectedTransfer: Transfer | undefined = undefined;
     editMode = false;
     loading = false;
-    loadingInitial = true;
+    loadingInitial = false;
 
     constructor(){
         makeAutoObservable(this)
     }
 
     get transfersByDate() {
-        return Array.from(this.transferRegistry.values()).sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
+        return Array.from(this.transferRegistry.values()).sort((a, b) => a.date!.getTime() - b.date!.getTime());
     }
 
     get groupedTransfers() {
         return Object.entries(
             this.transfersByDate.reduce((transfers, transfer) => {
-                const date = transfer.date;
+                const date = format(transfer.date!, 'dd MMM yyyy');
                 transfers[date] = transfers[date] ? [...transfers[date], transfer] : [transfer];
                 return transfers;
             }, {} as {[key: string]: Transfer[]})
@@ -65,7 +66,7 @@ export default class TransferStore {
     }
 
     private setTransfer = (transfer: Transfer) => {
-        transfer.date = transfer.date.split('T')[0];
+        transfer.date = new Date(transfer.date!);
         this.transferRegistry.set(transfer.id, transfer);
     }
 

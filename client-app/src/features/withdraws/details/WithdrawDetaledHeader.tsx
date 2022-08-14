@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Withdraw} from "../../../app/models/withdraw";
+import {format} from 'date-fns';
 
 const withdrawImageStyle = {
     filter: 'brightness(30%)'
@@ -34,7 +36,7 @@ export default observer (function WithdrawDetailedHeader({withdraw}: Props) {
                                     content={withdraw.accountNumber}
                                     style={{color: 'white'}}
                                 />
-                                <p>{withdraw.date}</p>
+                                <p>{format(withdraw.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                     {withdraw.amount}
                                 </p>
@@ -46,7 +48,7 @@ export default observer (function WithdrawDetailedHeader({withdraw}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Join Withdraw</Button>
                 <Button>Cancel attendance</Button>
-                <Button color='orange' floated='right'>
+                <Button  as={Link} to={`/manageWithdraw/${withdraw.id}`} color='orange' floated='right'>
                     Manage Withdraw
                 </Button>
             </Segment>

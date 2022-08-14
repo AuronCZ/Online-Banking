@@ -1,32 +1,46 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Form, Segment } from "semantic-ui-react";
+import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 import { Link } from "react-router-dom";
+import { Formik, Form } from "formik";
+import * as Yup from 'yup';
+import MyTextInput from "../../../app/common/form/MyTextInput";
+import MySelectInput from "../../../app/common/form/MySelectInput";
+import { balanceCategoryOptions } from "../../../app/common/options/balanceCategoryOptions";
+import MyDateInput from "../../../app/common/form/MyDateInput";
+import { Balance } from "../../../app/models/balance";
 
 
-export default observer (function BalanceForm(){
+export default observer(function BalanceForm() {
     const navigate = useNavigate();
-    const {balanceStore} = useStore();
-    const { createBalance, updateBalance, loading, loadBalance, loadingInitial} = balanceStore;
-    const {id} = useParams<{id: string}>();
-    const [balance, setBalance] = useState({
+    const { balanceStore } = useStore();
+    const { createBalance, updateBalance, loading, loadBalance, loadingInitial } = balanceStore;
+    const { id } = useParams<{ id: string }>();
+    const [balance, setBalance] = useState<Balance>({
         id: '',
         accountNumber: '',
         accountType: '',
         amount: '',
-        date: ''
+        date: null
     });
+
+    const validationSchema = Yup.object({
+        accountNumber: Yup.string().required('The balance account number is required'),
+        accountType: Yup.string().required(),
+        amount: Yup.string().required(),
+        date: Yup.string().required('Date is required').nullable(),
+    })
 
     useEffect(() => {
         if (id) loadBalance(id).then(balance => setBalance(balance!))
     }, [id, loadBalance]);
 
 
-    function handleSubmit() {
+    function handleFormSubmit(balance: Balance) {
         if (balance.id.length === 0) {
             let newBalance = {
                 ...balance,
@@ -38,24 +52,38 @@ export default observer (function BalanceForm(){
         }
     }
 
-    function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-        const {name, value} = event.target;
-        setBalance({...balance, [name]:value})
-    }
 
     if (loadingInitial) return <LoadingComponent content='Loading balance...' />
 
 
-    return(
+    return (
         <Segment clearing>
-            <Form onSubmit={handleSubmit} autoComplete='off'>
-                <Form.Input placeholder='AccountNumber' value={balance.accountNumber} name='accountNumber' onChange={handleInputChange}/>
-                <Form.Input placeholder='AccountType' value={balance.accountType} name='accountType' onChange={handleInputChange}/>
-                <Form.Input placeholder='Amount' value={balance.amount} name='amount' onChange={handleInputChange}/>
-                <Form.Input type='date' placeholder='Date' value={balance.date} name='date' onChange={handleInputChange}/>
-                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button as={Link} to='/balances' floated='right' type='button' content='Cancel' />
-            </Form>
+            <Header content='Balance Details' sub color='teal' />
+            <Formik 
+                validationSchema={validationSchema} 
+                enableReinitialize 
+                initialValues={balance} 
+                onSubmit={values => handleFormSubmit(values)}>
+                {({ handleSubmit, isValid, isSubmitting, dirty }) => (
+                    <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
+                        <MyTextInput placeholder='Account Number' name='accountNumber' />
+                        <MySelectInput options={balanceCategoryOptions} placeholder='Account Type'  name='accountType'  />
+                        <MyTextInput placeholder='Amount'  name='amount'  />
+                        <MyDateInput 
+                            placeholderText='Date'  
+                            name='date' 
+                            showTimeSelect
+                            timeCaption='time'
+                            dateFormat='MMMM d, yyyy h:mm aa'
+                         />
+                        <Button 
+                            disabled={isSubmitting || !dirty || !isValid} 
+                            loading={loading} floated='right' 
+                            positive type='submit' content='Submit' />
+                        <Button as={Link} to='/balances' floated='right' type='button' content='Cancel' />
+                    </Form>
+                )}
+            </Formik>
         </Segment>
     )
 })

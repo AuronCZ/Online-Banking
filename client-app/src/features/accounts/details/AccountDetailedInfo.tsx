@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react'
 import {Segment, Grid, Icon} from 'semantic-ui-react'
 import {Account} from "../../../app/models/account";
+import {format} from 'date-fns';
 
 interface Props {
     account: Account
@@ -28,7 +29,7 @@ export default observer(function AccountDetailedInfo({account}: Props) {
                     </Grid.Column>
                     <Grid.Column width={15}>
             <span>
-              {account.openDate}
+              {format(account.openDate!, 'dd MMM yyyy h:mm aa')}
             </span>
                     </Grid.Column>
                 </Grid>
