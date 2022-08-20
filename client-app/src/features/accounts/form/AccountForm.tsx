@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -17,7 +17,7 @@ import { Account } from "../../../app/models/account";
 
 
 export default observer(function AccountForm() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const { accountStore } = useStore();
     const { createAccount, updateAccount, loading, loadAccount, loadingInitial } = accountStore;
     const { id } = useParams<{ id: string }>();
@@ -51,9 +51,9 @@ export default observer(function AccountForm() {
                 ...account,
                 id: uuid()
             };
-            createAccount(newAccount).then(() => navigate(`/accounts/${newAccount.id}`))
+            createAccount(newAccount).then(() => history.push(`/accounts/${newAccount.id}`))
         } else {
-            updateAccount(account).then(() => navigate(`/accounts/${account.id}`))
+            updateAccount(account).then(() => history.push(`/accounts/${account.id}`))
         }
     }
 

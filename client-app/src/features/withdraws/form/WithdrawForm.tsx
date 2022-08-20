@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React,{useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -16,7 +16,7 @@ import { Withdraw } from "../../../app/models/withdraw";
 
 
 export default observer(function WithdrawForm() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const { withdrawStore } = useStore();
     const { createWithdraw, updateWithdraw, loading, loadWithdraw, loadingInitial } = withdrawStore;
     const { id } = useParams<{ id: string }>();
@@ -48,9 +48,9 @@ export default observer(function WithdrawForm() {
                 ...withdraw,
                 id: uuid()
             };
-            createWithdraw(newWithdraw).then(() => navigate(`/withdraws/${newWithdraw.id}`))
+            createWithdraw(newWithdraw).then(() => history.push(`/withdraws/${newWithdraw.id}`))
         } else {
-            updateWithdraw(withdraw).then(() => navigate(`/withdraws/${withdraw.id}`))
+            updateWithdraw(withdraw).then(() => history.push(`/withdraws/${withdraw.id}`))
         }
     }
 

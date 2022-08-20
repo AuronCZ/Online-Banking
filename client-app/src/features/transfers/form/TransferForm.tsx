@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -17,7 +17,7 @@ import { Transfer } from "../../../app/models/transfer";
 
 
 export default observer(function TransferForm() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const { transferStore } = useStore();
     const { createTransfer, updateTransfer, loading, loadTransfer, loadingInitial } = transferStore;
     const { id } = useParams<{ id: string }>();
@@ -50,9 +50,9 @@ export default observer(function TransferForm() {
                 ...transfer,
                 id: uuid()
             };
-            createTransfer(newTransfer).then(() => navigate(`/transfers/${newTransfer.id}`))
+            createTransfer(newTransfer).then(() => history.push(`/transfers/${newTransfer.id}`))
         } else {
-            updateTransfer(transfer).then(() => navigate(`/transfers/${transfer.id}`))
+            updateTransfer(transfer).then(() => history.push(`/transfers/${transfer.id}`))
         }
     }
 

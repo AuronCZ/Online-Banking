@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -16,7 +16,7 @@ import { Balance } from "../../../app/models/balance";
 
 
 export default observer(function BalanceForm() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const { balanceStore } = useStore();
     const { createBalance, updateBalance, loading, loadBalance, loadingInitial } = balanceStore;
     const { id } = useParams<{ id: string }>();
@@ -46,9 +46,9 @@ export default observer(function BalanceForm() {
                 ...balance,
                 id: uuid()
             };
-            createBalance(newBalance).then(() => navigate(`/balances/${newBalance.id}`))
+            createBalance(newBalance).then(() => history.push(`/balances/${newBalance.id}`))
         } else {
-            updateBalance(balance).then(() => navigate(`/balances/${balance.id}`))
+            updateBalance(balance).then(() => history.push(`/balances/${balance.id}`))
         }
     }
 

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Button, Header, Segment } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
@@ -16,7 +16,7 @@ import { Cards } from "../../../app/models/card";
 
 
 export default observer(function CardForm() {
-    const navigate = useNavigate();
+    const history = useHistory();
     const { cardStore } = useStore();
     const { createCard, updateCard, loading, loadCard, loadingInitial } = cardStore;
     const { id } = useParams<{ id: string }>();
@@ -47,9 +47,9 @@ export default observer(function CardForm() {
                 ...card,
                 id: uuid()
             };
-            createCard(newCard).then(() => navigate(`/cards/${newCard.id}`))
+            createCard(newCard).then(() => history.push(`/cards/${newCard.id}`))
         } else {
-            updateCard(card).then(() => navigate(`/cards/${card.id}`))
+            updateCard(card).then(() => history.push(`/cards/${card.id}`))
         }
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Container} from 'semantic-ui-react';
 import NavBar from './NavBar';
 import { observer } from 'mobx-react-lite';
-import { Route, Routes, useLocation, useRoutes } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import AccountForm from '../../features/accounts/form/AccountForm';
 import AccountDashboard from '../../features/accounts/dashboard/AccountDashboard';
@@ -29,40 +29,51 @@ import ServerError from '../../features/errors/ServerError';
 
 function App() {
   const location = useLocation();
-  const App = () =>
-    useRoutes([
-      { path: '/createAccount', element: <AccountForm/> },
-      { path: '/manageAccount/:id', element: <AccountForm/>  },
-      { path: '/createBalance', element: <BalanceForm/> },
-      { path: '/manageBalance/:id', element: <BalanceForm/>  },
-      { path: '/createCard', element: <CardForm/> },
-      { path: '/manageCard/:id', element: <CardForm/>  },
-      { path: '/createTransfer', element: <TransferForm/> },
-      { path: '/manageTransfer/:id', element: <TransferForm/>  },
-      { path: '/createWithdraw', element: <WithdrawForm/> },
-      { path: '/manageWithdraw/:id', element: <WithdrawForm/>  },
-    ]);
+  // const App = () =>
+  //   useRoutes([
+  //     { path: '/createAccount', element: <AccountForm/> },
+  //     { path: '/manageAccount/:id', element: <AccountForm/>  },
+  //     { path: '/createBalance', element: <BalanceForm/> },
+  //     { path: '/manageBalance/:id', element: <BalanceForm/>  },
+  //     { path: '/createCard', element: <CardForm/> },
+  //     { path: '/manageCard/:id', element: <CardForm/>  },
+  //     { path: '/createTransfer', element: <TransferForm/> },
+  //     { path: '/manageTransfer/:id', element: <TransferForm/>  },
+  //     { path: '/createWithdraw', element: <WithdrawForm/> },
+  //     { path: '/manageWithdraw/:id', element: <WithdrawForm/>  },
+  //   ]);
 
   return (
     <>
     <ToastContainer position='bottom-right' hideProgressBar/>
+    <Route exact path='/' component={HomePage} />
+    <Route 
+      path={'/(.+)'}
+      render={() => (
+        <>
       <NavBar  />
       <Container style={{marginTop: '7em'}}>
-      <Routes>
-        <Route path='/' element={<HomePage/>} />
-        <Route path='/accounts' element={<AccountDashboard/>} />
-        <Route path='/balances' element={<BalanceDashboard/>} />
-        <Route path='/cards' element={<CardDashboard/>} />
-        <Route path='/transfers' element={<TransferDashboard/>} />
-        <Route path='/withdraws' element={<WithdrawDashboard/>} />
-        <Route path='/accounts/:id' element={<AccountDetails/>} />
-        <Route path='/balances/:id' element={<BalanceDetails/>} />
-        <Route path='/cards/:id' element={<CardDetails/>} />
-        <Route path='/transfers/:id' element={<TransferDetails/>} />
-        <Route path='/withdraws/:id' element={<WithdrawDetails/>} />
-      </Routes>
-        <App key={location.key} />
+      <Switch>
+        <Route path='/accounts' component={AccountDashboard} />
+        <Route path='/balances' component={BalanceDashboard} />
+        <Route path='/cards' component={CardDashboard} />
+        <Route path='/transfers' component={TransferDashboard} />
+        <Route path='/withdraws' component={WithdrawDashboard} />
+        <Route path='/accounts/:id' component={AccountDetails} />
+        <Route path='/balances/:id' component={BalanceDetails} />
+        <Route path='/cards/:id' component={CardDetails} />
+        <Route path='/transfers/:id' component={TransferDetails} />
+        <Route path='/withdraws/:id' component={WithdrawDetails} />
+        <Route key={location.key} path={['/createAccount','/manageAccount/:id']} component={AccountForm} />
+        <Route  path={['/createBalance','/manageBalance/:id']} component={BalanceForm} />
+        <Route  path={['/createCard','/manageCard/:id']} component={CardForm} />
+        <Route  path={['/createTransfer','/manageTransfer/:id']} component={TransferForm} />
+        <Route  path={['/createWithdraw','/manageWithdraw/:id']} component={WithdrawForm} />
+      </Switch>
       </Container>
+      </>
+      )}
+      />
     </>
   );
 }
