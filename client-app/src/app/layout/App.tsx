@@ -23,6 +23,7 @@ import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
+import LoginForm from '../../features/users/LoginForm';
 
 
 
@@ -58,6 +59,7 @@ function App() {
                 <Route path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
                 <Route path='/errors' component={TestErrors} />
                 <Route path='/server-error' component={ServerError} />
+                <Route path='/login' component={LoginForm} />
                 <Route path='*' component={NotFound} />
               </Switch>
             </Container>

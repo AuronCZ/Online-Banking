@@ -4,6 +4,7 @@ import BalanceStore from "./balanceStore";
 import CardStore from "./cardStore";
 import CommonStore from "./commonStore";
 import TransferStore from "./transferStore";
+import UserStore from "./userStore";
 import WithdrawStore from "./withdrawStore";
 
 interface Store{
@@ -13,6 +14,7 @@ interface Store{
     transferStore: TransferStore;
     withdrawStore: WithdrawStore;
     commonStore: CommonStore;
+    userStore: UserStore;
 
 }
 
@@ -22,7 +24,8 @@ export const store: Store = {
     cardStore: new CardStore(),
     transferStore: new TransferStore(),
     withdrawStore: new WithdrawStore(),
-    commonStore: new CommonStore()
+    commonStore: new CommonStore(),
+    userStore: new UserStore()
 }
 
 export const StoreContext = createContext(store);

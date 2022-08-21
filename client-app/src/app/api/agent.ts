@@ -5,6 +5,7 @@ import { Account } from "../models/account";
 import { Balance } from "../models/balance";
 import { Cards } from "../models/card";
 import { Transfer } from "../models/transfer";
+import { User, UserFormValues } from "../models/user";
 import { Withdraw } from "../models/withdraw";
 import { store } from "../stores/store";
 
@@ -101,12 +102,19 @@ const Withdraws = {
     delete: (id: string) => axios.delete<void>(`/withdraws/${id}`)
 }
 
+const UserAccount = {
+    current: () => requests.get<User>('/account'),
+    login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+    register: (user: UserFormValues) => requests.post<User>('/account/register', user)
+}
+
 const agent = {
     Accounts,
     Balances,
     Cardss,
     Withdraws,
-    Transfers
+    Transfers,
+    UserAccount
 }
 
 export  default agent;
