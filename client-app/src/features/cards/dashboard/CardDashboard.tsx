@@ -17,7 +17,7 @@ export default observer (function CardDashboard() {
         if(cardRegistry.size <= 1) loadCards();
       }, [cardRegistry.size, loadCards])
 
-      if (cardStore.loadingInitial) return <LoadingComponent content='Loading app' />
+      if (cardStore.loadingInitial) return <LoadingComponent content='Loading cards...' />
     
     return(
         <Grid>

@@ -17,7 +17,7 @@ export default observer (function TransferDashboard() {
         if(transferRegistry.size <= 1) loadTransfers();
       }, [transferRegistry.size, loadTransfers])
 
-      if (transferStore.loadingInitial) return <LoadingComponent content='Loading app' />
+      if (transferStore.loadingInitial) return <LoadingComponent content='Loading transfers...' />
     
     return(
         <Grid>

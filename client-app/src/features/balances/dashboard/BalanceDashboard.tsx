@@ -17,7 +17,7 @@ export default observer (function BalanceDashboard() {
         if(balanceRegistry.size <= 1) loadBalances();
       }, [balanceRegistry.size, loadBalances])
 
-      if (balanceStore.loadingInitial) return <LoadingComponent content='Loading app' />
+      if (balanceStore.loadingInitial) return <LoadingComponent content='Loading balances...' />
     
     return(
         <Grid>

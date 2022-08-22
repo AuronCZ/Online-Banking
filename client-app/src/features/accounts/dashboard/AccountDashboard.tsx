@@ -16,7 +16,7 @@ export default observer (function AccountDashboard() {
       if(accountRegistry.size <= 1) loadAccounts();
     }, [accountRegistry.size, loadAccounts])
 
-  if (accountStore.loadingInitial) return <LoadingComponent content='Loading app' />
+  if (accountStore.loadingInitial) return <LoadingComponent content='Loading accounts...' />
 
     return(
         <Grid>

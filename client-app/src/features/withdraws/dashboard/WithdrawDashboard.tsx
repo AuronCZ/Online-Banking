@@ -17,7 +17,7 @@ export default observer (function WithdrawDashboard() {
         if(withdrawRegistry.size <= 1) loadWithdraws();
       }, [withdrawRegistry.size, loadWithdraws])
 
-      if (withdrawStore.loadingInitial) return <LoadingComponent content='Loading app' />
+      if (withdrawStore.loadingInitial) return <LoadingComponent content='Loading withdraws...' />
     
     return(
         <Grid>
