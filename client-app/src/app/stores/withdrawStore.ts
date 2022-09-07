@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Withdraw } from "../models/withdraw";
 import {format} from 'date-fns';
+import { Pagination, PagingParams } from "../models/pagination";
 
 
 export default class WithdrawStore {
@@ -10,9 +11,22 @@ export default class WithdrawStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor(){
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     get withdrawsByDate() {
@@ -32,15 +46,20 @@ export default class WithdrawStore {
     loadWithdraws = async () => {
         this.loadingInitial = true;
         try {
-            const withdraws = await agent.Withdraws.list();
-            withdraws.forEach(withdraw =>{
+            const result = await agent.Withdraws.list(this.axiosParams);
+            result.data.forEach(withdraw =>{
                 this.setWithdraw(withdraw);
               })
+              this.setPagination(result.pagination);
               this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadWithdraw = async (id: string) => {

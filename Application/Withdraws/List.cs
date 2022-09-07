@@ -10,24 +10,30 @@ using Microsoft.EntityFrameworkCore;
 using Application.Core;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Application.Interfaces;
 
 namespace Application.Withdraws
 {
     public class List
     {
-        public class Query : IRequest<Result<List<WithdrawDto>>> { }
+        public class Query : IRequest<Result<PagedList<WithdrawDto>>> 
+        { 
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<WithdrawDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<WithdrawDto>>>
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                this.userAccessor = userAccessor;
                 this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<WithdrawDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<WithdrawDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query =  this.context.Withdraws
                 .OrderBy(d => d.Date)
@@ -35,7 +41,10 @@ namespace Application.Withdraws
                     new {currentUsername = this.userAccessor.GetUsername() })
                 .AsQueryable();
 
-                return Result<List<WithdrawDto>>.Success(await this.context.Withdraws.ToListAsync());
+                return Result<PagedList<WithdrawDto>>.Success(
+                    await PagedList<WithdrawDto>.CreateAsync(query, request.Params.PageNumber,
+                        request.Params.PageSize)
+                );
             }
         }
     }

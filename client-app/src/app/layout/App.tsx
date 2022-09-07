@@ -27,6 +27,7 @@ import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
+import ProfilePage from '../../features/profiles/ProfilePage';
 
 
 
@@ -72,6 +73,7 @@ function App() {
                 <Route path={['/createCard', '/manageCard/:id']} component={CardForm} />
                 <Route path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
                 <Route path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
+                <Route path='/profiles/:username' component={ProfilePage} />
                 <Route path='/errors' component={TestErrors} />
                 <Route path='/server-error' component={ServerError} />
                 <Route path='/login' component={LoginForm} />

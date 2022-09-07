@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Account} from "../../../app/models/account";
 import {format} from 'date-fns';
+import { useStore } from '../../../app/stores/store';
 
 const accountImageStyle = {
     filter: 'brightness(30%)'
@@ -23,6 +24,15 @@ interface Props {
 }
 
 export default observer (function AccountDetailedHeader({account}: Props) {
+    const {accountStore} = useStore();
+    const {deleteAccount,loading} = accountStore;
+    const [target,setTarget] = useState('');
+
+    function handleAccountDelete(e:SyntheticEvent<HTMLButtonElement>, id:string){
+        setTarget(e.currentTarget.name);
+        deleteAccount(id);
+    }
+    
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -46,9 +56,12 @@ export default observer (function AccountDetailedHeader({account}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Account</Button>
-                <Button>Cancel attendance</Button>
-                <Button as={Link} to={`/manageAccount/${account.id}`} color='orange' floated='right'>
+                <Button 
+                    name={account.id}
+                    loading={loading && target === account.id} 
+                    onClick={(e) => handleAccountDelete(e,account.id)} 
+                    as={Link} to='/accounts'  content="Delete" color='red' floated='right' />
+                <Button as={Link} to={`/manageAccount/${account.id}`} color='blue' floated='left'>
                     Manage Account
                 </Button>
             </Segment>

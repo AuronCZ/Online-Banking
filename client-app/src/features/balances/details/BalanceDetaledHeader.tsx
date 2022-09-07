@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Balance} from "../../../app/models/balance";
 import {format} from 'date-fns';
+import { useStore } from '../../../app/stores/store';
 
 const balanceImageStyle = {
     filter: 'brightness(30%)'
@@ -23,6 +24,15 @@ interface Props {
 }
 
 export default observer (function BalanceDetailedHeader({balance}: Props) {
+    const {balanceStore} = useStore();
+    const {deleteBalance,loading} = balanceStore;
+    const [target,setTarget] = useState('');
+
+    function handleBalanceDelete(e:SyntheticEvent<HTMLButtonElement>, id:string){
+        setTarget(e.currentTarget.name);
+        deleteBalance(id);
+    }
+
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -46,9 +56,12 @@ export default observer (function BalanceDetailedHeader({balance}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Balance</Button>
-                <Button>Cancel attendance</Button>
-                <Button as={Link} to={`/manageBalance/${balance.id}`} color='orange' floated='right'>
+                <Button 
+                    name={balance.id}
+                    loading={loading && target === balance.id} 
+                    onClick={(e) => handleBalanceDelete(e,balance.id)} 
+                    as={Link} to='/balances'  content="Delete" color='red' floated='right' />
+                <Button as={Link} to={`/manageBalance/${balance.id}`} color='blue' floated='left'>
                     Manage balance
                 </Button>
             </Segment>

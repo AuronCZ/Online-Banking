@@ -4,6 +4,8 @@ import { history } from "../..";
 import { Account } from "../models/account";
 import { Balance } from "../models/balance";
 import { Cards } from "../models/card";
+import { PaginatedResult } from "../models/pagination";
+import { Profile } from "../models/profile";
 import { Transfer } from "../models/transfer";
 import { User, UserFormValues } from "../models/user";
 import { Withdraw } from "../models/withdraw";
@@ -26,6 +28,11 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async response => {
     await sleep(1000);
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<any>>
+    }
     return response;
 }, (error: AxiosError) => {
     const {data, status, config}: any = error.response!;
@@ -72,40 +79,40 @@ const requests = {
 }
 
 const Accounts = {
-    list: () => requests.get<Account[]>('/accounts'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Account[]>>('/accounts', {params}).then(responseBody),
     details: (id: string) => requests.get<Account>(`/accounts/${id}`),
-    create: (account: Account) => axios.post<void>('/accounts', account),
-    update: (account: Account) => axios.put<void>(`/accounts/${account.id}`, account),
-    delete: (id: string) => axios.delete<void>(`/accounts/${id}`)
+    create: (account: Account) => requests.post<void>('/accounts', account),
+    update: (account: Account) => requests.put<void>(`/accounts/${account.id}`, account),
+    delete: (id: string) => requests.del<void>(`/accounts/${id}`)
 
 }
 const Balances = {
-    list: () => requests.get<Balance[]>('/balances'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Balance[]>>('/balances', {params}).then(responseBody),
     details: (id: string) => requests.get<Balance>(`/balances/${id}`),
-    create: (balance: Balance) => axios.post<void>('/balances', balance),
-    update: (balance: Balance) => axios.put<void>(`/balances/${balance.id}`, balance),
-    delete: (id: string) => axios.delete<void>(`/balances/${id}`)
+    create: (balance: Balance) => requests.post<void>('/balances', balance),
+    update: (balance: Balance) => requests.put<void>(`/balances/${balance.id}`, balance),
+    delete: (id: string) => requests.del<void>(`/balances/${id}`)
 }
 const Cardss = {
-    list: () => requests.get<Cards[]>('/cards'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Cards[]>>('/cards', {params}).then(responseBody),
     details: (id: string) => requests.get<Cards>(`/cards/${id}`),
-    create: (card: Cards) => axios.post<void>('/cards', card),
-    update: (card: Cards) => axios.put<void>(`/cards/${card.id}`, card),
-    delete: (id: string) => axios.delete<void>(`/cards/${id}`)
+    create: (card: Cards) => requests.post<void>('/cards', card),
+    update: (card: Cards) => requests.put<void>(`/cards/${card.id}`, card),
+    delete: (id: string) => requests.del<void>(`/cards/${id}`)
 }
 const Transfers = {
-    list: () => requests.get<Transfer[]>('/transfers'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Transfer[]>>('/transfers', {params}).then(responseBody),
     details: (id: string) => requests.get<Transfer>(`/transfers/${id}`),
-    create: (transfer: Transfer) => axios.post<void>('/transfers', transfer),
-    update: (transfer: Transfer) => axios.put<void>(`/transfers/${transfer.id}`, transfer),
-    delete: (id: string) => axios.delete<void>(`/transfers/${id}`)
+    create: (transfer: Transfer) => requests.post<void>('/transfers', transfer),
+    update: (transfer: Transfer) => requests.put<void>(`/transfers/${transfer.id}`, transfer),
+    delete: (id: string) => requests.del<void>(`/transfers/${id}`)
 }
 const Withdraws = {
-    list: () => requests.get<Withdraw[]>('/withdraws'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Withdraw[]>>('/withdraws', {params}).then(responseBody),
     details: (id: string) => requests.get<Withdraw>(`/withdraws/${id}`),
-    create: (withdraw: Withdraw) => axios.post<void>('/withdraws', withdraw),
-    update: (withdraw: Withdraw) => axios.put<void>(`/withdraws/${withdraw.id}`, withdraw),
-    delete: (id: string) => axios.delete<void>(`/withdraws/${id}`)
+    create: (withdraw: Withdraw) => requests.post<void>('/withdraws', withdraw),
+    update: (withdraw: Withdraw) => requests.put<void>(`/withdraws/${withdraw.id}`, withdraw),
+    delete: (id: string) => requests.del<void>(`/withdraws/${id}`)
 }
 
 const UserAccount = {
@@ -114,13 +121,19 @@ const UserAccount = {
     register: (user: UserFormValues) => requests.post<User>('/account/register', user)
 }
 
+const Profiles = {
+    get: (username: string) => requests.get<Profile>(`/profiles/${username}`),
+    updateProfile: (profile: Partial<Profile>) => requests.put(`/profiles`, profile)
+}
+
 const agent = {
     Accounts,
     Balances,
     Cardss,
     Withdraws,
     Transfers,
-    UserAccount
+    UserAccount,
+    Profiles
 }
 
 export  default agent;

@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Balance } from "../models/balance";
 import {format} from 'date-fns';
+import { Pagination, PagingParams } from "../models/pagination";
 
 
 export default class BalanceStore {
@@ -10,9 +11,22 @@ export default class BalanceStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor(){
         makeAutoObservable(this)
+    }
+    
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     get balancesByDate() {
@@ -32,15 +46,20 @@ export default class BalanceStore {
     loadBalances = async () => {
         this.loadingInitial = true;
         try {
-            const balances = await agent.Balances.list();
-            balances.forEach(balance =>{
+            const result = await agent.Balances.list(this.axiosParams);
+            result.data.forEach(balance =>{
                 this.setBalance(balance);
               })
+              this.setPagination(result.pagination);
               this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadBalance = async (id: string) => {

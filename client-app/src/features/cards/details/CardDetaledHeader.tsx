@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Cards} from "../../../app/models/card";
 import {format} from 'date-fns';
+import { useStore } from '../../../app/stores/store';
 
 const cardImageStyle = {
     filter: 'brightness(30%)'
@@ -23,6 +24,15 @@ interface Props {
 }
 
 export default observer (function CardDetailedHeader({card}: Props) {
+    const {cardStore} = useStore();
+    const {deleteCard,loading} = cardStore;
+    const [target,setTarget] = useState('');
+
+    function handleCardDelete(e:SyntheticEvent<HTMLButtonElement>, id:string){
+        setTarget(e.currentTarget.name);
+        deleteCard(id);
+    }
+
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -46,9 +56,12 @@ export default observer (function CardDetailedHeader({card}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Card</Button>
-                <Button>Cancel attendance</Button>
-                <Button as={Link} to={`/manageCard/${card.id}`} color='orange' floated='right'>
+                <Button 
+                    name={card.id}
+                    loading={loading && target === card.id} 
+                    onClick={(e) => handleCardDelete(e,card.id)} 
+                    as={Link} to='/cards'  content="Delete" color='red' floated='right' />
+                <Button as={Link} to={`/manageCard/${card.id}`} color='blue' floated='left'>
                     Manage Card
                 </Button>
             </Segment>

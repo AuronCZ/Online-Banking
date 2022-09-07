@@ -22,6 +22,7 @@ namespace Application.Core
             CreateMap<Card,CardDto>();
             CreateMap<Transfer,TransferDto>();
             CreateMap<Withdraw,WithdrawDto>();
+            CreateMap<AppUser, Profiles.Profile>();
         }
     }
 }

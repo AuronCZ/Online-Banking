@@ -1,32 +1,60 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Grid, Loader } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { PagingParams } from "../../../app/models/pagination";
 import { useStore } from "../../../app/stores/store";
 import BalanceFilters from "./BalanceFilters";
 import BalanceList from "./BalanceList";
+import InfiniteScroll from 'react-infinite-scroller';
+import BalanceListItemPlaceholder from "./BalanceListItemPlaceholder";
 
 
 
 export default observer (function BalanceDashboard() {
     const {balanceStore} = useStore();
-    const {loadBalances, balanceRegistry} = balanceStore;
+    const {loadBalances, balanceRegistry, setPagingParams, pagination} = balanceStore;
+    const [loadingNext, setLoadingNext] = useState(false);
 
     useEffect(() => {
         if(balanceRegistry.size <= 1) loadBalances();
-      }, [balanceRegistry.size, loadBalances])
+    }, [balanceRegistry.size, loadBalances])
 
-      if (balanceStore.loadingInitial) return <LoadingComponent content='Loading balances...' />
+    function handleGetNext() {
+        setLoadingNext(true);
+        setPagingParams(new PagingParams(pagination!.currentPage + 1))
+        loadBalances().then(() => setLoadingNext(false));
+    }
+
     
     return(
         <Grid>
-            <Grid.Column width='10'>
+            <Grid.Row>
                 <Button as={NavLink} to='/createBalance' positive content='Create Balance' />
-                <BalanceList />
+            </Grid.Row>
+            <Grid.Column width='10'>
+                {balanceStore.loadingInitial && !loadingNext ? (
+                    <>
+                        <BalanceListItemPlaceholder />
+                        <BalanceListItemPlaceholder />
+                    </>
+                ) : (
+                    <InfiniteScroll
+                    pageStart={0}
+                    loadMore={handleGetNext}
+                    hasMore={!loadingNext && !!pagination && pagination.currentPage < pagination.totalPages}
+                    initialLoad={false}
+                >
+                   <BalanceList /> 
+                </InfiniteScroll>
+                )}
             </Grid.Column>
             <Grid.Column width='6'>
                 <BalanceFilters />
+            </Grid.Column>
+            <Grid.Column width={10}>
+                <Loader active={loadingNext}/>
             </Grid.Column>
         </Grid>
     )

@@ -10,24 +10,30 @@ using Microsoft.EntityFrameworkCore;
 using Application.Core;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Application.Interfaces;
 
 namespace Application.Transfers
 {
     public class List
     {
-        public class Query : IRequest<Result<List<TransferDto>>> { }
+        public class Query : IRequest<Result<PagedList<TransferDto>>> 
+        { 
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<TransferDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<TransferDto>>>
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                this.userAccessor = userAccessor;
                 this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<TransferDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<TransferDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query =  this.context.Transfers
                 .OrderBy(d => d.Date)
@@ -35,7 +41,10 @@ namespace Application.Transfers
                     new {currentUsername = this.userAccessor.GetUsername() })
                 .AsQueryable();
 
-                return Result<List<TransferDto>>.Success(await this.context.Transfers.ToListAsync());
+                return Result<PagedList<TransferDto>>.Success(
+                    await PagedList<TransferDto>.CreateAsync(query, request.Params.PageNumber,
+                        request.Params.PageSize)
+                );
             }
         }
     }

@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Transfer } from "../models/transfer";
 import {format} from 'date-fns';
+import { Pagination, PagingParams } from "../models/pagination";
 
 
 export default class TransferStore {
@@ -10,9 +11,22 @@ export default class TransferStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor(){
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     get transfersByDate() {
@@ -32,15 +46,20 @@ export default class TransferStore {
     loadTransfers = async () => {
         this.loadingInitial = true;
         try {
-            const transfers = await agent.Transfers.list();
-            transfers.forEach(transfer =>{
+            const result = await agent.Transfers.list(this.axiosParams);
+            result.data.forEach(transfer =>{
                 this.setTransfer(transfer);
               })
+              this.setPagination(result.pagination);
               this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadTransfer = async (id: string) => {

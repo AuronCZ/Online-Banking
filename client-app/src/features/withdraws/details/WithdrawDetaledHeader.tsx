@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Withdraw} from "../../../app/models/withdraw";
 import {format} from 'date-fns';
+import { useStore } from '../../../app/stores/store';
 
 const withdrawImageStyle = {
     filter: 'brightness(30%)'
@@ -23,6 +24,15 @@ interface Props {
 }
 
 export default observer (function WithdrawDetailedHeader({withdraw}: Props) {
+    const {withdrawStore} = useStore();
+    const {deleteWithdraw,loading} = withdrawStore;
+    const [target,setTarget] = useState('');
+
+    function handleWithdrawDelete(e:SyntheticEvent<HTMLButtonElement>, id:string){
+        setTarget(e.currentTarget.name);
+        deleteWithdraw(id);
+    }
+
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
@@ -46,9 +56,12 @@ export default observer (function WithdrawDetailedHeader({withdraw}: Props) {
                 </Segment>
             </Segment>
             <Segment clearing attached='bottom'>
-                <Button color='teal'>Join Withdraw</Button>
-                <Button>Cancel attendance</Button>
-                <Button  as={Link} to={`/manageWithdraw/${withdraw.id}`} color='orange' floated='right'>
+                <Button 
+                    name={withdraw.id}
+                    loading={loading && target === withdraw.id} 
+                    onClick={(e) => handleWithdrawDelete(e,withdraw.id)} 
+                    as={Link} to='/withdraws'  content="Delete" color='red' floated='right' />
+                <Button  as={Link} to={`/manageWithdraw/${withdraw.id}`} color='blue' floated='left'>
                     Manage Withdraw
                 </Button>
             </Segment>

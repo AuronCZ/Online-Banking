@@ -10,24 +10,30 @@ using Microsoft.EntityFrameworkCore;
 using Application.Core;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Application.Interfaces;
 
 namespace Application.Balances
 {
     public class List
     {
-        public class Query : IRequest<Result<List<BalanceDto>>> { }
+        public class Query : IRequest<Result<PagedList<BalanceDto>>> 
+        { 
+            public PagingParams Params { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<List<BalanceDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<BalanceDto>>>
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
-            public Handler(DataContext context, IMapper mapper)
+            private readonly IUserAccessor userAccessor;
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
+                this.userAccessor = userAccessor;
                 this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<BalanceDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<BalanceDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var query =  this.context.Balances
                 .OrderBy(d => d.Date)
@@ -35,7 +41,10 @@ namespace Application.Balances
                     new {currentUsername = this.userAccessor.GetUsername() })
                 .AsQueryable();
 
-                return Result<List<BalanceDto>>.Success(await this.context.Balances.ToListAsync());
+                return Result<PagedList<BalanceDto>>.Success(
+                    await PagedList<BalanceDto>.CreateAsync(query, request.Params.PageNumber,
+                        request.Params.PageSize)
+                );
             }
         }
     }

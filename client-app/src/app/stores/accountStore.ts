@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Account } from "../models/account";
 import {format} from 'date-fns';
+import { Pagination, PagingParams } from "../models/pagination";
 
 
 export default class AccountStore {
@@ -10,9 +11,22 @@ export default class AccountStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
+    pagingParams = new PagingParams();
 
     constructor(){
         makeAutoObservable(this)
+    }
+
+    setPagingParams = (pagingParams: PagingParams) => {
+        this.pagingParams = pagingParams;
+    }
+
+    get axiosParams() {
+        const params = new URLSearchParams();
+        params.append('pageNumber', this.pagingParams.pageNumber.toString());
+        params.append('pageSize', this.pagingParams.pageSize.toString());
+        return params;
     }
 
     get accountsByDate() {
@@ -32,15 +46,20 @@ export default class AccountStore {
     loadAccounts = async () =>  {
         this.loadingInitial = true;
         try {
-            const accounts = await agent.Accounts.list();
-            accounts.forEach(account =>{
+            const result = await agent.Accounts.list(this.axiosParams);
+            result.data.forEach(account =>{
                 this.setAccount(account);
             })
+            this.setPagination(result.pagination);
             this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
         }
+    }
+
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
     }
 
     loadAccount = async (id: string) => {
