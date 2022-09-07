@@ -8,24 +8,34 @@ using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace Application.Cards
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Card>>> { }
+        public class Query : IRequest<Result<List<CardDto>>> { }
 
-        public class Handler : IRequestHandler<Query, Result<List<Card>>>
+        public class Handler : IRequestHandler<Query, Result<List<CardDto>>>
         {
             private readonly DataContext context;
-            public Handler(DataContext context)
+            private readonly IMapper mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<Card>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<CardDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Card>>.Success(await this.context.Cards.ToListAsync());
+                var query =  this.context.Cards
+                .OrderBy(d => d.ExpirationDate)
+                .ProjectTo<CardDto>(this.mapper.ConfigurationProvider,
+                    new {currentUsername = this.userAccessor.GetUsername() })
+                .AsQueryable();
+
+                return Result<List<CardDto>>.Success(await this.context.Cards.ToListAsync());
             }
         }
     }

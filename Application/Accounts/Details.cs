@@ -4,34 +4,40 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Accounts
 {
     public class Details
     {
-        public class Query : IRequest<Result<Account>>
+        public class Query : IRequest<Result<AccountDto>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<Account>>
+        public class Handler : IRequestHandler<Query, Result<AccountDto>>
         {
         private readonly DataContext context;
+        private readonly IMapper mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IMapper mapper)
             {
-            this.context = context;
-
+                this.mapper = mapper;
+                this.context = context;
             }
 
-            public async Task<Result<Account>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<AccountDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var account = await this.context.Accounts.FindAsync(request.Id);
+                var account = await this.context.Accounts
+                    .ProjectTo<AccountDto>(this.mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync(x => x.Id == request.Id);
 
-                return Result<Account>.Success(account);
+                return Result<AccountDto>.Success(account);
             }
         }
     }

@@ -1,3 +1,8 @@
+using Application.Accounts;
+using Application.Balances;
+using Application.Cards;
+using Application.Transfers;
+using Application.Withdraws;
 using AutoMapper;
 using Domain;
 
@@ -12,6 +17,11 @@ namespace Application.Core
             CreateMap<Card,Card>();
             CreateMap<Transfer,Transfer>();
             CreateMap<Withdraw,Withdraw>();
+            CreateMap<Account,AccountDto>();
+            CreateMap<Balance,BalanceDto>();
+            CreateMap<Card,CardDto>();
+            CreateMap<Transfer,TransferDto>();
+            CreateMap<Withdraw,WithdrawDto>();
         }
     }
 }

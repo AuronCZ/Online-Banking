@@ -11,6 +11,8 @@ using MediatR;
 using AutoMapper;
 using Application.Withdraws;
 using Application.Core;
+using Application.Interfaces;
+using Infrastructure.Security;
 //using Application.Transfers;
 //using Application.Cards;
 //using Application.Balances;
@@ -39,6 +41,7 @@ namespace API.Extensions
             });
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

@@ -8,24 +8,34 @@ using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace Application.Withdraws
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Withdraw>>> { }
+        public class Query : IRequest<Result<List<WithdrawDto>>> { }
 
-        public class Handler : IRequestHandler<Query, Result<List<Withdraw>>>
+        public class Handler : IRequestHandler<Query, Result<List<WithdrawDto>>>
         {
             private readonly DataContext context;
-            public Handler(DataContext context)
+            private readonly IMapper mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<Withdraw>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<WithdrawDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Withdraw>>.Success(await this.context.Withdraws.ToListAsync());
+                var query =  this.context.Withdraws
+                .OrderBy(d => d.Date)
+                .ProjectTo<WithdrawDto>(this.mapper.ConfigurationProvider,
+                    new {currentUsername = this.userAccessor.GetUsername() })
+                .AsQueryable();
+
+                return Result<List<WithdrawDto>>.Success(await this.context.Withdraws.ToListAsync());
             }
         }
     }

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.Accounts
@@ -31,13 +33,18 @@ namespace Application.Accounts
         {
 
             private readonly DataContext context;
-            public Handler(DataContext context)
+            private readonly IUserAccessor userAccessor;
+            public Handler(DataContext context, IUserAccessor userAccessor)
             {
+                this.userAccessor = userAccessor;
                 this.context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await this.context.Users.FirstOrDefaultAsync(x => 
+                    x.UserName == this.userAccessor.GetUsername());
+                
                 this.context.Accounts.Add(request.Account);
 
                 var result = await this.context.SaveChangesAsync() > 0;

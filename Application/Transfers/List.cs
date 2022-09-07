@@ -8,24 +8,34 @@ using System.Threading;
 using Persistence;
 using Microsoft.EntityFrameworkCore;
 using Application.Core;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 
 namespace Application.Transfers
 {
     public class List
     {
-        public class Query : IRequest<Result<List<Transfer>>> { }
+        public class Query : IRequest<Result<List<TransferDto>>> { }
 
-        public class Handler : IRequestHandler<Query, Result<List<Transfer>>>
+        public class Handler : IRequestHandler<Query, Result<List<TransferDto>>>
         {
             private readonly DataContext context;
-            public Handler(DataContext context)
+            private readonly IMapper mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                this.mapper = mapper;
                 this.context = context;
             }
 
-            public async Task<Result<List<Transfer>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<List<TransferDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return Result<List<Transfer>>.Success(await this.context.Transfers.ToListAsync());
+                var query =  this.context.Transfers
+                .OrderBy(d => d.Date)
+                .ProjectTo<TransferDto>(this.mapper.ConfigurationProvider,
+                    new {currentUsername = this.userAccessor.GetUsername() })
+                .AsQueryable();
+
+                return Result<List<TransferDto>>.Success(await this.context.Transfers.ToListAsync());
             }
         }
     }
