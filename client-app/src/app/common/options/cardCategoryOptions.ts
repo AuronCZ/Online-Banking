@@ -1,6 +1,6 @@
 export const cardCategoryOptions = [
-    {text: 'Visa', value: 'savingsAccount'},
-    {text: 'Master Card', value: 'salaryAccount'},
-    {text: 'Discover', value: 'recurringDepositAccount'},
-    {text: 'American Express', value: 'fixedDepositAccount'},
+    {text: 'Visa', value: 'Visa'},
+    {text: 'Master Card', value: 'Master Card'},
+    {text: 'Discover', value: 'Discover'},
+    {text: 'American Express', value: 'American Express'},
 ]

@@ -36,7 +36,7 @@ export default observer (function TransferDetailedHeader({transfer}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${transfer.amount}.jpg`} fluid style={transferImageStyle}/>
+                <Image src={`/assets/typeImages/transferImages/${transfer.amount}.jpg`} fluid style={transferImageStyle}/>
                 <Segment style={transferImageTextStyle} basic>
                     <Item.Group>
                         <Item>

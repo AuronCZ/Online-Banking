@@ -4,9 +4,7 @@ import { useParams } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import WithdrawDetailedChat from "./WithdrawDetailedChat";
 import WithdrawDetailedInfo from "./WithdrawDetailedInfo";
-import WithdrawDetailedSidebar from "./WithdrawDetailedSidebar";
 import WithdrawDetailedHeader from "./WithdrawDetaledHeader";
 
 
@@ -24,13 +22,11 @@ export default observer (function WithdrawDetails(){
     
     return(
         <Grid>
-            <Grid.Column width={10}>
+            <Grid.Column width={9}>
                 <WithdrawDetailedHeader withdraw={withdraw} />
-                <WithdrawDetailedInfo withdraw={withdraw} />
-                <WithdrawDetailedChat />
             </Grid.Column>
-            <Grid.Column width={6}>
-                <WithdrawDetailedSidebar />
+            <Grid.Column width={7}>
+                <WithdrawDetailedInfo withdraw={withdraw} />
             </Grid.Column>
         </Grid>
     )

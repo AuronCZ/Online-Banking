@@ -4,9 +4,7 @@ import { useParams } from "react-router-dom";
 import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
-import TransferDetailedChat from "./TransferDetailedChat";
 import TransferDetailedInfo from "./TransferDetailedInfo";
-import TransferDetailedSidebar from "./TransferDetailedSidebar";
 import TransferDetailedHeader from "./TransferDetaledHeader";
 
 
@@ -25,13 +23,11 @@ export default observer (function TransferDetails(){
     
     return(
         <Grid>
-            <Grid.Column width={10}>
+            <Grid.Column width={9}>
                 <TransferDetailedHeader transfer={transfer} />
-                <TransferDetailedInfo transfer={transfer} />
-                <TransferDetailedChat />
             </Grid.Column>
-            <Grid.Column width={6}>
-                <TransferDetailedSidebar />
+            <Grid.Column width={7}>
+            <TransferDetailedInfo transfer={transfer} />
             </Grid.Column>
         </Grid>
     )
