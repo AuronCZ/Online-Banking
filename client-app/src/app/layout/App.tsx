@@ -23,11 +23,11 @@ import TestErrors from '../../features/errors/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/errors/NotFound';
 import ServerError from '../../features/errors/ServerError';
-import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
 import ModalContainer from '../common/modals/ModalContainer';
 import ProfilePage from '../../features/profiles/ProfilePage';
+import PrivateRoute from './PrivateRoute';
 
 
 
@@ -58,25 +58,24 @@ function App() {
             <NavBar />
             <Container style={{ marginTop: '7em' }}>
               <Switch>
-                <Route exact path='/accounts' component={AccountDashboard} />
-                <Route exact path='/balances' component={BalanceDashboard} />
-                <Route exact path='/cards' component={CardDashboard} />
-                <Route exact path='/transfers' component={TransferDashboard} />
-                <Route exact path='/withdraws' component={WithdrawDashboard} />
-                <Route path='/accounts/:id' component={AccountDetails} />
-                <Route path='/balances/:id' component={BalanceDetails} />
-                <Route path='/cards/:id' component={CardDetails} />
-                <Route path='/transfers/:id' component={TransferDetails} />
-                <Route path='/withdraws/:id' component={WithdrawDetails} />
-                <Route key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
-                <Route path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
-                <Route path={['/createCard', '/manageCard/:id']} component={CardForm} />
-                <Route path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
-                <Route path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
-                <Route path='/profiles/:username' component={ProfilePage} />
-                <Route path='/errors' component={TestErrors} />
+                <PrivateRoute exact path='/accounts' component={AccountDashboard} />
+                <PrivateRoute exact path='/balances' component={BalanceDashboard} />
+                <PrivateRoute exact path='/cards' component={CardDashboard} />
+                <PrivateRoute exact path='/transfers' component={TransferDashboard} />
+                <PrivateRoute exact path='/withdraws' component={WithdrawDashboard} />
+                <PrivateRoute path='/accounts/:id' component={AccountDetails} />
+                <PrivateRoute path='/balances/:id' component={BalanceDetails} />
+                <PrivateRoute path='/cards/:id' component={CardDetails} />
+                <PrivateRoute path='/transfers/:id' component={TransferDetails} />
+                <PrivateRoute path='/withdraws/:id' component={WithdrawDetails} />
+                <PrivateRoute key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
+                <PrivateRoute path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
+                <PrivateRoute path={['/createCard', '/manageCard/:id']} component={CardForm} />
+                <PrivateRoute path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
+                <PrivateRoute path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
+                <PrivateRoute path='/profiles/:username' component={ProfilePage} />
+                <PrivateRoute path='/errors' component={TestErrors} />
                 <Route path='/server-error' component={ServerError} />
-                <Route path='/login' component={LoginForm} />
                 <Route path='*' component={NotFound} />
               </Switch>
             </Container>
