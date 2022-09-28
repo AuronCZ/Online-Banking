@@ -7,19 +7,37 @@ import { useStore } from "../stores/store";
 
 export default observer(function NavBar() {
     const {userStore: {user, logout}} = useStore();
+    
     return(
         <Menu inverted fixed='top'>
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
-                    <img src="/assets/logo.png" alt="logo" style={{marginRight: '10px'}}/>
+                <img src="/assets/logo.png" alt="logo" style={{marginRight: '10px'}}/>
                     Banking System
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/accounts' name='Accounts' />
                 <Menu.Item as={NavLink} to='/balances' name='Balances' />
+                <Menu.Item as={NavLink}  to='/bankuser' name="User"/>
+                <Menu.Item as={NavLink}  to='/branches' name="Branch"/>
                 <Menu.Item as={NavLink} to='/cards' name='Cards' />
-                <Menu.Item as={NavLink} to='/transfers' name='Transfers' />
-                <Menu.Item as={NavLink} to='/withdraws' name='Withdraws' />
-                <Menu.Item as={NavLink} to='/errors' name='Errors' />
+      
+                <MenuItem >
+                    <Dropdown>
+                        <Dropdown.Menu text='Services'>
+                <Dropdown.Item as={NavLink}  to='/contact' name="Contact" /> 
+                <Dropdown.Item as={NavLink}  to='/customer' name="Customer"/>
+                <Dropdown.Item as={NavLink}  to='/deposit' name="Deposit" />
+                <Dropdown.Item as={NavLink}  to='/interest' name="Interest" />
+                <Dropdown.Item  as={NavLink}  to='/loan' name="Loan"/>
+                <Dropdown.Item as={NavLink}  to='/payment' name="Payment" />
+                <Dropdown.Item as={NavLink}  to='/salary' name="Salary" />
+                <Dropdown.Item as={NavLink}  to='/transaction' name="Transaction" />
+                <Dropdown.Item as={NavLink} to='/transfers' name='Transfers' />
+                <Dropdown.Item as={NavLink} to='/withdraws' name='Withdraws' />
+                <Dropdown.Item as={NavLink} to='/errors' name='Errors' />         
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </MenuItem>
                 <MenuItem position='right'>
                     <Image src={user?.image || '/assets/user.png'} avatar spaced='right' />
                     <Dropdown pointing='top left' text={user?.displayName}>

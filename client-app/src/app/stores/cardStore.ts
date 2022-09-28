@@ -46,7 +46,7 @@ export default class CardStore {
     loadCards = async () => {
         this.loadingInitial = true;
         try {
-            const result = await agent.Cardss.list(this.axiosParams);
+            const result = await agent.Card.list(this.axiosParams);
             result.data.forEach(card =>{
                 this.setCard(card);
               })
@@ -70,7 +70,7 @@ export default class CardStore {
         } else {
             this.loadingInitial = true;
             try {
-                card = await agent.Cardss.details(id);
+                card = await agent.Card.details(id);
                 this.setCard(card);
                 runInAction(() => {
                     this.selectedCard = card;
@@ -101,7 +101,7 @@ export default class CardStore {
     createCard = async (card: Cards) => {
         this.loading = true;
         try {
-            await agent.Cardss.create(card);
+            await agent.Card.create(card);
             runInAction(() => {
                 this.cardRegistry.set(card.id, card);
                 this.selectedCard = card;
@@ -119,7 +119,7 @@ export default class CardStore {
     updateCard = async (card: Cards) => {
         this.loading = true;
         try {
-            await agent.Cardss.update(card);
+            await agent.Card.update(card);
             runInAction(() => {
                 this.cardRegistry.set(card.id, card);
                 this.selectedCard = card;
@@ -137,7 +137,7 @@ export default class CardStore {
     deleteCard = async (id: string) => {
         this.loading = true;
         try {
-            await agent.Cardss.delete(id);
+            await agent.Card.delete(id);
             runInAction(() => {
                 this.cardRegistry.delete(id);
                 this.loading = false;
