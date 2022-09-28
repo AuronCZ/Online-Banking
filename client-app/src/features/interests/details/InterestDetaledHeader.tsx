@@ -36,7 +36,7 @@ export default observer (function InterestDetailedHeader({interest}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${interest.type}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -48,6 +48,7 @@ export default observer (function InterestDetailedHeader({interest}: Props) {
                                 />
                                 <p>{format(interest.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {interest.type}
                                    {interest.interestRate}
                                    {interest.monthsNumber}
                                 </p>

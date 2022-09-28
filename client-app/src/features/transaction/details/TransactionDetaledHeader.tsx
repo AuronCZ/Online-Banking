@@ -37,7 +37,7 @@ export default observer (function TransactionDetailedHeader({transaction}: Props
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${transaction.amount}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -49,6 +49,7 @@ export default observer (function TransactionDetailedHeader({transaction}: Props
                                 />
                                 <p>{format(transaction.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {transaction.amount}
                                    {transaction.type}
                                 </p>
                             </Item.Content>

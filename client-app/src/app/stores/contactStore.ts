@@ -1,29 +1,29 @@
-import { makeAutoObservable, runInAction} from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Contact } from "../models/contact";
 import { Pagination, PagingParams } from "../models/pagination";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 
 
 
 
-export default class ContactStore{
+export default class ContactStore {
     contactRegistry = new Map<string, Contact>();
     selectedContact: Contact | undefined = undefined;
-    editMode=false;
+    editMode = false;
     loading = false;
 
-    loadingInitial=false;
+    loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    constructor(){
+    constructor() {
         makeAutoObservable(this)
     }
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
     get axiosParams() {
-        const params= new URLSearchParams();
+        const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
 
@@ -40,7 +40,7 @@ export default class ContactStore{
                 const date = format(contact.date!, 'dd MMM yyyy');
                 contacts[date] = contacts[date] ? [...contacts[date], contact] : [contact];
                 return contacts;
-            }, {} as {[key: string]:Contact[]})
+            }, {} as { [key: string]: Contact[] })
         )
     }
 
@@ -62,18 +62,18 @@ export default class ContactStore{
         this.pagination = pagination;
     }
 
-    loadContact = async (id:string) =>{
-        let contact= this.getContact(id);
-        if(contact){
-            this.selectedContact= contact;
+    loadContact = async (id: string) => {
+        let contact = this.getContact(id);
+        if (contact) {
+            this.selectedContact = contact;
             return contact;
-        }else{
-            this.loadingInitial=true;
+        } else {
+            this.loadingInitial = true;
             try {
 
-               contact = await agent.Contacts.details(id);
+                contact = await agent.Contacts.details(id);
                 this.setContact(contact);
-                runInAction(() =>{
+                runInAction(() => {
                     this.selectedContact = contact;
 
                 })
@@ -86,71 +86,71 @@ export default class ContactStore{
         }
     }
 
-    private setContact =(contact :Contact) =>{
-
-        this.contactRegistry.set(contact.id,contact);
+    private setContact = (contact: Contact) => {
+        contact.date = new Date(contact.date!);
+        this.contactRegistry.set(contact.id, contact);
     }
 
-    private getContact = (id:string) =>{
+    private getContact = (id: string) => {
         return this.contactRegistry.get(id);
     }
 
-    setLoadingInitial =(state:boolean) =>{
+    setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-   createContact = async (contact :Contact) => {
+    createContact = async (contact: Contact) => {
 
-       this.loading=true;
-  
-    try {
-        await agent.Contacts.create(contact);
-        runInAction(() =>{
-            this.contactRegistry.set(contact.id,contact);
-            this.selectedContact = contact;
-            this.editMode=false;
-            this.loading=false;
-        })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         
-            this.loading=false;
-        })
+        this.loading = true;
+
+        try {
+            await agent.Contacts.create(contact);
+            runInAction(() => {
+                this.contactRegistry.set(contact.id, contact);
+                this.selectedContact = contact;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+
+                this.loading = false;
+            })
         }
-   }
-
-   updateContact = async (contact :Contact) =>{
-
-       this.loading=true;
-       try {
-        await agent.Contacts.update(contact);
-        runInAction(() =>{
-            this.contactRegistry.set(contact.id,contact);
-            this.selectedContact = contact;
-            this.editMode=false;
-            this.loading=false;
-        })
-       } catch (error) {
-           console.log(error);
-           runInAction(() =>{
-            this.loading=false;
-        })
-       }
-   }
-   deleteContact = async (id : string) =>{
-    this.loading=true;
-    try {
-     await agent.Contacts.delete(id);
-     runInAction(() =>{
-         this.contactRegistry.delete(id);
-         this.loading=false;
-     })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         this.loading=false;
-     })
     }
-}
+
+    updateContact = async (contact: Contact) => {
+
+        this.loading = true;
+        try {
+            await agent.Contacts.update(contact);
+            runInAction(() => {
+                this.contactRegistry.set(contact.id, contact);
+                this.selectedContact = contact;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+    deleteContact = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Contacts.delete(id);
+            runInAction(() => {
+                this.contactRegistry.delete(id);
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
 }

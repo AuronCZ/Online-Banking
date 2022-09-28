@@ -1,26 +1,26 @@
-import { makeAutoObservable, runInAction, transaction} from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Pagination, PagingParams } from "../models/pagination";
 import { Transaction } from "../models/transaction";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 
-export default class TransactionStore{
+export default class TransactionStore {
     transactionRegistry = new Map<string, Transaction>();
     selectedTransaction: Transaction | undefined = undefined;
-    editMode=false;
+    editMode = false;
     loading = false;
 
-    loadingInitial=false;
+    loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    constructor(){
+    constructor() {
         makeAutoObservable(this)
     }
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
     get axiosParams() {
-        const params= new URLSearchParams();
+        const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
 
@@ -33,11 +33,11 @@ export default class TransactionStore{
 
     get groupedTransaction() {
         return Object.entries(
-            this.transactionByDate.reduce((transactions,transaction) => {
+            this.transactionByDate.reduce((transactions, transaction) => {
                 const date = format(transaction.date!, 'dd MMM yyyy');
-                transactions[date] =transactions[date] ? [...transactions[date], transaction] : [transaction];
+                transactions[date] = transactions[date] ? [...transactions[date], transaction] : [transaction];
                 return transactions;
-            }, {} as {[key: string]: Transaction[]})
+            }, {} as { [key: string]: Transaction[] })
         )
     }
 
@@ -58,19 +58,19 @@ export default class TransactionStore{
     setPagination = (pagination: Pagination) => {
         this.pagination = pagination;
     }
-    loadTransaction = async (id:string) =>{
-        let transaction= this.getTransaction(id);
-        if(transaction){
-            this.selectedTransaction= transaction;
+    loadTransaction = async (id: string) => {
+        let transaction = this.getTransaction(id);
+        if (transaction) {
+            this.selectedTransaction = transaction;
 
             return transaction;
-        }else{
-            this.loadingInitial=true;
+        } else {
+            this.loadingInitial = true;
             try {
 
-               transaction = await agent.Transactions.details(id);
+                transaction = await agent.Transactions.details(id);
                 this.setTransaction(transaction);
-                runInAction(() =>{
+                runInAction(() => {
                     this.selectedTransaction = transaction;
 
                 })
@@ -83,71 +83,71 @@ export default class TransactionStore{
         }
     }
 
-    private setTransaction =(transaction : Transaction) =>{
-
-        this.transactionRegistry.set(transaction.id,transaction);
+    private setTransaction = (transaction: Transaction) => {
+        transaction.date = new Date(transaction.date!);
+        this.transactionRegistry.set(transaction.id, transaction);
     }
 
-    private getTransaction = (id:string) =>{
+    private getTransaction = (id: string) => {
         return this.transactionRegistry.get(id);
     }
 
-    setLoadingInitial =(state:boolean) =>{
+    setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-   createTransaction= async (transaction : Transaction) => {
+    createTransaction = async (transaction: Transaction) => {
 
-       this.loading=true;
-  
-    try {
-        await agent.Transactions.create(transaction);
-        runInAction(() =>{
-            this.transactionRegistry.set(transaction.id,transaction);
-            this.selectedTransaction = transaction;
-            this.editMode=false;
-            this.loading=false;
-        })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         
-            this.loading=false;
-        })
+        this.loading = true;
+
+        try {
+            await agent.Transactions.create(transaction);
+            runInAction(() => {
+                this.transactionRegistry.set(transaction.id, transaction);
+                this.selectedTransaction = transaction;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+
+                this.loading = false;
+            })
         }
-   }
-   updateTransaction = async (transaction : Transaction) =>{
-       this.loading=true;
-       try {
-        await agent.Transactions.update(transaction);
-        runInAction(() =>{
-            this.transactionRegistry.set(transaction.id,transaction);
-            this.selectedTransaction = transaction;
-            this.editMode=false;
-            this.loading=false;
-        })
-       } catch (error) {
-           console.log(error);
-           runInAction(() =>{
-            this.loading=false;
-        })
-       }
-   }
-
-   deleteTransaction = async (id : string) =>{
-
-    this.loading=true;
-    try {
-     await agent.Transactions.delete(id);
-     runInAction(() =>{
-         this.transactionRegistry.delete(id);
-         this.loading=false;
-     })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         this.loading=false;
-     })
     }
-}
+    updateTransaction = async (transaction: Transaction) => {
+        this.loading = true;
+        try {
+            await agent.Transactions.update(transaction);
+            runInAction(() => {
+                this.transactionRegistry.set(transaction.id, transaction);
+                this.selectedTransaction = transaction;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+
+    deleteTransaction = async (id: string) => {
+
+        this.loading = true;
+        try {
+            await agent.Transactions.delete(id);
+            runInAction(() => {
+                this.transactionRegistry.delete(id);
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
 }

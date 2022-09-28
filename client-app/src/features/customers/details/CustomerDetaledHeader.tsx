@@ -36,19 +36,20 @@ export default observer (function CustomeretailedHeader({customer}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${customer.name}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={customer.surname}
+                                    content={customer.name}
                                     
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(customer.birthDate!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {customer.surname} 
                                    {customer.address}
                                    {customer.email}
                                    {customer.tel}

@@ -37,18 +37,19 @@ export default observer (function SalaryDetailedHeader({salary}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${salary.accountNumber}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={salary.anualSalary}
+                                    content={salary.accountNumber}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(salary.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {salary.anualSalary}
                                    {salary.monthlyPayment}
                                 </p>
                             </Item.Content>

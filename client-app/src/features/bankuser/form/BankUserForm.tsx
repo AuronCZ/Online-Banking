@@ -76,6 +76,7 @@ export default observer(function AccountForm() {
                         <MyTextArea rows={2} name='name' placeholder='Name' />
                         <MyTextArea rows={2} placeholder='Surname' name='surname'  />
                         <MyTextInput placeholder='Username' name='username'  />
+                        <MyTextInput type='email' placeholder='Email' name='email'  />
                         <MyTextInput placeholder='Password' name='password'  />
                         <MyDateInput
                             placeholderText='Date' 

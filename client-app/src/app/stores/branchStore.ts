@@ -83,6 +83,7 @@ export default class BranchStore{
         }
     }
     private setBranch =(branch :Branch) =>{
+        branch.date = new Date(branch.date!);
         this.branchRegistry.set(branch.id,branch);
     }
 

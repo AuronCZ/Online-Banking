@@ -1,25 +1,25 @@
-import { makeAutoObservable, runInAction} from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Customer } from "../models/customer";
 import { Pagination, PagingParams } from "../models/pagination";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 
-export default class CustomerStore{
+export default class CustomerStore {
     customerRegistry = new Map<string, Customer>();
-    selectedCustomer: Customer| undefined = undefined;
-    editMode=false;
+    selectedCustomer: Customer | undefined = undefined;
+    editMode = false;
     loading = false;
-    loadingInitial=false;
+    loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    constructor(){
+    constructor() {
         makeAutoObservable(this)
     }
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
     get axiosParams() {
-        const params= new URLSearchParams();
+        const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
 
@@ -35,7 +35,7 @@ export default class CustomerStore{
                 const date = format(customer.birthDate!, 'dd MMM yyyy');
                 customers[date] = customers[date] ? [...customers[date], customer] : [customer];
                 return customers;
-            }, {} as {[key: string]: Customer[]})
+            }, {} as { [key: string]: Customer[] })
         )
     }
 
@@ -56,19 +56,19 @@ export default class CustomerStore{
     setPagination = (pagination: Pagination) => {
         this.pagination = pagination;
     }
-    loadCustomer = async (id:string) =>{
-        let customer= this.getCustomer(id);
-        if(customer){
-            this.selectedCustomer= customer;
+    loadCustomer = async (id: string) => {
+        let customer = this.getCustomer(id);
+        if (customer) {
+            this.selectedCustomer = customer;
 
             return customer;
-        }else{
-            this.loadingInitial=true;
+        } else {
+            this.loadingInitial = true;
             try {
 
-               customer = await agent.Customers.details(id);
+                customer = await agent.Customers.details(id);
                 this.setCustomer(customer);
-                runInAction(() =>{
+                runInAction(() => {
                     this.selectedCustomer = customer;
 
                 })
@@ -81,72 +81,72 @@ export default class CustomerStore{
         }
     }
 
-    private setCustomer =(customer : Customer) =>{
-
-        this.customerRegistry.set(customer.id,customer);
+    private setCustomer = (customer: Customer) => {
+        customer.birthDate = new Date(customer.birthDate!);
+        this.customerRegistry.set(customer.id, customer);
     }
 
-    private getCustomer = (id:string) =>{
+    private getCustomer = (id: string) => {
         return this.customerRegistry.get(id);
     }
 
-    setLoadingInitial =(state:boolean) =>{
+    setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
 
-   createCustomer = async (customer :Customer) => {
+    createCustomer = async (customer: Customer) => {
 
-       this.loading=true;
-  
-    try {
-        await agent.Customers.create(customer);
-        runInAction(() =>{
-            this.customerRegistry.set(customer.id,customer);
-            this.selectedCustomer = customer;
-            this.editMode=false;
-            this.loading=false;
-        })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         
-            this.loading=false;
-        })
+        this.loading = true;
+
+        try {
+            await agent.Customers.create(customer);
+            runInAction(() => {
+                this.customerRegistry.set(customer.id, customer);
+                this.selectedCustomer = customer;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+
+                this.loading = false;
+            })
         }
-   }
-
-   updateCustomer = async (customer :Customer) =>{
-
-       this.loading=true;
-       try {
-        await agent.Customers.update(customer);
-        runInAction(() =>{
-            this.customerRegistry.set(customer.id,customer);
-            this.selectedCustomer = customer;
-            this.editMode=false;
-            this.loading=false;
-        })
-       } catch (error) {
-           console.log(error);
-           runInAction(() =>{
-            this.loading=false;
-        })
-       }
-   }
-   deleteCustomer = async (id : string) =>{
-    this.loading=true;
-    try {
-     await agent.Customers.delete(id);
-     runInAction(() =>{
-         this.customerRegistry.delete(id);
-         this.loading=false;
-     })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         this.loading=false;
-     })
     }
-}
+
+    updateCustomer = async (customer: Customer) => {
+
+        this.loading = true;
+        try {
+            await agent.Customers.update(customer);
+            runInAction(() => {
+                this.customerRegistry.set(customer.id, customer);
+                this.selectedCustomer = customer;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+    deleteCustomer = async (id: string) => {
+        this.loading = true;
+        try {
+            await agent.Customers.delete(id);
+            runInAction(() => {
+                this.customerRegistry.delete(id);
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
 }

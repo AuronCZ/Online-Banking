@@ -37,18 +37,19 @@ export default observer (function DepositDetailedHeader({deposit}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${deposit.account}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={deposit.amount}
+                                    content={deposit.account}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(deposit.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {deposit.amount} 
                                    {deposit.payee}
                                 </p>
                             </Item.Content>

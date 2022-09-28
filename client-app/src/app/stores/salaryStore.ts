@@ -2,25 +2,25 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Pagination, PagingParams } from "../models/pagination";
 import { Salary } from "../models/salary";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 
-export default class SalaryStore{
-   salaryRegistry = new Map<string, Salary>();
+export default class SalaryStore {
+    salaryRegistry = new Map<string, Salary>();
     selectedSalary: Salary | undefined = undefined;
-    editMode=false;
+    editMode = false;
     loading = false;
 
-    loadingInitial=false;
+    loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    constructor(){
+    constructor() {
         makeAutoObservable(this)
     }
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
     get axiosParams() {
-        const params= new URLSearchParams();
+        const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
 
@@ -37,7 +37,7 @@ export default class SalaryStore{
                 const date = format(salary.date!, 'dd MMM yyyy');
                 salarys[date] = salarys[date] ? [...salarys[date], salary] : [salary];
                 return salarys;
-            }, {} as {[key: string]: Salary[]})
+            }, {} as { [key: string]: Salary[] })
         )
     }
 
@@ -58,19 +58,19 @@ export default class SalaryStore{
     setPagination = (pagination: Pagination) => {
         this.pagination = pagination;
     }
-    loadSalary = async (id:string) =>{
+    loadSalary = async (id: string) => {
         let salary = this.getSalary(id);
-        if(salary){
+        if (salary) {
             this.selectedSalary = salary;
 
             return salary;
-        }else{
-            this.loadingInitial=true;
+        } else {
+            this.loadingInitial = true;
             try {
 
-               salary = await agent.Salarys.details(id);
+                salary = await agent.Salarys.details(id);
                 this.setSalary(salary);
-                runInAction(() =>{
+                runInAction(() => {
                     this.selectedSalary = salary;
 
                 })
@@ -83,71 +83,71 @@ export default class SalaryStore{
         }
     }
 
-    private setSalary =(salary : Salary) =>{
-
-        this.salaryRegistry.set(salary.id,salary);
+    private setSalary = (salary: Salary) => {
+        salary.date = new Date(salary.date!);
+        this.salaryRegistry.set(salary.id, salary);
     }
 
-    private getSalary = (id:string) =>{
+    private getSalary = (id: string) => {
         return this.salaryRegistry.get(id);
     }
 
-    setLoadingInitial =(state:boolean) =>{
+    setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
-   createSalary = async (salary : Salary) => {
+    createSalary = async (salary: Salary) => {
 
-       this.loading=true;
-  
-    try {
-        await agent.Salarys.create(salary);
-        runInAction(() =>{
-            this.salaryRegistry.set(salary.id,salary);
-            this.selectedSalary = salary;
-            this.editMode=false;
-            this.loading=false;
-        })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         
-            this.loading=false;
-        })
+        this.loading = true;
+
+        try {
+            await agent.Salarys.create(salary);
+            runInAction(() => {
+                this.salaryRegistry.set(salary.id, salary);
+                this.selectedSalary = salary;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+
+                this.loading = false;
+            })
         }
-   }
-   updateSalary = async (salary : Salary) =>{
-       this.loading=true;
-       try {
-        await agent.Salarys.update(salary);
-        runInAction(() =>{
-            this.salaryRegistry.set(salary.id,salary);
-            this.selectedSalary = salary;
-            this.editMode=false;
-            this.loading=false;
-        })
-       } catch (error) {
-           console.log(error);
-           runInAction(() =>{
-            this.loading=false;
-        })
-       }
-   }
-
-   deleteSalary = async (id : string) =>{
-
-    this.loading=true;
-    try {
-     await agent.Salarys.delete(id);
-     runInAction(() =>{
-         this.salaryRegistry.delete(id);
-         this.loading=false;
-     })
-    } catch (error) {
-        console.log(error);
-        runInAction(() =>{
-         this.loading=false;
-     })
     }
-}
+    updateSalary = async (salary: Salary) => {
+        this.loading = true;
+        try {
+            await agent.Salarys.update(salary);
+            runInAction(() => {
+                this.salaryRegistry.set(salary.id, salary);
+                this.selectedSalary = salary;
+                this.editMode = false;
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
+
+    deleteSalary = async (id: string) => {
+
+        this.loading = true;
+        try {
+            await agent.Salarys.delete(id);
+            runInAction(() => {
+                this.salaryRegistry.delete(id);
+                this.loading = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() => {
+                this.loading = false;
+            })
+        }
+    }
 }

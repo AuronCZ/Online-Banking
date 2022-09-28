@@ -37,19 +37,20 @@ export default observer (function ContactDetailedHeader({contact}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${contact.name}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={contact.surname}
+                                    content={contact.name}
                                    
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(contact.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {contact.surname}
                                    {contact.email}
                                    {contact.phoneNumber}
                                    {contact.message}

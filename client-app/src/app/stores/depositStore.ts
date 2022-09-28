@@ -83,7 +83,7 @@ export default class DepositStore{
     }
 
     private setDeposit =(deposit : Deposit) =>{
-
+        deposit.date = new Date(deposit.date!);
         this.depositRegistry.set(deposit.id,deposit);
     }
 

@@ -37,18 +37,19 @@ export default observer (function PaymentDetailedHeader({payment}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${payment.account}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={payment.amount}
+                                    content={payment.account}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(payment.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                                   {payment.amount}
                                    {payment.payee}
                                 </p>
                             </Item.Content>

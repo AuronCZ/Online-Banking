@@ -37,18 +37,19 @@ export default observer (function LoanDetailedHeader({loan}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${loan.name}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={loan.surname}
+                                    content={loan.name}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(loan.loanDate!, 'dd MMM yyyy')}</p>
                                 <p>
+                                    {loan.surname}
                                     {loan.accNumber}
                                     {loan.type}
                                     {loan.amount}

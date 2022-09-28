@@ -37,7 +37,7 @@ export default observer (function BankUserDetailedHeader({bankuser}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src={`/assets/typeImages/accountImages/${bankuser.username}.jpg`} fluid style={accountImageStyle}/>
+                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -50,6 +50,7 @@ export default observer (function BankUserDetailedHeader({bankuser}: Props) {
                                 <p>{format(bankuser.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                 {bankuser.surname}
+                                {bankuser.username}
                                 {bankuser.email}
                                 </p>
                             </Item.Content>
