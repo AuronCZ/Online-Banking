@@ -62,7 +62,7 @@ export default observer (function BalanceDetailedHeader({balance}: Props) {
                     onClick={(e) => handleBalanceDelete(e,balance.id)} 
                     as={Link} to='/balances'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageBalance/${balance.id}`} color='blue' floated='left'>
-                    Manage balance
+                    Manage Balance
                 </Button>
             </Segment>
         </Segment.Group>

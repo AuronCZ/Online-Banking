@@ -37,20 +37,21 @@ export default observer (function BankUserDetailedHeader({bankuser}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src='/assets/User.jpg' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={bankuser.name}
+                                    content={bankuser.username}
+                                  
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(bankuser.date!, 'dd MMM yyyy')}</p>
                                 <p>
+                              {bankuser.name}
                                 {bankuser.surname}
-                                {bankuser.username}
                                 {bankuser.email}
                                 </p>
                             </Item.Content>
@@ -65,7 +66,7 @@ export default observer (function BankUserDetailedHeader({bankuser}: Props) {
                     onClick={(e) => handleBankUserDelete(e,bankuser.id)} 
                     as={Link} to='/bankuser'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageBankUser/${bankuser.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage User
                 </Button>
             </Segment>
         </Segment.Group>

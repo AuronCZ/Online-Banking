@@ -32,7 +32,6 @@ export default observer(function PaymentForm() {
             amount:Yup.string().required('Amount is required'),
             date:Yup.string().required('Date is required'),
             payee:Yup.string().required('Payee is required'),
-       
         })
 
         useEffect(() =>{
@@ -56,7 +55,7 @@ export default observer(function PaymentForm() {
         }
 
 
-    if (loadingInitial) return <LoadingComponent content='Loading account...' />
+    if (loadingInitial) return <LoadingComponent content='Loading payment...' />
 
     return (
         <Segment clearing>
@@ -68,8 +67,8 @@ export default observer(function PaymentForm() {
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                            <MyTextInput  placeholder="Account"  name="account" />
-                <MyTextInput  placeholder="Amount"  name="amount" />
+                        <MyTextInput  placeholder="Account"  name="account" />
+                        <MyTextInput  placeholder="Amount"  name="amount" />
                         <MyDateInput
                             placeholderText='Date' 
                             name='date'

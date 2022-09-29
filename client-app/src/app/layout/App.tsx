@@ -34,7 +34,6 @@ import ContactDashboard from '../../features/contacts/dashboard/ContactDashboard
 import CustomerDashboard from '../../features/customers/dashboard/CustomerDashboard';
 import DepositDashboard from '../../features/deposits/dashboard/DepositDashboard';
 import InterestDashboard from '../../features/interests/dashboard/InterestDashboard';
-import LoanDashboard from '../../features/loans/dashboard/LoanDashboard';
 import PaymentDashboard from '../../features/payments/dashboard/PaymentDashboard';
 import SalaryDashboard from '../../features/salarys/dashboard/SalaryDashboard';
 import TransactionDashboard from '../../features/transaction/dashboard/TransactionDashboard';
@@ -45,7 +44,6 @@ import CustomerDetails from '../../features/customers/details/CustomerDetails';
 import DepositDetails from '../../features/deposits/details/DepositDetails';
 import TransactionDetails from '../../features/transaction/details/TransactionDetails';
 import InterestDetails from '../../features/interests/details/InterestDetails';
-import LoanDetails from '../../features/loans/details/LoanDetails';
 import PaymentDetails from '../../features/payments/details/PaymentDetails';
 import SalaryDetails from '../../features/salarys/details/SalaryDetails';
 import BankUserForm from '../../features/bankuser/form/BankUserForm';
@@ -57,7 +55,11 @@ import InterestForm from '../../features/interests/form/InterestForm';
 import TransactionForm from '../../features/transaction/form/TransactionForm';
 import PaymentForm from '../../features/payments/form/PaymentForm';
 import SalaryForm from '../../features/salarys/form/SalaryForm';
-import LoanForm from '../../features/loans/form/LoanForm';
+import LoanDashboard from '../../features/loan/dashboard/LoanDashboard';
+import LoanDetails from '../../features/loan/details/LoanDetails';
+import LoanForm from '../../features/loan/form/LoanForm';
+import Dashboard from '../../features/dashboard/Dashboard';
+
 
 
 
@@ -83,66 +85,68 @@ function App() {
       <Route exact path='/' component={HomePage} />
       <Route
         path={'/(.+)'}
-        render={() => (
-          <>
-            <NavBar />
-            <Container style={{ marginTop: '7em' }}>
-              <Switch>
-                <PrivateRoute exact path='/accounts' component={AccountDashboard} />
-                <PrivateRoute exact path='/balances' component={BalanceDashboard} />
-                <PrivateRoute exact path='/bankuser' component={BankUserDashboard} />
-                <PrivateRoute exact path='/branches' component={BranchDashboard} />
-                <PrivateRoute exact path='/cards' component={CardDashboard} />
-                <PrivateRoute exact path='/contact' component={ContactDashboard} /> 
-                <PrivateRoute exact path='/customer' component={CustomerDashboard}/>
-                <PrivateRoute exact path='/deposit' component={DepositDashboard} />
-                <PrivateRoute exact path='/interest' component={InterestDashboard} />
-                <PrivateRoute exact path='/loan'component={LoanDashboard} />
-                <PrivateRoute exact path='/payment' component={PaymentDashboard} />
-                <PrivateRoute exact path='/salary' component={SalaryDashboard} />
-                <PrivateRoute exact path='/transaction' component={TransactionDashboard} />`
-                <PrivateRoute exact path='/transfers' component={TransferDashboard} />
-                <PrivateRoute exact path='/withdraws' component={WithdrawDashboard} />
+        render={() => {
+          return (
+            <>
+              <NavBar />
+              <Container style={{ marginTop: '7em' }}>
+                <Switch>
+                  <PrivateRoute exact path='/accounts' component={AccountDashboard} />
+                  <PrivateRoute exact path='/balances' component={BalanceDashboard} />
+                  <PrivateRoute exact path='/bankuser' component={BankUserDashboard} />
+                  <PrivateRoute exact path='/branches' component={BranchDashboard} />
+                  <PrivateRoute exact path='/cards' component={CardDashboard} />
+                  <PrivateRoute exact path='/contact' component={ContactDashboard} />
+                  <PrivateRoute exact path='/customer' component={CustomerDashboard} />
+                  <PrivateRoute exact path='/deposit' component={DepositDashboard} />
+                  <PrivateRoute exact path='/interest' component={InterestDashboard} />
+                  <PrivateRoute exact path='/loan' component={LoanDashboard} />
+                  <PrivateRoute exact path='/payment' component={PaymentDashboard} />
+                  <PrivateRoute exact path='/salary' component={SalaryDashboard} />
+                  <PrivateRoute exact path='/transaction' component={TransactionDashboard} />`
+                  <PrivateRoute exact path='/transfers' component={TransferDashboard} />
+                  <PrivateRoute exact path='/withdraws' component={WithdrawDashboard} />
+                  <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                  <PrivateRoute path='/accounts/:id' component={AccountDetails} />
+                  <PrivateRoute path='/balances/:id' component={BalanceDetails} />
+                  <PrivateRoute path='/bankuser/:id' component={BankUserDetails} />
+                  <PrivateRoute path='/branches/:id' component={BranchDetails} />
+                  <PrivateRoute path='/cards/:id' component={CardDetails} />
+                  <PrivateRoute path='/contact/:id' component={ContactDetails} />
+                  <PrivateRoute path='/customer/:id' component={CustomerDetails} />
+                  <PrivateRoute path='/deposit/:id' component={DepositDetails} />
+                  <PrivateRoute path='/interest/:id' component={InterestDetails} />
+                  <PrivateRoute path='/loan/:id' component={LoanDetails} />
+                  <PrivateRoute path='/payment/:id' component={PaymentDetails} />
+                  <PrivateRoute path='/salary/:id' component={SalaryDetails} />
+                  <PrivateRoute path='/transaction/:id' component={TransactionDetails} />
+                  <PrivateRoute path='/transfers/:id' component={TransferDetails} />
+                  <PrivateRoute path='/withdraws/:id' component={WithdrawDetails} />
 
-                <PrivateRoute path='/accounts/:id' component={AccountDetails} />
-                <PrivateRoute path='/balances/:id' component={BalanceDetails} />   
-                <PrivateRoute path='/bankuser/:id' component={BankUserDetails} />
-                <PrivateRoute  path='/branches/:id' component={BranchDetails} />
-                <PrivateRoute path='/cards/:id' component={CardDetails} />
-                <PrivateRoute path='/contact/:id' component={ContactDetails} />
-                <PrivateRoute path='/customer/:id' component={CustomerDetails} />
-                <PrivateRoute path='/deposit/:id' component={DepositDetails} />
-                <PrivateRoute path='/interest/:id' component={InterestDetails} />
-                <PrivateRoute path='/loan/:id' component={LoanDetails} />
-                <PrivateRoute path='/payment/:id' component={PaymentDetails} />
-                <PrivateRoute path='/salary/:id' component={SalaryDetails} />
-                <PrivateRoute path='/transaction/:id' component={TransactionDetails} />
-                <PrivateRoute path='/transfers/:id' component={TransferDetails} />
-                <PrivateRoute path='/withdraws/:id' component={WithdrawDetails} />
-
-                <PrivateRoute key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
-                <PrivateRoute path={['/createBankUser','/manageBankUser/:id']} component={BankUserForm} />
-                <PrivateRoute path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
-                <PrivateRoute path={['/createBranch','/manageBranch/:id']} component={BranchForm} />     
-                <PrivateRoute path={['/createCard', '/manageCard/:id']} component={CardForm} />
-                <PrivateRoute path={[ '/createContact','/manageContact/:id']} component={ContactForm} />
-                <PrivateRoute path={[ '/createCustomer','/manageCustomer/:id']} component={CustomerForm} />
-                <PrivateRoute path={['/createDeposit','/manageDeposit/:id']} component={DepositForm} />
-                <PrivateRoute path={['/createInterest','/manageInterest/:id']} component={InterestForm} />
-                <PrivateRoute path={[ '/createLoan', '/manageLoan/:id']} component={LoanForm} />
-                <PrivateRoute path={['/createPayment','/managePayment/:id']} component={PaymentForm} />
-                <PrivateRoute path={['/createSalary','/manageSalary/:id']} component={SalaryForm} />
-                <PrivateRoute path={['/createTransaction','/manageTransaction/:id']} component={TransactionForm} />
-                <PrivateRoute path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
-                <PrivateRoute path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
-                <PrivateRoute path='/profiles/:username' component={ProfilePage} />
-                <PrivateRoute path='/errors' component={TestErrors} />
-                <Route path='/server-error' component={ServerError} />
-                <Route path='*' component={NotFound} />
-              </Switch>
-            </Container>
-          </>
-        )}
+                  <PrivateRoute key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
+                  <PrivateRoute path={['/createBankUser', '/manageBankUser/:id']} component={BankUserForm} />
+                  <PrivateRoute path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
+                  <PrivateRoute path={['/createBranch', '/manageBranch/:id']} component={BranchForm} />
+                  <PrivateRoute path={['/createCard', '/manageCard/:id']} component={CardForm} />
+                  <PrivateRoute path={['/createContact', '/manageContact/:id']} component={ContactForm} />
+                  <PrivateRoute path={['/createCustomer', '/manageCustomer/:id']} component={CustomerForm} />
+                  <PrivateRoute path={['/createDeposit', '/manageDeposit/:id']} component={DepositForm} />
+                  <PrivateRoute path={['/createInterest', '/manageInterest/:id']} component={InterestForm} />
+                  <PrivateRoute path={['/createLoan', '/manageLoan/:id']} component={LoanForm} />
+                  <PrivateRoute path={['/createPayment', '/managePayment/:id']} component={PaymentForm} />
+                  <PrivateRoute path={['/createSalary', '/manageSalary/:id']} component={SalaryForm} />
+                  <PrivateRoute path={['/createTransaction', '/manageTransaction/:id']} component={TransactionForm} />
+                  <PrivateRoute path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
+                  <PrivateRoute path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
+                  <PrivateRoute path='/profiles/:username' component={ProfilePage} />
+                  <PrivateRoute path='/errors' component={TestErrors} />
+                  <Route path='/server-error' component={ServerError} />
+                  <Route path='*' component={NotFound} />
+                </Switch>
+              </Container>
+            </>
+          );
+        }}
       />
     </>
   );

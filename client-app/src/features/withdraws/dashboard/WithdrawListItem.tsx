@@ -21,7 +21,7 @@ export default function WithdrawListItem({withdraw}: Props) {
                             <Item.Header as={Link} to={`/withdraws/${withdraw.id}`}>
                                 {withdraw.accountNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Withdraw</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

@@ -20,7 +20,7 @@ export default function DepositListItem({deposit}: Props){
                             <Item.Header as={Link} to={`/deposit/${deposit.id}`}>
                                 {deposit.account}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Deposit</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

@@ -66,7 +66,7 @@ export default observer(function TransactionForm() {
 
     return (
         <Segment clearing>
-            <Header content='Account Details' sub color='teal' />
+            <Header content='Transaction Details' sub color='teal' />
             <Formik 
                 validationSchema={validationSchema}
                 enableReinitialize 
@@ -88,7 +88,7 @@ export default observer(function TransactionForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/transaction' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

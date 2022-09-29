@@ -13,26 +13,26 @@ export default observer(function NavBar() {
             <Container>
                 <Menu.Item as={NavLink} to='/' exact header>
                     <img src="/assets/logo.png" alt="logo" style={{ marginRight: '10px' }} />
-                    Banking System
+                    Online Banking
                 </Menu.Item>
                 <Menu.Item as={NavLink} to='/accounts' name='Accounts' />
-                <Menu.Item as={NavLink} to='/balances' name='Balances' />
-                <Menu.Item as={NavLink} to='/bankuser' name="User" />
-                <Menu.Item as={NavLink} to='/branches' name="Branch" />
-                <Menu.Item as={NavLink} to='/cards' name='Cards' />
-
+                <Menu.Item as={NavLink} to='/contact' name="Contact" />
+                <Menu.Item as={NavLink} to='/deposit' name="Deposits" />
+                <Menu.Item as={NavLink} to='/payment' name="Payments" />
+                <Menu.Item as={NavLink} to='/transfers' name='Transfers' />
+                <Menu.Item as={NavLink} to='/dashboard' name="Dashboard" />
                 <MenuItem >
-                    <Dropdown>
-                        <Dropdown.Menu name='Services'>
-                            <Dropdown.Item as={NavLink} to='/contact' text="Contact" />
-                            <Dropdown.Item as={NavLink} to='/customer' text="Customer" />
-                            <Dropdown.Item as={NavLink} to='/deposit' text="Deposit" />
-                            <Dropdown.Item as={NavLink} to='/interest' text="Interest" />
-                            <Dropdown.Item as={NavLink} to='/loan' text="Loan" />
-                            <Dropdown.Item as={NavLink} to='/payment' text="Payment" />
-                            <Dropdown.Item as={NavLink} to='/salary' text="Salary" />
-                            <Dropdown.Item as={NavLink} to='/transaction' text="Transaction" />
-                            <Dropdown.Item as={NavLink} to='/transfers' text='Transfers' />
+                    <Dropdown text="Services">
+                        <Dropdown.Menu >
+                            <Dropdown.Item as={NavLink} to='/balances' text='Balances' />
+                            <Dropdown.Item as={NavLink} to='/branches' text="Branches" />
+                            <Dropdown.Item as={NavLink} to='/cards' text='Cards' />
+                            <Dropdown.Item as={NavLink} to='/customer' text="Customers" />
+                            <Dropdown.Item as={NavLink} to='/interest' text="Interests" />
+                            <Dropdown.Item as={NavLink} to='/loan' text="Loans" />
+                            <Dropdown.Item as={NavLink} to='/salary' text="Salarys" />
+                            <Dropdown.Item as={NavLink} to='/transaction' text="Transactions" />
+                            <Dropdown.Item as={NavLink} to='/bankuser' text="Users" />
                             <Dropdown.Item as={NavLink} to='/withdraws' text='Withdraws' />
                             <Dropdown.Item as={NavLink} to='/errors' text='Errors' />
                         </Dropdown.Menu>

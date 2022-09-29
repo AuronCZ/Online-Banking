@@ -37,7 +37,7 @@ export default observer (function BranchDetailedHeader({branch}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src='/assets/Bank.jpg' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -48,12 +48,10 @@ export default observer (function BranchDetailedHeader({branch}: Props) {
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(branch.date!, 'dd MMM yyyy')}</p>
-                                <p>
-                                   {branch.branchNumber}
-                                   {branch.country}
-                                   {branch.city}
-                                   {branch.address}
-                                </p>
+                                <p> {branch.branchNumber}</p>
+                                <p>{branch.country}</p>
+                                <p>{branch.city}</p>
+                                <p>  {branch.address}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -66,7 +64,7 @@ export default observer (function BranchDetailedHeader({branch}: Props) {
                     onClick={(e) => handleBranchDelete(e,branch.id)} 
                     as={Link} to='/branches'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageBranch/${branch.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Branch
                 </Button>
             </Segment>
         </Segment.Group>

@@ -33,12 +33,12 @@ export default observer(function InterestForm() {
     });
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('The account name is required'),
-        surname: Yup.string().required('The account surname is required'),
-        accountNumber: Yup.string().required(),
-        accountType: Yup.string().required(),
-        openDate: Yup.string().required('Date is required').nullable(),
-        balance: Yup.string().required(),
+        type: Yup.string().required('Type is required'),
+        amount: Yup.string().required('Amount is required'),
+        interestRate: Yup.string().required('Interest rate is required'),
+        monthsNumber: Yup.string().required('Months number is required'),
+        date: Yup.string().required('Date is required').nullable(),
+    
     })
 
     useEffect(() => {
@@ -61,7 +61,7 @@ export default observer(function InterestForm() {
         }
     }
 
-    if (loadingInitial) return <LoadingComponent content='Loading' />
+    if (loadingInitial) return <LoadingComponent content='Loading interest...' />
     return (
         <Segment clearing>
             <Header content='Interest Details' sub color='teal' />
@@ -88,7 +88,7 @@ export default observer(function InterestForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right'
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/interest' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

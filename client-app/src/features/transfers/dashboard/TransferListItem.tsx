@@ -20,7 +20,7 @@ export default function TransferListItem({transfer}: Props) {
                             <Item.Header as={Link} to={`/transfers/${transfer.id}`}>
                                 {transfer.transferNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Transfer</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

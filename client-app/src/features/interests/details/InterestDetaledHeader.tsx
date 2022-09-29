@@ -49,9 +49,11 @@ export default observer (function InterestDetailedHeader({interest}: Props) {
                                 <p>{format(interest.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                    {interest.type}
-                                   {interest.interestRate}
-                                   {interest.monthsNumber}
+                                  
+                                  
                                 </p>
+                                <p> {interest.interestRate}</p>
+                                <p> {interest.monthsNumber}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>

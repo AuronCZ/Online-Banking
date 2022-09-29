@@ -44,14 +44,12 @@ export default observer (function TransactionDetailedHeader({transaction}: Props
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={transaction.payee}
+                                    content={transaction.type}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(transaction.date!, 'dd MMM yyyy')}</p>
-                                <p>
-                                   {transaction.amount}
-                                   {transaction.type}
-                                </p>
+                                <p>{transaction.amount}</p>
+                                <p>{transaction.payee}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -64,7 +62,7 @@ export default observer (function TransactionDetailedHeader({transaction}: Props
                     onClick={(e) => handleTransactionDelete(e,transaction.id)} 
                     as={Link} to='/transaction'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageTransaction/${transaction.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Transaction
                 </Button>
             </Segment>
         </Segment.Group>

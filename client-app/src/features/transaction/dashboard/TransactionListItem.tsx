@@ -21,7 +21,7 @@ export default function TransactionListItem({transaction}: Props){
                             <Item.Header as={Link} to={`/transaction/${transaction.id}`}>
                                 {transaction.amount}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Transaction</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

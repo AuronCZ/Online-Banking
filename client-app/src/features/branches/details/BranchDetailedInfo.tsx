@@ -19,10 +19,16 @@ export default observer(function BranchDetailedInfo({branch}: Props) {
                     </Grid.Column>
                     <Grid.Column width={15}>
                         <p>{branch.bank}</p>
-                        <p>{branch.branchNumber}</p>
-                        <p>{branch.country}</p>
-                        <p>{branch.city}</p>
                     </Grid.Column>
+                    <Grid.Column width={15}>
+                    <p>{branch.branchNumber}</p>
+                    </Grid.Column>
+                    <Grid.Column width={15}>
+                    <p>{branch.country}</p>
+                    </Grid.Column>
+                    <Grid.Column width={15}>
+                    <p>{branch.city}</p>
+                    </Grid.Column> 
                 </Grid>
             </Segment>
             <Segment attached>

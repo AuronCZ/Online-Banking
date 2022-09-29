@@ -37,24 +37,21 @@ export default observer (function ContactDetailedHeader({contact}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src='/assets/Contact.jpg' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={contact.name}
-                                   
+                                    content={contact.email}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(contact.date!, 'dd MMM yyyy')}</p>
-                                <p>
-                                   {contact.surname}
-                                   {contact.email}
-                                   {contact.phoneNumber}
-                                   {contact.message}
-                                </p>
+                                <p>{contact.name}</p>
+                                <p> {contact.surname}</p>
+                                <p> {contact.phoneNumber}</p>
+                                <p> {contact.message}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -67,7 +64,7 @@ export default observer (function ContactDetailedHeader({contact}: Props) {
                     onClick={(e) => handleContactDelete(e,contact.id)} 
                     as={Link} to='/contact'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageContact/${contact.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Contacts
                 </Button>
             </Segment>
         </Segment.Group>

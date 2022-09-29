@@ -1,18 +1,19 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroller";
 import { NavLink } from "react-router-dom";
 import { Button, Grid, Loader } from "semantic-ui-react";
 import { PagingParams } from "../../../app/models/pagination";
 import { useStore } from "../../../app/stores/store";
-import AccountFilters from "./LoanFilters";
-import InfiniteScroll from 'react-infinite-scroller';
-import LoanListItemPlaceholder from "./LoanListItemPlaceholder";
+import LoanFilters from "./LoanFilters";
 import LoanList from "./LoanList";
+import LoanListItemPlaceholder from "./LoanListItemPlaceholder";
+
 
 
 export default observer (function LoanDashboard() {
     const {loanStore} = useStore();
-    const {loadLoans, loanRegistry, setPagingParams, pagination} = loanStore;
+    const {loadLoans,loanRegistry, setPagingParams, pagination} = loanStore;
     const [loadingNext, setLoadingNext] = useState(false);
 
     useEffect(() => {
@@ -48,7 +49,7 @@ export default observer (function LoanDashboard() {
                 )}
             </Grid.Column>
             <Grid.Column width='6'>
-                <AccountFilters />
+                <LoanFilters />
             </Grid.Column>
             <Grid.Column width={10}>
                 <Loader active={loadingNext}/>

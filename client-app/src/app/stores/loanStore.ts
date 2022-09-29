@@ -1,8 +1,8 @@
-import { format } from 'date-fns';
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { Loan } from "../models/loan";
+import {format} from 'date-fns';
 import { Pagination, PagingParams } from "../models/pagination";
+import { Loan } from "../models/loan";
 
 
 export default class LoanStore {
@@ -13,27 +13,29 @@ export default class LoanStore {
     loadingInitial = false;
     pagination: Pagination | null = null;
     pagingParams = new PagingParams();
-    constructor() {
+
+    constructor(){
         makeAutoObservable(this)
     }
+
     setPagingParams = (pagingParams: PagingParams) => {
         this.pagingParams = pagingParams;
     }
+
     get axiosParams() {
         const params = new URLSearchParams();
         params.append('pageNumber', this.pagingParams.pageNumber.toString());
         params.append('pageSize', this.pagingParams.pageSize.toString());
-
         return params;
     }
 
-    get loanByDate() {
+    get loansByDate() {
         return Array.from(this.loanRegistry.values()).sort((a, b) => a.loanDate!.getTime() - b.loanDate!.getTime());
     }
 
-    get groupedLoan() {
+    get groupedLoans() {
         return Object.entries(
-            this.loanByDate.reduce((loans, loan) => {
+            this.loansByDate.reduce((loans,loan) => {
                 const date = format(loan.loanDate!, 'dd MMM yyyy');
                 loans[date] = loans[date] ? [...loans[date], loan] : [loan];
                 return loans;
@@ -41,11 +43,11 @@ export default class LoanStore {
         )
     }
 
-    loadLoans = async () => {
+    loadLoans = async () =>  {
         this.loadingInitial = true;
         try {
             const result = await agent.Loans.list(this.axiosParams);
-            result.data.forEach(loan => {
+            result.data.forEach(loan =>{
                 this.setLoan(loan);
             })
             this.setPagination(result.pagination);
@@ -55,14 +57,15 @@ export default class LoanStore {
             this.setLoadingInitial(false);
         }
     }
+
     setPagination = (pagination: Pagination) => {
         this.pagination = pagination;
     }
+
     loadLoan = async (id: string) => {
         let loan = this.getLoan(id);
         if (loan) {
             this.selectedLoan = loan;
-
             return loan;
         } else {
             this.loadingInitial = true;
@@ -70,9 +73,7 @@ export default class LoanStore {
                 loan = await agent.Loans.details(id);
                 this.setLoan(loan);
                 runInAction(() => {
-
-                    this.selectedLoan = loan;
-
+                    this.selectedLoan =loan;
                 })
                 this.setLoadingInitial(false);
                 return loan;
@@ -92,35 +93,31 @@ export default class LoanStore {
         return this.loanRegistry.get(id);
     }
 
+
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;
     }
 
 
     createLoan = async (loan: Loan) => {
-
         this.loading = true;
-
         try {
             await agent.Loans.create(loan);
             runInAction(() => {
-                this.loanRegistry.set(loan.id, loan);
+                this.loanRegistry.set(loan.id,loan);
                 this.selectedLoan = loan;
-
                 this.editMode = false;
                 this.loading = false;
             })
         } catch (error) {
             console.log(error);
             runInAction(() => {
-
                 this.loading = false;
             })
         }
     }
 
     updateLoan = async (loan: Loan) => {
-
         this.loading = true;
         try {
             await agent.Loans.update(loan);
@@ -137,6 +134,7 @@ export default class LoanStore {
             })
         }
     }
+
     deleteLoan = async (id: string) => {
         this.loading = true;
         try {
@@ -151,5 +149,6 @@ export default class LoanStore {
                 this.loading = false;
             })
         }
+
     }
 }

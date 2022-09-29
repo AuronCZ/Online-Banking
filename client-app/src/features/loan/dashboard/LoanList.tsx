@@ -2,19 +2,19 @@ import React, { Fragment } from "react";
 import { observer } from "mobx-react-lite";
 import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
-import AccountListItem from "./LoanListItem";
+import InterestListItem from "./LoanListItem";
 import LoanListItem from "./LoanListItem";
 
 
 
 export default observer(function LoanList() {
-    const { loanStore } = useStore();
-    const { groupedLoan } = loanStore;
+    const {loanStore } = useStore();
+    const { groupedLoans} = loanStore;
 
 
     return (
         <>
-            {groupedLoan.map(([group, loans]) => (
+            {groupedLoans.map(([group,loans]) => (
                 <Fragment key={group}>
                     <Header sub color='teal'>
                         {group}

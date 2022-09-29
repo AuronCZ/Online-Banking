@@ -22,7 +22,6 @@ export default observer(function HomePage() {
                             Go to ower services!
                         </Button>
                     </>
-
                 ) : (
                     <>
                         <Button onClick={() => modalStore.openModal(<LoginForm />)} size='huge' inverted>

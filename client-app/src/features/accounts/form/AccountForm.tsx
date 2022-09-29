@@ -32,12 +32,12 @@ export default observer(function AccountForm() {
     });
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('The account name is required'),
-        surname: Yup.string().required('The account surname is required'),
-        accountNumber: Yup.string().required(),
-        accountType: Yup.string().required(),
+        name: Yup.string().required('Name is required'),
+        surname: Yup.string().required('Surname is required'),
+        accountNumber: Yup.string().required('Account number is required'),
+        accountType: Yup.string().required('Account type is required'),
         openDate: Yup.string().required('Date is required').nullable(),
-        balance: Yup.string().required(),
+        balance: Yup.string().required('Balance is required'),
     })
 
     useEffect(() => {
@@ -70,8 +70,8 @@ export default observer(function AccountForm() {
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        <MyTextArea rows={2} name='name' placeholder='Name' />
-                        <MyTextArea rows={2} placeholder='Surname' name='surname'  />
+                        <MyTextInput name='name' placeholder='Name' />
+                        <MyTextInput  placeholder='Surname' name='surname'  />
                         <MyTextInput placeholder='Account Number' name='accountNumber'  />
                         <MySelectInput options={accountCategoryOptions} placeholder='Account Type' name='accountType'  />
                         <MyDateInput

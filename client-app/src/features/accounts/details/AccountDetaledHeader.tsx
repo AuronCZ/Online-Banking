@@ -43,13 +43,12 @@ export default observer (function AccountDetailedHeader({account}: Props) {
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={account.accountNumber}
+                                    content={account.accountType}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(account.openDate!, 'dd MMM yyyy')}</p>
-                                <p>
-                                   {account.accountType}
-                                </p>
+                                <p>{account.accountNumber}</p>
+                                <p>{account.balance}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>

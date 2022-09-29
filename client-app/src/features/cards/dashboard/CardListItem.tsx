@@ -21,7 +21,7 @@ export default function CardListItem({card}: Props) {
                             <Item.Header as={Link} to={`/cards/${card.id}`}>
                                 {card.accountNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank Card</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

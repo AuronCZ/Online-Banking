@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Contact } from "../../../app/models/contact";
 
@@ -19,9 +18,9 @@ export default function ContactListItem({contact}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/contacts/${contact.id}`}>
-                                {contact.name}
+                                {contact.email}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Contact</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>
@@ -33,8 +32,8 @@ export default function ContactListItem({contact}: Props){
             </Segment>
             <Segment secondary>
                 <span>
+                    <div>{contact.name}</div>
                     <div>{contact.surname}</div>
-                    <div>{contact.email}</div>
                     <div>{contact.phoneNumber}</div>
                 </span>
             </Segment>
@@ -44,7 +43,7 @@ export default function ContactListItem({contact}: Props){
                 </span>
                 <Button
                     as={Link}
-                    to={`/contacts/${contact.id}`}
+                    to={`/contact/${contact.id}`}
                     color='teal'
                     floated='right'
                     content='View'

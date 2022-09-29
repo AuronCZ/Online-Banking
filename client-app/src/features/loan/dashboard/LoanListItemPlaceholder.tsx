@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Segment, Button, Placeholder } from 'semantic-ui-react';
 
-export default function AccountListItemPlaceholder() {
+export default function LoanListItemPlaceholder() {
     return (
         <Fragment>
             <Placeholder fluid style={{ marginTop: 25 }}>

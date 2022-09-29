@@ -25,11 +25,12 @@ namespace Application.Withdraws
             {
                 var withdraw = await this.context.Withdraws.FindAsync(request.Id);
 
-                //if (withdraw == null) return null;
+
+                this.context.Remove(withdraw);
 
                 var result = await this.context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to delete the withdraw");
+                if (!result) return Result<Unit>.Failure("Failed to delete withdraw");
 
                 return Result<Unit>.Success(Unit.Value);
             }

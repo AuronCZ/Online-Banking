@@ -20,7 +20,7 @@ export default function AccountListItem({account}: Props){
                             <Item.Header as={Link} to={`/accounts/${account.id}`}>
                                 {account.accountNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank Account</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

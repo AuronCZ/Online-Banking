@@ -20,7 +20,7 @@ export default function BranchListItem({branch}: Props){
                             <Item.Header as={Link} to={`/branches/${branch.id}`}>
                                 {branch.bank}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank Branch</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

@@ -29,10 +29,10 @@ export default observer(function CardForm() {
     });
 
     const validationSchema = Yup.object({
-        accountNumber: Yup.string().required('The card account number is required'),
-        cardType: Yup.string().required(),
-        cardNumber: Yup.string().required(),
-        expirationDate: Yup.string().required('Date is required').nullable(),
+        accountNumber: Yup.string().required('Account number is required'),
+        cardType: Yup.string().required('Card type is required'),
+        cardNumber: Yup.string().required('Card number is required'),
+        expirationDate: Yup.string().required('Expiration date is required').nullable(),
     })
 
     useEffect(() => {

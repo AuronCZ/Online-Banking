@@ -1,9 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Core;
 using MediatR;
 using Persistence;
+using Application.Core;
 
 namespace Application.Cards
 {
@@ -11,6 +11,7 @@ namespace Application.Cards
     {
         public class Command : IRequest<Result<Unit>>
         {
+
             public Guid Id { get; set; }
         }
         public class Handler : IRequestHandler<Command, Result<Unit>>
@@ -25,11 +26,12 @@ namespace Application.Cards
             {
                 var card = await this.context.Cards.FindAsync(request.Id);
 
-                //if (card == null) return null;
+              
+                this.context.Remove(card);
 
                 var result = await this.context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to delete the card");
+                if(!result) return Result<Unit>.Failure("Failed to delete the card");
 
                 return Result<Unit>.Success(Unit.Value);
             }

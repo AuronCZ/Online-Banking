@@ -30,10 +30,10 @@ export default observer(function SalaryForm() {
     });
 
     const validationSchema = Yup.object({
-        accountNumber:Yup.string().required('AccountNumber is required'),
-        anualSalary:Yup.string().required('AnualSalary is required'),
-        monthlyPayment:Yup.string().required('MonthlyPayment is required'),
-   
+        accountNumber:Yup.string().required('Account number is required'),
+        anualSalary:Yup.string().required('Anual salary is required'),
+        monthlyPayment:Yup.string().required('Monthly payment is required'),
+        date:Yup.string().required('Date is required'),
     })
 
 
@@ -58,7 +58,7 @@ export default observer(function SalaryForm() {
     }
 
 
-    if (loadingInitial) return <LoadingComponent content='Loading account...' />
+    if (loadingInitial) return <LoadingComponent content='Loading salary...' />
 
     return (
         <Segment clearing>
@@ -84,7 +84,7 @@ export default observer(function SalaryForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/salary' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

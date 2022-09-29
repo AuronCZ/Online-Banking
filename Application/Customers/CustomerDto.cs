@@ -13,7 +13,7 @@ namespace Application.Customers
         public string Address { get; set; }
         public string Email { get; set; }
         public string Tel { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime BirthDate { get; set; }
         public string Gender { get; set; }
         public string Bank { get; set; }
         public string AccNumber { get; set; }

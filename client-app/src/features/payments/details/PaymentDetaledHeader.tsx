@@ -37,7 +37,7 @@ export default observer (function PaymentDetailedHeader({payment}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src='/assets/Payment.jpg' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
@@ -50,8 +50,9 @@ export default observer (function PaymentDetailedHeader({payment}: Props) {
                                 <p>{format(payment.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                    {payment.amount}
-                                   {payment.payee}
+                                 
                                 </p>
+                                <p>  {payment.payee}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -64,7 +65,7 @@ export default observer (function PaymentDetailedHeader({payment}: Props) {
                     onClick={(e) => handlePaymentDelete(e,payment.id)} 
                     as={Link} to='/payment'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/managePayment/${payment.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Payment
                 </Button>
             </Segment>
         </Segment.Group>

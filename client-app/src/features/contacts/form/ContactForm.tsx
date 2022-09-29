@@ -32,10 +32,11 @@ export default observer(function ContactForm() {
     });
    const validationSchema = Yup.object({
        name:Yup.string().required('Name is required'),
-        surname:Yup.string().required('Surname is required'),
+       surname:Yup.string().required('Surname is required'),
        email:Yup.string().required('Email is required'),
        phoneNumber:Yup.string().required('Phone number is required'),
-       message:Yup.string().required('Message is required')
+       message:Yup.string().required('Message is required'),
+       date:Yup.string().required('Date is required')
     })
 
 
@@ -74,9 +75,9 @@ export default observer(function ContactForm() {
                 <MyTextInput  placeholder="Surname"   name="surname"/>
                 <MyTextInput type="email"  placeholder="Email"  name="email"/>
                 <MyTextInput  placeholder="Phone Number"   name="phoneNumber" />
-                <MyTextArea rows={30} placeholder="Report the problem" name="message"  />
+                <MyTextArea rows={10} placeholder="Report the problem" name="message"  />
                         <MyDateInput
-                            placeholderText='date' 
+                            placeholderText='Date' 
                             name='date'
                             showTimeSelect
                             timeCaption='time'
@@ -87,7 +88,7 @@ export default observer(function ContactForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/contact' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

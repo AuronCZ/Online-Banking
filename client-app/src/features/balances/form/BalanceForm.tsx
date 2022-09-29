@@ -29,9 +29,9 @@ export default observer(function BalanceForm() {
     });
 
     const validationSchema = Yup.object({
-        accountNumber: Yup.string().required('The balance account number is required'),
-        accountType: Yup.string().required(),
-        amount: Yup.string().required(),
+        accountNumber: Yup.string().required('Account number is required'),
+        accountType: Yup.string().required('Account type is required'),
+        amount: Yup.string().required('Amount is required'),
         date: Yup.string().required('Date is required').nullable(),
     })
 

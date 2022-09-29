@@ -21,7 +21,7 @@ export default function BalanceListItem({balance}: Props){
                             <Item.Header as={Link} to={`/balances/${balance.id}`}>
                                 {balance.accountNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Balance</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

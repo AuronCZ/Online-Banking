@@ -14,7 +14,7 @@ namespace Application.Loans
         public string Type { get; set; }
         public string Amount { get; set; }
         public string Duration { get; set; }
-       public DateTime Date { get; set; }
+        public DateTime LoanDate { get; set; }
         public string Payments { get; set; }
        
       

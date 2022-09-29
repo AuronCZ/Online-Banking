@@ -9,11 +9,8 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
-import MyTextArea from "../../../app/common/form/MyTextArea";
 import MySelectInput from "../../../app/common/form/MySelectInput";
-import { accountCategoryOptions } from "../../../app/common/options/accountCategoryOptions";
 import MyDateInput from "../../../app/common/form/MyDateInput";
-import { Account } from "../../../app/models/account";
 import { Deposit } from "../../../app/models/deposit";
 import { depositCategoryOptions } from "../../../app/common/options/depositCategoryOptions";
 
@@ -36,7 +33,6 @@ export default observer(function AccountForm() {
         amount: Yup.string().required('Amount is required'),
         date: Yup.string().required('Date is required'),
         payee: Yup.string().required('Payee is required'),
-
     })
 
 
@@ -76,8 +72,8 @@ export default observer(function AccountForm() {
                         <MyTextInput placeholder="Account" name="account" />
                         <MySelectInput options={depositCategoryOptions} placeholder="Amount" name="amount" />
                         <MyDateInput
-                            placeholderText='Open Date'
-                            name='openDate'
+                            placeholderText='Date'
+                            name='date'
                             showTimeSelect
                             timeCaption='time'
                             dateFormat='MMMM d, yyyy h:mm aa'
@@ -87,7 +83,7 @@ export default observer(function AccountForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right'
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/deposit' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

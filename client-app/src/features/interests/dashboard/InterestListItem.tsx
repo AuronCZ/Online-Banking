@@ -20,7 +20,7 @@ export default function InterestListItem({interest}: Props){
                             <Item.Header as={Link} to={`/interest/${interest.id}`}>
                                 {interest.type}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Loan Interest</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

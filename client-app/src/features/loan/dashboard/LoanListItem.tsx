@@ -5,7 +5,7 @@ import {format} from 'date-fns';
 import { Loan } from "../../../app/models/loan";
 
 interface Props {
-    loan:Loan
+   loan:Loan
 }
 
 export default function LoanListItem({loan}: Props){
@@ -18,9 +18,9 @@ export default function LoanListItem({loan}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/loan/${loan.id}`}>
-                                {loan.name}
+                                {loan.type}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank Loan</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>
@@ -32,16 +32,16 @@ export default function LoanListItem({loan}: Props){
             </Segment>
             <Segment secondary>
                 <span>
+                    <div>{loan.name}</div>
                     <div>{loan.surname}</div>
-                    <div>{loan.accNumber}</div>
-                    <div>{loan.type}</div>
-                    <div>{loan.amount}</div>
                     <div>{loan.duration}</div>
+                    <div>{loan.amount}</div>
+                    <div>{loan.payments}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={loan.payments} />
+                    <Label basic content={loan.accNumber} />
                 </span>
                 <Button
                     as={Link}

@@ -5,9 +5,8 @@ import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
 import ContactDetailedInfo from "./ContactDetailedInfo";
-import AccountDetailedInfo from "./ContactDetailedInfo";
 import ContactDetaledHeader from "./ContactDetaledHeader";
-import AccountDetailedHeader from "./ContactDetaledHeader";
+
 
 
 export default observer (function ContactDetails(){

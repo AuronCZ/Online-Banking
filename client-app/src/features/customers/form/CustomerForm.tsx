@@ -37,12 +37,15 @@ export default observer(function CustomerForm() {
     });
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('The account name is required'),
-        surname: Yup.string().required('The account surname is required'),
-        accountNumber: Yup.string().required(),
-        accountType: Yup.string().required(),
-        openDate: Yup.string().required('Date is required').nullable(),
-        balance: Yup.string().required(),
+        name:Yup.string().required('Name is required'),
+        surname:Yup.string().required('Surname is required'),
+        address:Yup.string().required('Address is required'),
+        email:Yup.string().required('Email is required'),
+        tel:Yup.string().required('Telephone number is required'),
+        birthDate:Yup.string().required('Birth date is required'),
+        gender:Yup.string().required('Gender is required'),
+        bank:Yup.string().required('Bank is required'),
+        accNumber:Yup.string().required('Account number is required')
     })
 
    
@@ -67,7 +70,7 @@ export default observer(function CustomerForm() {
         }
     }
 
-    if (loadingInitial) return <LoadingComponent content='Loading account...' />
+    if (loadingInitial) return <LoadingComponent content='Loading customer...' />
 
     return (
         <Segment clearing>
@@ -99,7 +102,7 @@ export default observer(function CustomerForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/customer' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

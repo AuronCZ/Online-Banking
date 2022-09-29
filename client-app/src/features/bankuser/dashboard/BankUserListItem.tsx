@@ -19,9 +19,10 @@ export default function BankUserListItem({bankuser}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/bankuser/${bankuser.id}`}>
-                                {bankuser.name}
+                                {bankuser.username}
+                              
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank User</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>
@@ -33,8 +34,8 @@ export default function BankUserListItem({bankuser}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{bankuser.surname}</div>
-                    <div>{bankuser.username}</div>
+                  <div>  {bankuser.name}</div>
+                  <div>{bankuser.surname}</div>
                 </span>
             </Segment>
             <Segment clearing>

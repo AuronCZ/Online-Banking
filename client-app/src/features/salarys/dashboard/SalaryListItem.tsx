@@ -21,7 +21,7 @@ export default function SalaryListItem({salary}: Props){
                             <Item.Header as={Link} to={`/salary/${salary.id}`}>
                                 {salary.accountNumber}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Salary</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

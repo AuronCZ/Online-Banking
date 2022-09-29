@@ -36,27 +36,24 @@ export default observer (function CustomeretailedHeader({customer}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src='/assets/Customer.jpg' fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={customer.name}
-                                    
+                                    content={customer.email}
                                     style={{color: 'white'}}
                                 />
+                                <p>{customer.name}</p>
+                                <p>{customer.surname} </p>
                                 <p>{format(customer.birthDate!, 'dd MMM yyyy')}</p>
-                                <p>
-                                   {customer.surname} 
-                                   {customer.address}
-                                   {customer.email}
-                                   {customer.tel}
-                                   {customer.gender}
-                                   {customer.bank}
-                                   {customer.accNumber}
-                                </p>
+                                <p> {customer.address}</p>
+                                <p>{customer.tel}</p>
+                                <p>{customer.gender}</p>
+                                <p>{customer.bank}</p>
+                                <p>{customer.accNumber}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -69,7 +66,7 @@ export default observer (function CustomeretailedHeader({customer}: Props) {
                     onClick={(e) => handleCustomerDelete(e,customer.id)} 
                     as={Link} to='/customer'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageCustomer/${customer.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Customer
                 </Button>
             </Segment>
         </Segment.Group>

@@ -50,8 +50,9 @@ export default observer (function DepositDetailedHeader({deposit}: Props) {
                                 <p>{format(deposit.date!, 'dd MMM yyyy')}</p>
                                 <p>
                                    {deposit.amount} 
-                                   {deposit.payee}
+                                  
                                 </p>
+                                <p> {deposit.payee}</p>
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -64,7 +65,7 @@ export default observer (function DepositDetailedHeader({deposit}: Props) {
                     onClick={(e) => handleDepositDelete(e,deposit.id)} 
                     as={Link} to='/deposit'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageDeposit/${deposit.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Deposit
                 </Button>
             </Segment>
         </Segment.Group>

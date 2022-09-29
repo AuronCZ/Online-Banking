@@ -38,8 +38,9 @@ export default observer(function BranchForm() {
         bank:Yup.string().required('Bank name is required'),
         branchNumber:Yup.string().required('Branch number is required'),
         country:Yup.string().required('Country is required'),
-       city:Yup.string().required('City is required'),
-       address:Yup.string().required('Address is required')
+        city:Yup.string().required('City is required'),
+        address:Yup.string().required('Address is required'),
+        date:Yup.string().required('Date is required')
     })
 
     useEffect(() => {
@@ -60,7 +61,7 @@ export default observer(function BranchForm() {
     }
 
 
-    if (loadingInitial) return <LoadingComponent content='Loading account...' />
+    if (loadingInitial) return <LoadingComponent content='Loading branch...' />
 
     return (
         <Segment clearing>
@@ -72,8 +73,8 @@ export default observer(function BranchForm() {
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        <MyTextArea rows={2} name='bank' placeholder='Bank' />
-                        <MyTextArea rows={2} placeholder='Branch Number' name='branchNumber'  />
+                        <MyTextInput name='bank' placeholder='Bank' />
+                        <MyTextInput placeholder='Branch Number' name='branchNumber'  />
                         <MyTextInput placeholder='Country' name='country'  />
                         <MyTextInput placeholder='Address' name='address'  />
                         <MySelectInput options={branchCategoryOptions} placeholder='City' name='city'  />
@@ -88,7 +89,7 @@ export default observer(function BranchForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/branches' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

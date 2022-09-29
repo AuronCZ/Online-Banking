@@ -5,6 +5,7 @@ import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import {Account} from "../../../app/models/account";
 import {format} from 'date-fns';
 import { useStore } from '../../../app/stores/store';
+import { Interest } from '../../../app/models/interest';
 import { Loan } from '../../../app/models/loan';
 
 const accountImageStyle = {
@@ -23,7 +24,6 @@ const accountImageTextStyle = {
 interface Props {
     loan:Loan
 }
-
 export default observer (function LoanDetailedHeader({loan}: Props) {
     const {loanStore} = useStore();
     const {deleteLoan,loading} = loanStore;
@@ -44,18 +44,17 @@ export default observer (function LoanDetailedHeader({loan}: Props) {
                             <Item.Content>
                                 <Header
                                     size='huge'
-                                    content={loan.name}
+                                    content={loan.type}
                                     style={{color: 'white'}}
                                 />
                                 <p>{format(loan.loanDate!, 'dd MMM yyyy')}</p>
-                                <p>
-                                    {loan.surname}
-                                    {loan.accNumber}
-                                    {loan.type}
-                                    {loan.amount}
-                                    {loan.duration}
-                                    {loan.payments}
-                                </p>
+                                <p>{loan.name}</p>
+                                <p>{loan.surname}</p>
+                                <p> {loan.accNumber}</p>
+                                <p>{loan.amount}</p>
+                                <p> {loan.duration}</p>
+                                <p> {loan.payments}</p>
+                            
                             </Item.Content>
                         </Item>
                     </Item.Group>
@@ -68,7 +67,7 @@ export default observer (function LoanDetailedHeader({loan}: Props) {
                     onClick={(e) => handleLoanDelete(e,loan.id)} 
                     as={Link} to='/loan'  content="Delete" color='red' floated='right' />
                 <Button as={Link} to={`/manageLoan/${loan.id}`} color='blue' floated='left'>
-                    Manage Account
+                    Manage Loan
                 </Button>
             </Segment>
         </Segment.Group>

@@ -21,7 +21,7 @@ export default function PaymentListItem({payment}: Props){
                             <Item.Header as={Link} to={`/payment/${payment.id}`}>
                                 {payment.account}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Payment</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>

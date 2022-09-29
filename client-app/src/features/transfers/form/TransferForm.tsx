@@ -31,10 +31,10 @@ export default observer(function TransferForm() {
     });
 
     const validationSchema = Yup.object({
-        transferNumber: Yup.string().required('The transfer number is required'),
-        accountNumber: Yup.string().required(),
-        amount: Yup.string().required(),
-        payee: Yup.string().required(),
+        transferNumber: Yup.string().required('Transfer number is required'),
+        accountNumber: Yup.string().required('Account number is required'),
+        amount: Yup.string().required('Amount is required'),
+        payee: Yup.string().required('Payee is required'),
         date: Yup.string().required('Date is required').nullable(),
     })
 
@@ -72,7 +72,7 @@ export default observer(function TransferForm() {
                         <MyTextInput placeholder='Transfer Number' name='transferNumber' />
                         <MyTextInput placeholder='Account Number'  name='accountNumber'  />
                         <MySelectInput options={transferCategoryOptions} placeholder='Amount'  name='amount'  />
-                        <MyTextArea rows={2} placeholder='Payee'  name='payee'  />
+                        <MyTextInput placeholder='Payee'  name='payee'  />
                         <MyDateInput
                             placeholderText='Date'  
                             name='date'  

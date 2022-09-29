@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Customer } from "../../../app/models/customer";
 
@@ -19,9 +18,9 @@ export default function CustomerListItem({customer}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/customer/${customer.id}`}>
-                                {customer.name}
+                                {customer.email}
                             </Item.Header>
-                            <Item.Description>Mananged by Name of the Bank</Item.Description>
+                            <Item.Description>Bank Customer</Item.Description>
                         </Item.Content>
                     </Item>
                 </Item.Group>
@@ -33,9 +32,9 @@ export default function CustomerListItem({customer}: Props){
             </Segment>
             <Segment secondary>
                 <span>
+                    <div>{customer.name}</div>
                     <div>{customer.surname}</div>
                     <div>{customer.address}</div>
-                    <div>{customer.email}</div>
                     <div>{customer.tel}</div>
                     <div>{customer.gender}</div>
                     <div>{customer.bank}</div>

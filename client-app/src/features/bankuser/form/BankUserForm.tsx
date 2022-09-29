@@ -38,7 +38,7 @@ export default observer(function AccountForm() {
         username:Yup.string().required('Username is required'),
         email:Yup.string().required('Email is required'),
         password:Yup.string().required('Password is required'),
-   
+        date:Yup.string().required('Date is required'),
     })
 
     useEffect(() =>{
@@ -61,7 +61,7 @@ export default observer(function AccountForm() {
         }
     }
     
-    if (loadingInitial) return <LoadingComponent content='Loading account...' />
+    if (loadingInitial) return <LoadingComponent content='Loading user...' />
 
     return (
         <Segment clearing>
@@ -73,11 +73,11 @@ export default observer(function AccountForm() {
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        <MyTextArea rows={2} name='name' placeholder='Name' />
-                        <MyTextArea rows={2} placeholder='Surname' name='surname'  />
+                        <MyTextInput name='name' placeholder='Name' />
+                        <MyTextInput placeholder='Surname' name='surname'  />
                         <MyTextInput placeholder='Username' name='username'  />
                         <MyTextInput type='email' placeholder='Email' name='email'  />
-                        <MyTextInput placeholder='Password' name='password'  />
+                        <MyTextInput type="password" placeholder='Password' name='password'  />
                         <MyDateInput
                             placeholderText='Date' 
                             name='date'
@@ -90,7 +90,7 @@ export default observer(function AccountForm() {
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/bankuser' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

@@ -29,10 +29,10 @@ export default observer(function WithdrawForm() {
     });
 
     const validationSchema = Yup.object({
-        accountNumber: Yup.string().required('The withdraw account number is required'),
-        amount: Yup.string().required(),
+        accountNumber: Yup.string().required('Account number is required'),
+        amount: Yup.string().required('Amount is required'),
         date: Yup.string().required('Date is required').nullable(),
-        pin: Yup.string().required(),
+        pin: Yup.string().required('PIN is required'),
     })
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export default observer(function WithdrawForm() {
                             timeCaption='time'
                             dateFormat='MMMM d, yyyy h:mm aa'
                         />
-                        <MyTextInput placeholder='Pin'  name='pin'  />
+                        <MyTextInput type="password" placeholder='Pin'  name='pin'  />
                         <Button 
                             disabled={isSubmitting || !dirty || !isValid} 
                             loading={loading} floated='right' 
