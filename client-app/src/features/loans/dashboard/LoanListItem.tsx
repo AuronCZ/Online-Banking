@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Loan } from "../../../app/models/loan";
 

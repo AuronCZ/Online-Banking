@@ -20,16 +20,16 @@ import { interestCategoryOptions } from "../../../app/common/options/interestCat
 
 export default observer(function InterestForm() {
     const history = useHistory();
-    const {interestStore } = useStore();
+    const { interestStore } = useStore();
     const { createInterest, updateInterest, loading, loadInterest, loadingInitial } = interestStore;
     const { id } = useParams<{ id: string }>();
-    const [interest,setInterest]= useState<Interest>({
-        id:'',
-        type:'',
+    const [interest, setInterest] = useState<Interest>({
+        id: '',
+        type: '',
         amount: '',
         interestRate: '',
-        monthsNumber:'',
-        date:null
+        monthsNumber: '',
+        date: null
     });
 
     const validationSchema = Yup.object({
@@ -41,52 +41,52 @@ export default observer(function InterestForm() {
         balance: Yup.string().required(),
     })
 
-    useEffect(() =>{
+    useEffect(() => {
         if (id) loadInterest(id).then(interest => setInterest(interest!));
-    },[id,loadInterest])
+    }, [id, loadInterest])
 
 
-    function handleFormSubmit(interest : Interest){
+    function handleFormSubmit(interest: Interest) {
 
-        if(interest.id.length === 0 ){
-            let newInterest ={
+        if (interest.id.length === 0) {
+            let newInterest = {
                 ...interest,
-                id:uuid()
+                id: uuid()
             };
 
             createInterest(newInterest).then(() => history.push(`/interest/${newInterest.id}`))
-        }else{
+        } else {
             updateInterest(interest).then(() => history.push(`/interest/${interest.id}`))
 
         }
     }
-    
-     if(loadingInitial) return <LoadingComponent content='Loading'/>
+
+    if (loadingInitial) return <LoadingComponent content='Loading' />
     return (
         <Segment clearing>
             <Header content='Interest Details' sub color='teal' />
-            <Formik 
+            <Formik
                 validationSchema={validationSchema}
-                enableReinitialize 
-                initialValues={interest} 
+                enableReinitialize
+                initialValues={interest}
                 onSubmit={values => handleFormSubmit(values)}>
                 {({ handleSubmit, isValid, isSubmitting, dirty }) => (
                     <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                        <MySelectInput options={interestCategoryOptions} placeholder='Type' name='type'  />
-                        <MyTextInput  placeholder="Amount"  name="amount" />
-                        <MyTextInput  placeholder="Interest Rate"   name="interestRate" />
-                         <MyTextInput  placeholder="Months Number" name="monthsNumber" />
+                        <MySelectInput options={interestCategoryOptions} placeholder='Type' name='type' />
+                        <MyTextInput placeholder="Amount" name="amount" />
+                        <MyTextInput placeholder="Interest Rate" name="interestRate" />
+                        <MyTextInput placeholder="Months Number" name="monthsNumber" />
                         <MyDateInput
-                            placeholderText='Date' 
+                            placeholderText='Date'
                             name='date'
                             showTimeSelect
                             timeCaption='time'
                             dateFormat='MMMM d, yyyy h:mm aa'
-                            />
-                      
-                        <Button 
+                        />
+
+                        <Button
                             disabled={isSubmitting || !dirty || !isValid}
-                            loading={loading} floated='right' 
+                            loading={loading} floated='right'
                             positive type='submit' content='Submit' />
                         <Button as={Link} to='/accounts' floated='right' type='button' content='Cancel' />
                     </Form>

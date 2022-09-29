@@ -36,7 +36,7 @@ export default observer (function InterestDetailedHeader({interest}: Props) {
     return (
         <Segment.Group>
             <Segment basic attached='top' style={{padding: '0'}}>
-                <Image src='/assets/typeImages/logoImages/logo.png' fluid style={accountImageStyle}/>
+                <Image src={`/assets/typeImages/interestImages/${interest.type}.jpg`} fluid style={accountImageStyle}/>
                 <Segment style={accountImageTextStyle} basic>
                     <Item.Group>
                         <Item>

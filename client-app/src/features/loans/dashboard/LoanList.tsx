@@ -14,7 +14,7 @@ export default observer(function LoanList() {
 
     return (
         <>
-            {groupedLoan.map(([group,loans]) => (
+            {groupedLoan.map(([group, loans]) => (
                 <Fragment key={group}>
                     <Header sub color='teal'>
                         {group}

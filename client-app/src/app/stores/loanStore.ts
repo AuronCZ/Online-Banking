@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format } from 'date-fns';
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { Loan } from "../models/loan";
@@ -37,7 +37,7 @@ export default class LoanStore {
                 const date = format(loan.loanDate!, 'dd MMM yyyy');
                 loans[date] = loans[date] ? [...loans[date], loan] : [loan];
                 return loans;
-            }, {} as { [key: string]: Loan[] })
+            }, {} as {[key: string]: Loan[]})
         )
     }
 

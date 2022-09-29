@@ -123,7 +123,7 @@ function App() {
                 <PrivateRoute key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
                 <PrivateRoute path={['/createBankUser','/manageBankUser/:id']} component={BankUserForm} />
                 <PrivateRoute path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
-                <PrivateRoute path={['/createBranch','/manage/:id']} component={BranchForm} />     
+                <PrivateRoute path={['/createBranch','/manageBranch/:id']} component={BranchForm} />     
                 <PrivateRoute path={['/createCard', '/manageCard/:id']} component={CardForm} />
                 <PrivateRoute path={[ '/createContact','/manageContact/:id']} component={ContactForm} />
                 <PrivateRoute path={[ '/createCustomer','/manageCustomer/:id']} component={CustomerForm} />
