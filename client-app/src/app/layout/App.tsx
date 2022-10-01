@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import { observer } from 'mobx-react-lite';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Link, Route, Router, Switch, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import AccountForm from '../../features/accounts/form/AccountForm';
 import AccountDashboard from '../../features/accounts/dashboard/AccountDashboard';
@@ -60,6 +60,9 @@ import LoanDetails from '../../features/loan/details/LoanDetails';
 import LoanForm from '../../features/loan/form/LoanForm';
 import Dashboard from '../../features/dashboard/Dashboard';
 
+import AuthRoute from './AuthRoute';
+
+
 
 
 
@@ -67,6 +70,7 @@ import Dashboard from '../../features/dashboard/Dashboard';
 function App() {
   const location = useLocation();
   const {commonStore, userStore} = useStore();
+
 
   useEffect(() => {
     if (commonStore.token) {
@@ -77,9 +81,13 @@ function App() {
   }, [commonStore, userStore])
 
   if (!commonStore.appLoaded) return <LoadingComponent content='Loading app...'/>
-
+  const routes = [
+    {  path: "/dashboard", component:"ComponentA",roleRequired:"ADMIN" },
+  ];
   return (
+    
     <>
+    
       <ToastContainer position='bottom-right' hideProgressBar />
       <ModalContainer />
       <Route exact path='/' component={HomePage} />
@@ -105,8 +113,16 @@ function App() {
                   <PrivateRoute exact path='/salary' component={SalaryDashboard} />
                   <PrivateRoute exact path='/transaction' component={TransactionDashboard} />`
                   <PrivateRoute exact path='/transfers' component={TransferDashboard} />
-                  <PrivateRoute exact path='/withdraws' component={WithdrawDashboard} />
-                  <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                  <PrivateRoute exact path='/withdraw' component={WithdrawDashboard} />
+               
+                                                  {/* @ts-ignore */}
+                
+              
+                <Switch>
+                <PrivateRoute path='/dashboard' component={Dashboard} />
+                <AuthRoute roleRequired="ADMIN" />
+                </Switch>
+
                   <PrivateRoute path='/accounts/:id' component={AccountDetails} />
                   <PrivateRoute path='/balances/:id' component={BalanceDetails} />
                   <PrivateRoute path='/bankuser/:id' component={BankUserDetails} />

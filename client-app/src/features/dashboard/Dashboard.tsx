@@ -1,12 +1,15 @@
-import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import React from "react"
+import WithPermission from "../../app/layout/WithPermissions"
 
 
+const Dashboard = () => {
+	return (
+		
+			<WithPermission roleRequired="ADMIN" message="Only Admin can view this">
+				<h1>Dashboard</h1>
+			</WithPermission>
+	
+	)
+}
 
-export default observer (function Dashboard() {
-    
-
-    return(
-       <h1>Dashboard</h1>
-    )
-})
+export default Dashboard
