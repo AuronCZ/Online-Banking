@@ -35,7 +35,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start":"set HTTPS=true&&set SSL_CRT_FILE=./ssl/server.crt&&set SSL_KEY_FILE=./ssl/server.key&&react-scripts start",
     "build": "react-scripts build",
     "postbuild": "move build ../API/wwwroot",
     "test": "react-scripts test",
