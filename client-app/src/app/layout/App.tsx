@@ -91,14 +91,18 @@ function App() {
       <ToastContainer position='bottom-right' hideProgressBar />
       <ModalContainer />
       <Route exact path='/' component={HomePage} />
+   
       <Route
         path={'/(.+)'}
         render={() => {
           return (
             <>
               <NavBar />
+              
               <Container style={{ marginTop: '7em' }}>
+             
                 <Switch>
+                  
                   <PrivateRoute exact path='/accounts' component={AccountDashboard} />
                   <PrivateRoute exact path='/balances' component={BalanceDashboard} />
                   <PrivateRoute exact path='/bankuser' component={BankUserDashboard} />
@@ -114,15 +118,6 @@ function App() {
                   <PrivateRoute exact path='/transaction' component={TransactionDashboard} />`
                   <PrivateRoute exact path='/transfers' component={TransferDashboard} />
                   <PrivateRoute exact path='/withdraw' component={WithdrawDashboard} />
-               
-                                                  {/* @ts-ignore */}
-                
-              
-                <Switch>
-                <PrivateRoute path='/dashboard' component={Dashboard} />
-                <AuthRoute roleRequired="ADMIN" />
-                </Switch>
-
                   <PrivateRoute path='/accounts/:id' component={AccountDetails} />
                   <PrivateRoute path='/balances/:id' component={BalanceDetails} />
                   <PrivateRoute path='/bankuser/:id' component={BankUserDetails} />
@@ -138,7 +133,7 @@ function App() {
                   <PrivateRoute path='/transaction/:id' component={TransactionDetails} />
                   <PrivateRoute path='/transfers/:id' component={TransferDetails} />
                   <PrivateRoute path='/withdraws/:id' component={WithdrawDetails} />
-
+                 
                   <PrivateRoute key={location.key} path={['/createAccount', '/manageAccount/:id']} component={AccountForm} />
                   <PrivateRoute path={['/createBankUser', '/manageBankUser/:id']} component={BankUserForm} />
                   <PrivateRoute path={['/createBalance', '/manageBalance/:id']} component={BalanceForm} />
@@ -155,11 +150,23 @@ function App() {
                   <PrivateRoute path={['/createTransfer', '/manageTransfer/:id']} component={TransferForm} />
                   <PrivateRoute path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
                   <PrivateRoute path='/profiles/:username' component={ProfilePage} />
+               
+             
+               
                   <PrivateRoute path='/errors' component={TestErrors} />
+                 
                   <Route path='/server-error' component={ServerError} />
+                  <Switch>
+                  <PrivateRoute path='/dashboard' component={Dashboard} />
+                <AuthRoute roleRequired="ADMIN" />
+                  </Switch>
                   <Route path='*' component={NotFound} />
+               
                 </Switch>
+                           
+               
               </Container>
+            
             </>
           );
         }}

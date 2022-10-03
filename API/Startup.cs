@@ -77,7 +77,7 @@ namespace API
                     await next.Invoke();
                 });
             }
-            // app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 

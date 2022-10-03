@@ -33,7 +33,7 @@ export default observer(function NavBar() {
                             <Dropdown.Item as={NavLink} to='/salary' text="Salarys" />
                             <Dropdown.Item as={NavLink} to='/transaction' text="Transactions" />
                             <Dropdown.Item as={NavLink} to='/bankuser' text="Users" />
-                            <Dropdown.Item as={NavLink} to='/withdraws' text='Withdraws' />
+                            <Dropdown.Item as={NavLink} to='/withdraw' text='Withdraws' />
                             <Dropdown.Item as={NavLink} to='/errors' text='Errors' />
                         </Dropdown.Menu>
                     </Dropdown>

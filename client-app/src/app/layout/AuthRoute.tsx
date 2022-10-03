@@ -27,7 +27,7 @@ const useAuth = () => {
 
 //protected Route state
 type AuthRouteType = {
-	roleRequired?: "ADMIN" | "USER"
+	roleRequired?: "ADMIN" | "USER" | "MANAGER"
 
 }
 
