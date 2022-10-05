@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTransfer(Account account)
+        public async Task<IActionResult> CreateAccount(Account account)
         {
             return HandleResult(await Mediator.Send(new Create.Command {Account = account}));
         }

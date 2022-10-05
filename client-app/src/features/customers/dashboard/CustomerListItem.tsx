@@ -18,8 +18,8 @@ export default function CustomerListItem({customer}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/customer/${customer.id}`}>
-                                {customer.email}
-                            </Item.Header>
+                                {customer.name} <></> 
+                                {customer.surname}                           </Item.Header>
                             <Item.Description>Bank Customer</Item.Description>
                         </Item.Content>
                     </Item>
@@ -32,17 +32,16 @@ export default function CustomerListItem({customer}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{customer.name}</div>
-                    <div>{customer.surname}</div>
-                    <div>{customer.address}</div>
-                    <div>{customer.tel}</div>
-                    <div>{customer.gender}</div>
-                    <div>{customer.bank}</div>
+                    <div>Account number: {customer.accNumber}</div>
+                    <div>Address: {customer.address}</div>
+                    <div>Gender: {customer.gender}</div>
+                    <div>Phone number: {customer.tel}</div>
+                    <div>Email: {customer.email}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={customer.accNumber} />
+                    <Label basic content={customer.bank} />
                 </span>
                 <Button
                     as={Link}

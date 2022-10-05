@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { BankUser } from "../../../app/models/bankuser";
 
@@ -34,8 +33,8 @@ export default function BankUserListItem({bankuser}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                  <div>  {bankuser.name}</div>
-                  <div>{bankuser.surname}</div>
+                  <div>Name: {bankuser.name}</div>
+                  <div>Surname: {bankuser.surname}</div>
                 </span>
             </Segment>
             <Segment clearing>

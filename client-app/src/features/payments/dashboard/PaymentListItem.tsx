@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Payment } from "../../../app/models/payment";
 
@@ -33,7 +32,7 @@ export default function PaymentListItem({payment}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{payment.amount}</div>
+                    <div>Amount: {payment.amount}</div>
                 </span>
             </Segment>
             <Segment clearing>

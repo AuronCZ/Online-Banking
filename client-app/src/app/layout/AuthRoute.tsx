@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import {BrowserRouter, Redirect, Switch} from "react-router-dom"
+import {Redirect, Switch} from "react-router-dom"
 
 const useAuth = () => {
 	//get item from localstorage
@@ -25,9 +25,9 @@ const useAuth = () => {
 	}
 }
 
-//protected Route state
+//AuthRoute state
 type AuthRouteType = {
-	roleRequired?: "ADMIN" | "USER" | "MANAGER"
+	roleRequired?: "ADMIN" | "USER"
 
 }
 

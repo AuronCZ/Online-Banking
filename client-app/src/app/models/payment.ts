@@ -3,5 +3,5 @@ export interface Payment {
    account: string
    amount: string
    date: Date | null;
-   payee: string
+   payee: string;
  }

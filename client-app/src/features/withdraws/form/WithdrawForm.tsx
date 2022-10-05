@@ -81,7 +81,7 @@ export default observer(function WithdrawForm() {
                             disabled={isSubmitting || !dirty || !isValid} 
                             loading={loading} floated='right' 
                             positive type='submit' content='Submit' />
-                        <Button as={Link} to='/withdraws' floated='right' type='button' content='Cancel' />
+                        <Button as={Link} to='/withdraw' floated='right' type='button' content='Cancel' />
                     </Form>
                 )}
             </Formik>

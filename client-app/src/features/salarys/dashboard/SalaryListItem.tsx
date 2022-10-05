@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Salary } from "../../../app/models/salary";
 
@@ -33,7 +32,7 @@ export default function SalaryListItem({salary}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{salary.anualSalary}</div>
+                    <div>Anual Salary: {salary.anualSalary}</div>
             
                 </span>
             </Segment>

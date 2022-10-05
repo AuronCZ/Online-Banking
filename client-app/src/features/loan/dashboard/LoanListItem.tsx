@@ -32,16 +32,16 @@ export default function LoanListItem({loan}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{loan.name}</div>
-                    <div>{loan.surname}</div>
-                    <div>{loan.duration}</div>
-                    <div>{loan.amount}</div>
-                    <div>{loan.payments}</div>
+                    <div>Name: {loan.name}</div>
+                    <div>Surname: {loan.surname}</div>
+                    <div>Account number: {loan.accNumber}</div>
+                    <div>Duration: {loan.duration}</div>
+                    <div>Payments: {loan.payments}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={loan.accNumber} />
+                    <Label basic content={loan.amount} />
                 </span>
                 <Button
                     as={Link}

@@ -17,6 +17,7 @@ namespace Domain
         public DateTime OpenDate { get; set; }
         
         public string Balance { get; set; }
+
     }
 }
 

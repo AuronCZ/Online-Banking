@@ -60,7 +60,7 @@ export default observer (function WithdrawDetailedHeader({withdraw}: Props) {
                     name={withdraw.id}
                     loading={loading && target === withdraw.id} 
                     onClick={(e) => handleWithdrawDelete(e,withdraw.id)} 
-                    as={Link} to='/withdraws'  content="Delete" color='red' floated='right' />
+                    as={Link} to='/withdraw'  content="Delete" color='red' floated='right' />
                 <Button  as={Link} to={`/manageWithdraw/${withdraw.id}`} color='blue' floated='left'>
                     Manage Withdraw
                 </Button>

@@ -7,7 +7,6 @@ import { useStore } from "../../../app/stores/store";
 import AccountFilters from "./SalaryFilters";
 import AccountList from "./SalaryList";
 import InfiniteScroll from 'react-infinite-scroller';
-import AccountListItemPlaceholder from "./SalaryListItemPlaceholder";
 import SalaryListItemPlaceholder from "./SalaryListItemPlaceholder";
 
 

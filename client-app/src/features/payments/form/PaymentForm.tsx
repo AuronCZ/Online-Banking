@@ -23,7 +23,8 @@ export default observer(function PaymentForm() {
         account:'',
         amount: '',
         date:null,
-        payee:''
+        payee:'',
+
         });
     
         
@@ -32,6 +33,7 @@ export default observer(function PaymentForm() {
             amount:Yup.string().required('Amount is required'),
             date:Yup.string().required('Date is required'),
             payee:Yup.string().required('Payee is required'),
+    
         })
 
         useEffect(() =>{
@@ -77,6 +79,7 @@ export default observer(function PaymentForm() {
                             dateFormat='MMMM d, yyyy h:mm aa'
                             />
                       <MyTextInput  placeholder="Payee" name="payee" />
+                     
                         <Button 
                             disabled={isSubmitting || !dirty || !isValid}
                             loading={loading} floated='right' 

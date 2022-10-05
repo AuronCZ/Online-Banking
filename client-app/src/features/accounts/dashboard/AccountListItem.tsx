@@ -18,7 +18,9 @@ export default function AccountListItem({account}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/accounts/${account.id}`}>
-                                {account.accountNumber}
+                            {account.name} <></>
+                             {account.surname}
+                                
                             </Item.Header>
                             <Item.Description>Bank Account</Item.Description>
                         </Item.Content>
@@ -32,14 +34,13 @@ export default function AccountListItem({account}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{account.name}</div>
-                    <div>{account.surname}</div>
-                    <div>{account.balance}</div>
+                <div>Account number: {account.accountNumber}</div>
+                    <div>Balance: {account.balance}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={account.accountType} />
+                    <Label basic content={ account.accountType} />
                 </span>
                 <Button
                     as={Link}

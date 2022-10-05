@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite';
 import React, { SyntheticEvent, useState } from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
-import {Account} from "../../../app/models/account";
 import {format} from 'date-fns';
 import { useStore } from '../../../app/stores/store';
 import { Payment } from '../../../app/models/payment';
@@ -53,6 +52,7 @@ export default observer (function PaymentDetailedHeader({payment}: Props) {
                                  
                                 </p>
                                 <p>  {payment.payee}</p>
+                     
                             </Item.Content>
                         </Item>
                     </Item.Group>

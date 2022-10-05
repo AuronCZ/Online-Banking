@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Account } from "../../../app/models/account";
 import {format} from 'date-fns';
 import { Transaction } from "../../../app/models/transaction";
 
@@ -33,7 +32,7 @@ export default function TransactionListItem({transaction}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{transaction.payee}</div>
+                    <div>Payee: {transaction.payee}</div>
               
                 </span>
             </Segment>

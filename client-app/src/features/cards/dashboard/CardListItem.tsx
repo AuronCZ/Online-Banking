@@ -33,7 +33,7 @@ export default function CardListItem({card}: Props) {
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{card.cardNumber}</div>
+                    <div>Card number: {card.cardNumber}</div>
                 </span>
             </Segment>
             <Segment clearing>

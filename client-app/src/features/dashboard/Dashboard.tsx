@@ -2,7 +2,6 @@ import React from "react"
 import { Grid } from "semantic-ui-react"
 import WithPermission from "../../app/layout/WithPermissions"
 import AccountList from "./AccountList"
-
 import BalanceList from "./BalanceList"
 import BankUserList from "./BankUserList"
 import BranchList from "./BranchList"
@@ -22,12 +21,10 @@ import WithdrawList from "./WithdrawList"
 
 const Dashboard = () => (
 
-	<WithPermission roleRequired="ADMIN" message="Only Admin can view this">
+	<WithPermission roleRequired="ADMIN"  message="Only Admin can view this">
 		<h1>Dashboard </h1>
-	
 		<AccountList  />
 		<BalanceList />
-		<BankUserList/>
 		<BranchList/>
 		<CardList/>
 		<ContactList/>
@@ -39,9 +36,9 @@ const Dashboard = () => (
 		<SalaryList/>
 		<TransactionList/>
 		<TransferList/>
+		<BankUserList/>
 		<WithdrawList/>
 	</WithPermission>
-
 )
 
 export default Dashboard

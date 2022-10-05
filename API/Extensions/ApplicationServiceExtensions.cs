@@ -8,11 +8,6 @@ using Application.Withdraws;
 using Application.Core;
 using Application.Interfaces;
 using Infrastructure.Security;
-//using Application.Transfers;
-//using Application.Cards;
-//using Application.Balances;
-//using Application.Accounts;
-
 namespace API.Extensions
 {
     public static class ApplicationServiceExtensions

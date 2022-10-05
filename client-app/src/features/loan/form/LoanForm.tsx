@@ -11,7 +11,6 @@ import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MySelectInput from "../../../app/common/form/MySelectInput";
 import MyDateInput from "../../../app/common/form/MyDateInput";
-import { interestCategoryOptions } from "../../../app/common/options/interestCategoryOptions";
 import { Loan } from "../../../app/models/loan";
 import { loanCategoryOptions } from "../../../app/common/options/loanCategoryOptions";
 

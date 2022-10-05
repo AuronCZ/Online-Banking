@@ -32,9 +32,9 @@ export default function BranchListItem({branch}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{branch.branchNumber}</div>
-                    <div>{branch.country}</div>
-                    <div>{branch.city}</div>
+                    <div>Branch number: {branch.branchNumber}</div>
+                    <div>Country: {branch.country}</div>
+                    <div>City: {branch.city}</div>
                 </span>
             </Segment>
             <Segment clearing>

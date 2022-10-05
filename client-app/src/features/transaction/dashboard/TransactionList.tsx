@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { observer } from "mobx-react-lite";
 import { Header } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
-import AccountListItem from "./TransactionListItem";
 import TransactionListItem from "./TransactionListItem";
 
 

@@ -33,7 +33,7 @@ export default function BalanceListItem({balance}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{balance.amount}</div>
+                    <div>Amount: {balance.amount}</div>
                 </span>
             </Segment>
             <Segment clearing>

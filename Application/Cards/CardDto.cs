@@ -11,7 +11,7 @@ namespace Application.Cards
         public string CardType { get; set; }
 
         public string CardNumber { get; set; }
-        
+
         public DateTime ExpirationDate { get; set; }  
     }
 }

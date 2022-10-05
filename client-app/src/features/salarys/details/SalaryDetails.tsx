@@ -5,9 +5,7 @@ import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
 import SalaryDetailedInfo from "./SalaryDetailedInfo";
-import AccountDetailedInfo from "./SalaryDetailedInfo";
 import SalaryDetaledHeader from "./SalaryDetaledHeader";
-import AccountDetailedHeader from "./SalaryDetaledHeader";
 
 
 export default observer (function SalaryDetails(){

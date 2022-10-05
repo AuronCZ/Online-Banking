@@ -5,7 +5,6 @@ import { Button, Grid, Loader } from "semantic-ui-react";
 import { PagingParams } from "../../../app/models/pagination";
 import { useStore } from "../../../app/stores/store";
 import AccountFilters from "./DepositFilters";
-
 import InfiniteScroll from 'react-infinite-scroller';
 import DepositListItemPlaceholder from "./DepositListItemPlaceholder";
 import DepositList from "./DepositList";

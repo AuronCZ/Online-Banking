@@ -1,7 +1,7 @@
 import React from "react"
 
 type Props = {
-	roleRequired: "ADMIN" | "USER" | "MANAGER"
+	roleRequired: "ADMIN" | "USER"
 	message?: string
 	children?: React.ReactNode
 }

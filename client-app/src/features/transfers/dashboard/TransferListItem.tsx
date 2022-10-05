@@ -32,13 +32,13 @@ export default function TransferListItem({transfer}: Props) {
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{transfer.accountNumber}</div>
-                    <div>{transfer.payee}</div>
+                    <div>Account number: {transfer.accountNumber}</div>
+                    <div>Amount: {transfer.amount}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={transfer.amount} />
+                    <Label basic content={transfer.payee}/>
                 </span>
                 <Button
                     as={Link}

@@ -10,7 +10,7 @@ export default observer(function LoginForm() {
     const history = useHistory()
     const {userStore} = useStore();
     const login = () => {
-		localStorage.setItem("user", JSON.stringify({role:"ADMIN"}))
+		localStorage.setItem("user", JSON.stringify({role:"USER"}))
 		history.push("/")
 	}
     return (

@@ -9,9 +9,7 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
-import MyTextArea from "../../../app/common/form/MyTextArea";
 import MySelectInput from "../../../app/common/form/MySelectInput";
-import { accountCategoryOptions } from "../../../app/common/options/accountCategoryOptions";
 import MyDateInput from "../../../app/common/form/MyDateInput";
 import { Branch } from "../../../app/models/branch";
 import { branchCategoryOptions } from "../../../app/common/options/branchCategoryOptions";
@@ -76,8 +74,8 @@ export default observer(function BranchForm() {
                         <MyTextInput name='bank' placeholder='Bank' />
                         <MyTextInput placeholder='Branch Number' name='branchNumber'  />
                         <MyTextInput placeholder='Country' name='country'  />
-                        <MyTextInput placeholder='Address' name='address'  />
                         <MySelectInput options={branchCategoryOptions} placeholder='City' name='city'  />
+                        <MyTextInput placeholder='Address' name='address'  />
                         <MyDateInput
                             placeholderText='Date' 
                             name='date'

@@ -5,9 +5,7 @@ import { Grid } from "semantic-ui-react";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { useStore } from "../../../app/stores/store";
 import DepositDetailedInfo from "./DepositDetailedInfo";
-import AccountDetailedInfo from "./DepositDetailedInfo";
 import DepositDetaledHeader from "./DepositDetaledHeader";
-import AccountDetailedHeader from "./DepositDetaledHeader";
 
 
 export default observer (function DepositDetails(){

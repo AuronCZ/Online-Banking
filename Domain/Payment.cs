@@ -1,4 +1,5 @@
 using System;
+
 namespace Domain
 {
     public class Payment
@@ -12,6 +13,5 @@ namespace Domain
         public DateTime Date { get; set; }
 
         public string Payee { get; set; }
-
     }
 }

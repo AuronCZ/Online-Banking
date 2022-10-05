@@ -5,9 +5,7 @@ import { Button, Grid, Loader } from "semantic-ui-react";
 import { PagingParams } from "../../../app/models/pagination";
 import { useStore } from "../../../app/stores/store";
 import AccountFilters from "./InterestFilters";
-import AccountList from "./InterestList";
 import InfiniteScroll from 'react-infinite-scroller';
-import AccountListItemPlaceholder from "./InterestListItemPlaceholder";
 import InterestList from "./InterestList";
 import InterestListItemPlaceholder from "./InterestListItemPlaceholder";
 

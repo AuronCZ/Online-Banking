@@ -33,12 +33,12 @@ export default function WithdrawListItem({withdraw}: Props) {
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{withdraw.pin}</div>
+                    <div>Amount: {withdraw.amount}</div>
                 </span>
             </Segment>
             <Segment clearing>
                 <span>
-                    <Label basic content={withdraw.amount} />
+                    <Label basic content={withdraw.pin} />
                 </span>
                 <Button
                     as={Link}

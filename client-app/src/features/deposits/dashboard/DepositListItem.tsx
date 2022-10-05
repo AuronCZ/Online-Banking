@@ -32,7 +32,7 @@ export default function DepositListItem({deposit}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{deposit.amount}</div>
+                    <div>Amount: {deposit.amount}</div>
                 </span>
             </Segment>
             <Segment clearing>

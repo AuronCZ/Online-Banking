@@ -12,6 +12,5 @@ namespace Application.Payments
         public string Amount{ get; set; }
         public DateTime Date { get; set; }
         public string Payee { get; set; }
-    
     }
 }

@@ -32,8 +32,8 @@ export default function InterestListItem({interest}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{interest.interestRate}</div>
-                    <div>{interest.monthsNumber}</div>
+                    <div>Rate: {interest.interestRate}</div>
+                    <div>Months: {interest.monthsNumber}</div>
                   
                 </span>
             </Segment>

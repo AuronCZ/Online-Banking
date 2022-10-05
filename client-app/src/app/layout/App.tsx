@@ -59,13 +59,7 @@ import LoanDashboard from '../../features/loan/dashboard/LoanDashboard';
 import LoanDetails from '../../features/loan/details/LoanDetails';
 import LoanForm from '../../features/loan/form/LoanForm';
 import Dashboard from '../../features/dashboard/Dashboard';
-
 import AuthRoute from './AuthRoute';
-
-
-
-
-
 
 function App() {
   const location = useLocation();
@@ -118,6 +112,7 @@ function App() {
                   <PrivateRoute exact path='/transaction' component={TransactionDashboard} />`
                   <PrivateRoute exact path='/transfers' component={TransferDashboard} />
                   <PrivateRoute exact path='/withdraw' component={WithdrawDashboard} />
+                  
                   <PrivateRoute path='/accounts/:id' component={AccountDetails} />
                   <PrivateRoute path='/balances/:id' component={BalanceDetails} />
                   <PrivateRoute path='/bankuser/:id' component={BankUserDetails} />
@@ -151,20 +146,17 @@ function App() {
                   <PrivateRoute path={['/createWithdraw', '/manageWithdraw/:id']} component={WithdrawForm} />
                   <PrivateRoute path='/profiles/:username' component={ProfilePage} />
                
-             
-               
                   <PrivateRoute path='/errors' component={TestErrors} />
-                 
                   <Route path='/server-error' component={ServerError} />
+                  
                   <Switch>
                   <PrivateRoute path='/dashboard' component={Dashboard} />
-                <AuthRoute roleRequired="ADMIN" />
+                  <AuthRoute roleRequired="ADMIN" />
                   </Switch>
+               
                   <Route path='*' component={NotFound} />
                
                 </Switch>
-                           
-               
               </Container>
             
             </>

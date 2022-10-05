@@ -18,7 +18,10 @@ export default function ContactListItem({contact}: Props){
                         <Item.Image size='tiny' circular src='/assets/user.png' />
                         <Item.Content>
                             <Item.Header as={Link} to={`/contacts/${contact.id}`}>
-                                {contact.email}
+                             {contact.name} <></>
+                            {contact.surname}
+                               
+                            
                             </Item.Header>
                             <Item.Description>Contact</Item.Description>
                         </Item.Content>
@@ -32,9 +35,8 @@ export default function ContactListItem({contact}: Props){
             </Segment>
             <Segment secondary>
                 <span>
-                    <div>{contact.name}</div>
-                    <div>{contact.surname}</div>
-                    <div>{contact.phoneNumber}</div>
+                    <div>Email: {contact.email}</div>
+                    <div>Phone number: {contact.phoneNumber}</div>
                 </span>
             </Segment>
             <Segment clearing>

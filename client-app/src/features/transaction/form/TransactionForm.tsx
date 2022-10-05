@@ -9,11 +9,8 @@ import { Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
-import MyTextArea from "../../../app/common/form/MyTextArea";
 import MySelectInput from "../../../app/common/form/MySelectInput";
-import { accountCategoryOptions } from "../../../app/common/options/accountCategoryOptions";
 import MyDateInput from "../../../app/common/form/MyDateInput";
-import { Account } from "../../../app/models/account";
 import { Transaction } from "../../../app/models/transaction";
 import { transactionCategoryOptions } from "../../../app/common/options/transactionCategoryOptions";
 
