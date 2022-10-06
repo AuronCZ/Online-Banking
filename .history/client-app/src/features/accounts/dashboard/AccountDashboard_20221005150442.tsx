@@ -7,7 +7,7 @@ import { useStore } from "../../../app/stores/store";
 import AccountFilters from "./AccountFilters";
 import AccountList from "./AccountList";
 import InfiniteScroll from 'react-infinite-scroller';
-import AccountListItemPlaceholder from "./AccountListItemPlaceholder"
+import AccountListItemPlaceholder from "./AccountListItemPlaceholder";
 
 
 export default observer (function AccountDashboard() {
